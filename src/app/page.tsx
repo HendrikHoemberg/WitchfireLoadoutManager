@@ -24,7 +24,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="mt-16 bg-[#303030] rounded-lg p-6 max-w-4xl w-full">
+      <div className="mt-16 bg-[#30303075] rounded-lg p-6 max-w-4xl w-full">
         <h2 className="text-2xl font-bold text-[#c00101] mb-4">About Witchfire</h2>
         <p className="text-gray-100 mb-4">
           Witchfire is a dark fantasy first-person shooter developed by The Astronauts. Set in an alternate history where witches are real and deadly, the game combines fast-paced gunplay with magical abilities.
@@ -47,8 +47,8 @@ interface FeatureCardProps {
 function FeatureCard({ title, description, icon, link }: FeatureCardProps) {
   return (
     <Link href={link} className="block">
-      <div className="bg-[#303030] rounded-lg p-0 h-full hover:bg-[#3D3D3D] transition-colors border border-gray-600 hover:border-red-600">
-        <div className="flex items-center mb-1 bg-[#555555] w-full rounded-t-lg p-3 space-x-3">
+      <div className="bg-[#30303071] rounded-lg p-0 h-full hover:bg-[#3D3D3D] transition-colors border border-gray-600 hover:border-red-600">
+        <div className="flex items-center mb-1 bg-[#5555556b] w-full rounded-t-lg p-3 space-x-3">
           <div className="text-4xl">{icon}</div>
           <h3 className="text-xl font-bold text-red-600 hover:underline">{title}</h3>
         </div>
