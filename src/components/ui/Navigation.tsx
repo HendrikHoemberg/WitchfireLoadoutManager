@@ -13,8 +13,8 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-[#1A1A1A] text-white py-4 px-6 shadow-md">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+    <nav className="bg-[#1a1a1abb] text-white py-4 px-6 shadow-md">
+      <div className="container mx-au4to flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
           <Link href="/" className="text-2xl font-bold text-gray-100 hover:text-red-600 transition-colors">
             Witchfire Loadout Manager

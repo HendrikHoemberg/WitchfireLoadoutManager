@@ -1,8 +1,8 @@
+import Navigation from '@/components/ui/Navigation';
+import { LoadoutProvider } from '@/context/LoadoutContext';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { LoadoutProvider } from '@/context/LoadoutContext'
-import Navigation from '@/components/ui/Navigation'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-800 text-white min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-white min-h-screen`}
       >
         <LoadoutProvider>
           <div className="flex flex-col min-h-screen">
@@ -35,7 +35,7 @@ export default function RootLayout({
             <main className="flex-grow container mx-auto px-4 py-8">
               {children}
             </main>
-            <footer className="bg-[#1A1A1A] text-gray-100 py-2">
+            <footer className="bg-[#1a1a1abb] text-gray-100 py-2">
               <div className="container mx-auto px-4 text-center">
                 <p>Witchfire Loadout Manager & Randomizer {new Date().getFullYear()}</p>
                 <p className="text-sm mt-2">Not affiliated with The Astronauts or Witchfire.</p>
