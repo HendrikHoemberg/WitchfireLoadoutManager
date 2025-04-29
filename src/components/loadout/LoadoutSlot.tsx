@@ -12,14 +12,20 @@ interface LoadoutSlotProps {
 
 const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlotProps) => {
   // Determine the display name for the category
-  const getCategoryDisplayName = (category: string) => {
+  const getCategoryDisplayName = (category: string, slotIndex?: number) => {
     switch (category) {
-      case 'Weapons': return 'Weapon';
+      case 'Weapons': 
+        return slotIndex === 0 ? 'Primary Weapon' : 'Secondary Weapon';
+      case 'DemonicWeapons': return 'Demonic Weapon';
       case 'LightSpells': return 'Light Spell';
       case 'HeavySpells': return 'Heavy Spell';
       default: return category;
     }
   };
+  
+  // Determine which slot index this is for weapons
+  const slotIndex = category === 'Weapons' && onClick ? 
+    onClick.toString().includes('primaryWeapon') ? 0 : 1 : undefined;
 
   return (
     <div 
@@ -53,7 +59,7 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
           <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-gray-800 rounded-md opacity-30">
             <span className="text-3xl">+</span>
           </div>
-          <span className="mt-1 text-xs text-gray-500">{getCategoryDisplayName(category)}</span>
+          <span className="mt-1 text-xs text-gray-500">{getCategoryDisplayName(category, slotIndex)}</span>
         </>
       )}
     </div>

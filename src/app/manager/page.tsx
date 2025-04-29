@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ItemCategory, Loadout } from '@/types';
 import { useLoadout } from '@/context/LoadoutContext';
 import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
@@ -9,11 +9,18 @@ import ItemSelector from '@/components/loadout/ItemSelector';
 export default function ManagerPage() {
   const { loadout, setItemInLoadout, clearLoadout } = useLoadout();
   
+  // Clear loadout when the page loads
+  useEffect(() => {
+    clearLoadout();
+  }, [clearLoadout]);
+  
   const [selectedSlot, setSelectedSlot] = useState<keyof Loadout | null>(null);
   
   // Map loadout slot to item category
   const slotToCategory: Record<keyof Loadout, ItemCategory> = {
-    weapon: 'Weapons',
+    primaryWeapon: 'Weapons',
+    secondaryWeapon: 'Weapons',
+    demonicWeapon: 'DemonicWeapons',
     lightSpell: 'LightSpells',
     heavySpell: 'HeavySpells',
     relic: 'Relics',

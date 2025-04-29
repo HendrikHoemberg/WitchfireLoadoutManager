@@ -42,7 +42,7 @@ export default function WikiPage() {
   
   // All available categories
   const categories: (ItemCategory | 'All')[] = [
-    'All', 'Weapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings'
+    'All', 'Weapons', 'DemonicWeapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings'
   ];
   
   // All available elements
@@ -151,6 +151,7 @@ export default function WikiPage() {
 // Helper function to get display name for category
 function getCategoryDisplayName(category: string): string {
   switch (category) {
+    case 'DemonicWeapons': return 'Demonic Weapons';
     case 'LightSpells': return 'Light Spells';
     case 'HeavySpells': return 'Heavy Spells';
     default: return category;

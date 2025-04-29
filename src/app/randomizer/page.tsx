@@ -13,15 +13,16 @@ export default function RandomizerPage() {
     randomizerSettings, 
     setPreferredElements, 
     toggleExcludedItem, 
-    clearExcludedItems 
+    clearExcludedItems,
+    clearLoadout
   } = useLoadout();
   
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory>('Weapons');
 
-  // Generate a random loadout when the page loads
+  // Clear loadout when the page loads
   useEffect(() => {
-    generateRandomLoadout();
-  }, [generateRandomLoadout]);
+    clearLoadout();
+  }, [clearLoadout]);
 
   // Toggle element preference
   const toggleElementPreference = (element: Element) => {
@@ -41,7 +42,7 @@ export default function RandomizerPage() {
 
   // Category tabs for item selection
   const categories: ItemCategory[] = [
-    'Weapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings'
+    'Weapons', 'DemonicWeapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings'
   ];
 
   return (
@@ -140,6 +141,7 @@ export default function RandomizerPage() {
 // Helper function to get display name for category
 function getCategoryDisplayName(category: string): string {
   switch (category) {
+    case 'DemonicWeapons': return 'Demonic Weapons';
     case 'LightSpells': return 'Light Spells';
     case 'HeavySpells': return 'Heavy Spells';
     default: return category;

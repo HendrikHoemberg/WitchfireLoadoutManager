@@ -333,9 +333,56 @@ export const rings: BaseItem[] = [
   }
 ];
 
+// Sample Demonic Weapons
+export const demonicWeapons: BaseItem[] = [
+  {
+    id: 'dw001',
+    name: 'Hellfire Blade',
+    category: 'DemonicWeapons',
+    iconUrl: '/images/weapons/hellfire-blade.png',
+    element: 'Fire',
+    mysterium1: {
+      charismata: ['Deals fire damage on hit', 'Ignites enemies with a 20% chance'],
+      requirements: ['Use this weapon 30 times']
+    },
+    mysterium2: {
+      charismata: ['Increased fire damage', 'Burning enemies take 15% more damage from all sources'],
+      requirements: ['Kill 25 enemies with this weapon']
+    },
+    mysterium3: {
+      charismata: ['Killing a burning enemy creates a fire explosion', 'Explosion deals 40 fire damage to nearby enemies'],
+      requirements: ['Kill 3 burning enemies in quick succession 5 times']
+    },
+    addedOn: '2025-04-01',
+    updatedOn: '2025-04-01'
+  },
+  {
+    id: 'dw002',
+    name: 'Soul Reaper',
+    category: 'DemonicWeapons',
+    iconUrl: '/images/weapons/soul-reaper.png',
+    element: 'Decay',
+    mysterium1: {
+      charismata: ['Deals decay damage', 'Heals the user for 5% of damage dealt'],
+      requirements: ['Use this weapon 30 times']
+    },
+    mysterium2: {
+      charismata: ['Increased decay damage', 'Healing increased to 10% of damage dealt'],
+      requirements: ['Kill 25 enemies with this weapon']
+    },
+    mysterium3: {
+      charismata: ['Killing an enemy grants a soul fragment', 'Collecting 3 soul fragments grants 50% increased damage for 10 seconds'],
+      requirements: ['Kill 50 enemies with this weapon']
+    },
+    addedOn: '2025-04-01',
+    updatedOn: '2025-04-01'
+  }
+];
+
 // Export all items in a single array
 export const allItems: BaseItem[] = [
   ...weapons,
+  ...demonicWeapons,
   ...lightSpells,
   ...heavySpells,
   ...relics,
@@ -348,6 +395,8 @@ export const getItemsByCategory = (category: string): BaseItem[] => {
   switch (category) {
     case 'Weapons':
       return weapons;
+    case 'DemonicWeapons':
+      return demonicWeapons;
     case 'LightSpells':
       return lightSpells;
     case 'HeavySpells':

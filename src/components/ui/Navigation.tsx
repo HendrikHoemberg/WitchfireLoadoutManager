@@ -7,8 +7,8 @@ const Navigation = () => {
   const pathname = usePathname();
 
   const navItems = [
-    { name: 'Randomizer', path: '/randomizer' },
     { name: 'Loadout Manager', path: '/manager' },
+    { name: 'Loadout Randomizer', path: '/randomizer' },
     { name: 'Item Wiki', path: '/wiki' },
   ];
 

@@ -25,10 +25,22 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot }: LoadoutDisplayPr
     <div className="w-full max-w-4xl mx-auto">
       <div className="flex flex-wrap justify-center gap-4 mb-8">
         <LoadoutSlot 
-          item={loadout.weapon} 
+          item={loadout.primaryWeapon} 
           category="Weapons" 
-          isSelected={selectedSlot === 'weapon'}
-          onClick={() => onSlotClick && onSlotClick('weapon')}
+          isSelected={selectedSlot === 'primaryWeapon'}
+          onClick={() => onSlotClick && onSlotClick('primaryWeapon')}
+        />
+        <LoadoutSlot 
+          item={loadout.secondaryWeapon} 
+          category="Weapons" 
+          isSelected={selectedSlot === 'secondaryWeapon'}
+          onClick={() => onSlotClick && onSlotClick('secondaryWeapon')}
+        />
+        <LoadoutSlot 
+          item={loadout.demonicWeapon} 
+          category="DemonicWeapons" 
+          isSelected={selectedSlot === 'demonicWeapon'}
+          onClick={() => onSlotClick && onSlotClick('demonicWeapon')}
         />
         <LoadoutSlot 
           item={loadout.lightSpell} 

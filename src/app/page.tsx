@@ -13,16 +13,16 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
         <FeatureCard 
-          title="Loadout Randomizer" 
-          description="Generate balanced loadouts with optional element preferences and item exclusions."
-          icon="🎲"
-          link="/randomizer"
-        />
-        <FeatureCard 
           title="Loadout Manager" 
           description="Manually create and customize loadouts with a visual interface."
           icon="⚔️"
           link="/manager"
+        />
+        <FeatureCard 
+          title="Loadout Randomizer" 
+          description="Generate balanced loadouts with optional element preferences and item exclusions."
+          icon="🎲"
+          link="/randomizer"
         />
         <FeatureCard 
           title="Item Wiki" 

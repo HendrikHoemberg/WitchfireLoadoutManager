@@ -1,5 +1,5 @@
 // Item Categories and Element Types
-export type ItemCategory = 'Weapons' | 'LightSpells' | 'HeavySpells' | 'Relics' | 'Fetishes' | 'Rings';
+export type ItemCategory = 'Weapons' | 'DemonicWeapons' | 'LightSpells' | 'HeavySpells' | 'Relics' | 'Fetishes' | 'Rings';
 export type Element = 'Fire' | 'Decay' | 'Ice' | 'Lightning' | null;
 
 // Base Item Structure
@@ -50,7 +50,9 @@ export function isWeapon(item: BaseItem): item is Weapon {
 
 // Loadout Structure
 export interface Loadout {
-  weapon: BaseItem | null;
+  primaryWeapon: BaseItem | null;
+  secondaryWeapon: BaseItem | null;
+  demonicWeapon: BaseItem | null;
   lightSpell: BaseItem | null;
   heavySpell: BaseItem | null;
   relic: BaseItem | null;

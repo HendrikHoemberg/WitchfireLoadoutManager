@@ -24,7 +24,9 @@ interface LoadoutContextType {
 }
 
 const defaultLoadout: Loadout = {
-  weapon: null,
+  primaryWeapon: null,
+  secondaryWeapon: null,
+  demonicWeapon: null,
   lightSpell: null,
   heavySpell: null,
   relic: null,
@@ -98,7 +100,9 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
   // Generate a random loadout based on current settings
   const generateRandomLoadout = useCallback(() => {
     const newLoadout: Loadout = {
-      weapon: null,
+      primaryWeapon: null,
+      secondaryWeapon: null,
+      demonicWeapon: null,
       lightSpell: null,
       heavySpell: null,
       relic: null,
@@ -108,13 +112,17 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
 
     // Map category names to loadout slot names
     const categoryToSlot: Record<string, keyof Loadout> = {
-      'Weapons': 'weapon',
+      'Weapons': 'primaryWeapon', // Primary weapon gets items from Weapons category
+      'DemonicWeapons': 'demonicWeapon',
       'LightSpells': 'lightSpell',
       'HeavySpells': 'heavySpell',
       'Relics': 'relic',
       'Fetishes': 'fetish',
       'Rings': 'ring'
     };
+    
+    // Secondary weapon also gets items from Weapons category
+    // We'll handle this separately
 
     // For each category, select a random item
     Object.entries(categoryToSlot).forEach(([category, slot]) => {
@@ -152,6 +160,48 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
       const randomIndex = Math.floor(Math.random() * availableItems.length);
       newLoadout[slot] = availableItems[randomIndex];
     });
+    
+    // Handle secondary weapon separately (also from Weapons category)
+    // Get all weapons
+    let availableWeapons = getItemsByCategory('Weapons');
+    
+    // Filter out excluded items
+    if (randomizerSettings.excludedItems.length > 0) {
+      availableWeapons = availableWeapons.filter(
+        item => !randomizerSettings.excludedItems.includes(item.id)
+      );
+    }
+    
+    // Filter out the primary weapon to avoid duplicates
+    if (newLoadout.primaryWeapon) {
+      availableWeapons = availableWeapons.filter(
+        item => item.id !== newLoadout.primaryWeapon?.id
+      );
+    }
+    
+    // Check if we have enough items to randomize
+    if (availableWeapons.length >= 1) {
+      // If preferred elements are specified, prioritize items with those elements
+      if (randomizerSettings.preferredElements.length > 0) {
+        const weaponsWithPreferredElements = availableWeapons.filter(
+          item => item.element !== null && randomizerSettings.preferredElements.includes(item.element)
+        );
+        
+        // If we have items with preferred elements, use those
+        if (weaponsWithPreferredElements.length > 0) {
+          const randomIndex = Math.floor(Math.random() * weaponsWithPreferredElements.length);
+          newLoadout.secondaryWeapon = weaponsWithPreferredElements[randomIndex];
+        } else {
+          // Otherwise, select a random weapon
+          const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+          newLoadout.secondaryWeapon = availableWeapons[randomIndex];
+        }
+      } else {
+        // No element preference, select a random weapon
+        const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+        newLoadout.secondaryWeapon = availableWeapons[randomIndex];
+      }
+    }
     
     setLoadout(newLoadout);
   }, [randomizerSettings]);
