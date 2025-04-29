@@ -32,9 +32,9 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
       className={`
         relative flex flex-col items-center justify-center 
         w-24 h-24 sm:w-32 sm:h-32 rounded-lg 
-        ${isSelected ? 'border-2 border-red-500' : 'border border-gray-700'} 
-        ${item ? 'bg-gray-800' : 'bg-gray-900'} 
-        transition-all duration-200 cursor-pointer hover:border-red-400
+        ${isSelected ? 'border-2 border-red-600' : 'border border-gray-700'} 
+        ${item ? 'bg-[#4D4D4D]' : 'bg-[#303030]'} 
+        transition-all duration-200 cursor-pointer hover:border-red-500
       `}
       onClick={onClick}
     >
@@ -47,7 +47,7 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
               <span className="text-2xl">{item.name.charAt(0)}</span>
             </div>
           </div>
-          <span className="mt-1 text-xs text-center text-gray-300 truncate w-full px-1">{item.name}</span>
+          <span className="mt-1 text-xs text-center text-gray-100 truncate w-full px-1">{item.name}</span>
           {item.element && (
             <div className="absolute top-1 right-1 w-4 h-4 rounded-full" 
                  style={{ backgroundColor: getElementColor(item.element) }}>
@@ -59,7 +59,7 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
           <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-gray-800 rounded-md opacity-30">
             <span className="text-3xl">+</span>
           </div>
-          <span className="mt-1 text-xs text-gray-500">{getCategoryDisplayName(category, slotIndex)}</span>
+          <span className="mt-1 text-xs text-gray-100">{getCategoryDisplayName(category, slotIndex)}</span>
         </>
       )}
     </div>

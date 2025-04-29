@@ -20,7 +20,7 @@ const ItemCard = ({ item }: ItemCardProps) => {
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden border border-gray-700 hover:border-red-500 transition-colors">
+    <div className="bg-[#1A1A1A] rounded-lg overflow-hidden border border-gray-700 hover:border-red-500 transition-colors">
       {/* Item Header */}
       <div className="p-4 bg-gray-800 flex items-center gap-4">
         <div className="w-16 h-16 bg-gray-700 rounded-md flex items-center justify-center">

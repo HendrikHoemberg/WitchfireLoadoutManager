@@ -55,10 +55,13 @@ export default function RandomizerPage() {
       </div>
       
       {/* Loadout Display */}
-      <LoadoutDisplay loadout={loadout} />
+      <div className="bg-[#1A1A1A] rounded-lg p-6">
+        <LoadoutDisplay loadout={loadout} />
+      </div>
+      
       
       {/* Element Preferences */}
-      <div className="bg-gray-900 rounded-lg p-4">
+      <div className="bg-[#1A1A1A] rounded-lg p-4">
         <h2 className="text-xl font-semibold mb-3">Element Preferences</h2>
         <div className="flex flex-wrap gap-3">
           {['Fire', 'Ice', 'Lightning', 'Decay'].map((element) => {
@@ -99,7 +102,7 @@ export default function RandomizerPage() {
       </div>
       
       {/* Item Exclusion Section */}
-      <div className="bg-gray-900 rounded-lg p-4">
+      <div className="bg-[#1A1A1A] rounded-lg p-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Exclude Items</h2>
           <button

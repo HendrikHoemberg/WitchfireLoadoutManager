@@ -13,10 +13,10 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-gray-900 text-white py-4 px-6 shadow-md">
+    <nav className="bg-[#1A1A1A] text-white py-4 px-6 shadow-md">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
-          <Link href="/" className="text-2xl font-bold text-red-500 hover:text-red-400 transition-colors">
+          <Link href="/" className="text-2xl font-bold text-gray-100 hover:text-red-600 transition-colors">
             Witchfire Loadout Manager
           </Link>
         </div>
@@ -29,8 +29,8 @@ const Navigation = () => {
                 <Link 
                   href={item.path}
                   className={`py-2 px-3 rounded-md transition-colors ${isActive 
-                    ? 'bg-red-700 text-white' 
-                    : 'text-gray-300 hover:text-white hover:bg-gray-800'}`}
+                    ? 'bg-[#4D4D4D] text-white' 
+                    : 'text-gray-100 hover:text-white hover:bg-[#3D3D3D]'}`}
                 >
                   {item.name}
                 </Link>

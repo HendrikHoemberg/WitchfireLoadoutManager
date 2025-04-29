@@ -35,7 +35,7 @@ export default function RootLayout({
             <main className="flex-grow container mx-auto px-4 py-8">
               {children}
             </main>
-            <footer className="bg-gray-900 text-gray-400 py-6">
+            <footer className="bg-[#1A1A1A] text-gray-100 py-2">
               <div className="container mx-auto px-4 text-center">
                 <p>Witchfire Loadout Manager & Randomizer {new Date().getFullYear()}</p>
                 <p className="text-sm mt-2">Not affiliated with The Astronauts or Witchfire.</p>

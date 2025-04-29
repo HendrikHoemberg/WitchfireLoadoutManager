@@ -60,7 +60,7 @@ export default function WikiPage() {
       </div>
       
       {/* Search and Filters */}
-      <div className="bg-gray-900 rounded-lg p-6">
+      <div className="bg-[#1A1A1A] rounded-lg p-6">
         <div className="mb-6">
           <input
             type="text"

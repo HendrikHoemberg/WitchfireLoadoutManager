@@ -5,8 +5,8 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-red-500 mb-6">Witchfire Loadout Manager & Randomizer</h1>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+        <h1 className="text-4xl font-bold text-red-600 mb-6">Witchfire Loadout Manager & Randomizer</h1>
+        <p className="text-xl text-gray-100 max-w-3xl mx-auto">
           Create, manage, and randomize balanced loadouts for Witchfire with element preferences and detailed item information.
         </p>
       </div>
@@ -32,12 +32,12 @@ export default function Home() {
         />
       </div>
 
-      <div className="mt-16 bg-gray-900 rounded-lg p-6 max-w-4xl w-full">
-        <h2 className="text-2xl font-bold text-red-400 mb-4">About Witchfire</h2>
-        <p className="text-gray-300 mb-4">
+      <div className="mt-16 bg-[#303030] rounded-lg p-6 max-w-4xl w-full">
+        <h2 className="text-2xl font-bold text-red-600 mb-4">About Witchfire</h2>
+        <p className="text-gray-100 mb-4">
           Witchfire is a dark fantasy first-person shooter developed by The Astronauts. Set in an alternate history where witches are real and deadly, the game combines fast-paced gunplay with magical abilities.
         </p>
-        <p className="text-gray-300">
+        <p className="text-gray-100">
           This tool helps you experiment with different loadout combinations, discover synergies between items, and optimize your gameplay experience.
         </p>
       </div>
@@ -55,10 +55,10 @@ interface FeatureCardProps {
 function FeatureCard({ title, description, icon, link }: FeatureCardProps) {
   return (
     <Link href={link} className="block">
-      <div className="bg-gray-900 rounded-lg p-6 h-full hover:bg-gray-800 transition-colors border border-gray-700 hover:border-red-500">
+      <div className="bg-[#303030] rounded-lg p-6 h-full hover:bg-[#3D3D3D] transition-colors border border-gray-600 hover:border-red-600">
         <div className="text-4xl mb-4">{icon}</div>
-        <h3 className="text-xl font-bold text-red-400 mb-2">{title}</h3>
-        <p className="text-gray-300">{description}</p>
+        <h3 className="text-xl font-bold text-red-600 mb-2">{title}</h3>
+        <p className="text-gray-100">{description}</p>
       </div>
     </Link>
   );

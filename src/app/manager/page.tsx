@@ -46,18 +46,18 @@ export default function ManagerPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-red-500 mb-4">Loadout Manager</h1>
-        <p className="text-gray-300 max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold text-red-600 mb-4">Loadout Manager</h1>
+        <p className="text-gray-100 max-w-2xl mx-auto">
           Create and customize your perfect loadout by selecting items for each slot.
         </p>
       </div>
       
       {/* Loadout Display */}
-      <div className="bg-gray-900 rounded-lg p-6">
+      <div className="bg-[#1A1A1A] rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Current Loadout</h2>
           <button
-            className="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-sm rounded-md transition-colors"
+            className="px-3 py-1 bg-[#4D4D4D] hover:bg-[#696969] text-sm rounded-md transition-colors"
             onClick={clearLoadout}
           >
             Clear All
@@ -79,7 +79,7 @@ export default function ManagerPage() {
       
       {/* Item Selection */}
       {currentCategory && (
-        <div className="bg-gray-900 rounded-lg p-6">
+        <div className="bg-[#1A1A1A] rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">{getCategoryDisplayName(currentCategory)} Selection</h2>
           
           <ItemSelector
@@ -90,7 +90,7 @@ export default function ManagerPage() {
       )}
       
       {!currentCategory && (
-        <div className="bg-gray-900 rounded-lg p-6 text-center">
+        <div className="bg-[#1A1A1A] rounded-lg p-6 text-center">
           <p className="text-gray-400">Click on a loadout slot above to select an item for that slot.</p>
         </div>
       )}
