@@ -141,9 +141,13 @@ const ItemSelector = ({
               const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
               const popupHeight = 500; // Increased height estimate to prevent cut-off
               
-              // Default position (to the right)
-              let top = rect.top;
+              // Position the popup so its bottom edge is significantly above the bottom edge of the item card
+              // First calculate the bottom position with an offset to move it higher
+              let bottom = rect.bottom - 100; // Add a 100px offset to move it higher
               let left = rect.right + 10;
+              
+              // Calculate top based on bottom position and popup height
+              let top = bottom - popupHeight;
               
               // Check if popup would go off the right edge of the screen
               if (left + popupWidth > viewportWidth) {
@@ -156,10 +160,10 @@ const ItemSelector = ({
                 }
               }
               
-              // Check if popup would go off the bottom of the screen
-              if (top + popupHeight > viewportHeight) {
-                // Adjust top position to keep popup within viewport
-                top = Math.max(10, viewportHeight - popupHeight - 10);
+              // Check if popup would go off the top of the screen
+              if (top < 10) {
+                // If it would go off the top, position it at the top with a small margin
+                top = 10;
               }
               
               setPopupPosition({ top, left });
@@ -182,13 +186,22 @@ const ItemSelector = ({
                   const viewportWidth = window.innerWidth;
                   const viewportHeight = window.innerHeight;
                   
-                  // For mobile, prefer centering the popup
-                  let top = Math.max(10, rect.top - 100); // Position above the finger
-                  let left = Math.max(10, (viewportWidth - 288) / 2); // Center horizontally
+                  // Estimate popup dimensions
+                  const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
+                  const popupHeight = 500; // Increased height estimate to prevent cut-off
                   
-                  // Ensure it doesn't go off bottom
-                  if (top + 500 > viewportHeight) {
-                    top = Math.max(10, viewportHeight - 500 - 10);
+                  // Position the popup so its bottom edge is significantly above the bottom edge of the item card
+                  // For mobile, we'll still center horizontally but position higher
+                  let bottom = rect.bottom - 100; // Add a 100px offset to move it higher
+                  let left = Math.max(10, (viewportWidth - popupWidth) / 2); // Center horizontally
+                  
+                  // Calculate top based on bottom position and popup height
+                  let top = bottom - popupHeight;
+                  
+                  // Check if popup would go off the top of the screen
+                  if (top < 10) {
+                    // If it would go off the top, position it at the top with a small margin
+                    top = 10;
                   }
                   
                   setPopupPosition({ top, left });
