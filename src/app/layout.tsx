@@ -29,9 +29,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased text-white min-h-screen`}>
         <LoadoutProvider>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen pt-16">
             <Navigation />
-            <div className="flex justify-center items-center py-4 sm:py-8">
+            <div className="flex justify-center items-center py-4 sm:py-8 mt-2">
               <Image
                 src="/images/wf-logo2.png"
                 alt="Witchfire Logo"
