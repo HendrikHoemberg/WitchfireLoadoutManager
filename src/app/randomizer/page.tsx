@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Element, ItemCategory } from '@/types';
-import { useLoadout } from '@/context/LoadoutContext';
-import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
 import ItemSelector from '@/components/loadout/ItemSelector';
+import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
+import { useLoadout } from '@/context/LoadoutContext';
+import { Element, ItemCategory } from '@/types';
+import { useEffect, useState } from 'react';
 
 export default function RandomizerPage() {
   const { 
@@ -47,22 +48,27 @@ export default function RandomizerPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-red-500 mb-4">Loadout Randomizer</h1>
-        <p className="text-gray-300 max-w-2xl mx-auto">
-          Generate balanced loadouts with optional element preferences and item exclusions.
-        </p>
-      </div>
+      
       
       {/* Loadout Display */}
-      <div className="bg-[#1A1A1A] rounded-lg p-6">
+      <div className="relative bg-[#30303071] rounded-lg p-8 transition-colors border border-gray-600 flex flex-col items-center justify-center text-center overflow-hidden">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
         <LoadoutDisplay loadout={loadout} />
       </div>
       
       
       {/* Element Preferences */}
-      <div className="bg-[#1A1A1A] rounded-lg p-4">
-        <h2 className="text-xl font-semibold mb-3">Element Preferences</h2>
+      <div className="relative bg-[#30303071] rounded-lg p-8 transition-colors border border-gray-600 flex flex-col items-center justify-center text-center overflow-hidden">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
+        <h2 className="text-xl font-semibold mb-3 text-gray-100">Element Preferences</h2>
         <div className="flex flex-wrap gap-3">
           {['Fire', 'Ice', 'Lightning', 'Decay'].map((element) => {
             const isSelected = randomizerSettings.preferredElements.includes(element as Exclude<Element, null>);
@@ -71,7 +77,7 @@ export default function RandomizerPage() {
                 key={element}
                 className={`
                   px-4 py-2 rounded-md transition-colors
-                  ${isSelected ? 'bg-gray-700 border border-red-500' : 'bg-gray-800 border border-gray-700'}
+                  ${isSelected ? 'bg-gray-700 border border-[#ddaf7aa6]' : 'bg-gray-800 border border-gray-700'}
                 `}
                 onClick={() => toggleElementPreference(element as Exclude<Element, null>)}
               >
@@ -94,7 +100,7 @@ export default function RandomizerPage() {
       {/* Randomize Button */}
       <div className="flex justify-center">
         <button
-          className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-md transition-colors"
+          className="px-6 py-3 hover:bg-[#ddaf7ada] bg-[#ddaf7aa6] text-white font-bold rounded-md transition-colors"
           onClick={generateRandomLoadout}
         >
           Generate New Loadout
@@ -102,9 +108,14 @@ export default function RandomizerPage() {
       </div>
       
       {/* Item Exclusion Section */}
-      <div className="bg-[#1A1A1A] rounded-lg p-4">
+      <div className="relative bg-[#30303071] rounded-lg p-8 transition-colors border border-gray-600 overflow-hidden">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Exclude Items</h2>
+          <h2 className="text-xl text-gray-100 font-semibold">Exclude Items</h2>
           <button
             className="px-3 py-1 bg-gray-800 hover:bg-gray-700 text-sm rounded-md transition-colors"
             onClick={clearExcludedItems}
@@ -120,7 +131,7 @@ export default function RandomizerPage() {
               key={category}
               className={`
                 px-4 py-2 whitespace-nowrap
-                ${selectedCategory === category ? 'border-b-2 border-red-500 font-medium' : 'text-gray-400'}
+                ${selectedCategory === category ? 'text-gray-100 border-b-2 border-[#ddaf7aa6] font-medium' : 'text-gray-300'}
               `}
               onClick={() => setSelectedCategory(category)}
             >

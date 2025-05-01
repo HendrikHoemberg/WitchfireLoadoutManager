@@ -1,6 +1,5 @@
 "use client";
 
-import Image from 'next/image';
 import { BaseItem } from '@/types';
 
 interface LoadoutSlotProps {
@@ -32,9 +31,9 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
       className={`
         relative flex flex-col items-center justify-center 
         w-24 h-24 sm:w-32 sm:h-32 rounded-lg 
-        ${isSelected ? 'border-2 border-red-600' : 'border border-gray-700'} 
-        ${item ? 'bg-[#4D4D4D]' : 'bg-[#303030]'} 
-        transition-all duration-200 cursor-pointer hover:border-red-500
+        ${isSelected ? 'border-2 border-[#ddaf7aa6]' : 'border border-gray-700'} 
+        ${item ? 'bg-[#303030]' : 'bg-opacity-50 bg-[#30303025]'} 
+        transition-all duration-200 cursor-pointer hover:border-[#ddaf7aa6]
       `}
       onClick={onClick}
     >
@@ -42,7 +41,7 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
         <>
           <div className="relative w-16 h-16 sm:w-24 sm:h-24">
             {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-700 rounded-md">
+            <div className="absolute inset-0 flex items-center justify-center bg-[#1d1d1d] rounded-md">
               {/* This is a placeholder. In a real app, you'd use Image component with the actual image */}
               <span className="text-2xl">{item.name.charAt(0)}</span>
             </div>
@@ -56,7 +55,7 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
         </>
       ) : (
         <>
-          <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-gray-800 rounded-md opacity-30">
+          <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-[#30303025] rounded-md opacity-30">
             <span className="text-3xl">+</span>
           </div>
           <span className="mt-1 text-xs text-gray-100">{getCategoryDisplayName(category, slotIndex)}</span>

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
-import { BaseItem, ItemCategory } from '@/types';
 import { getItemsByCategory } from '@/data/items';
+import { BaseItem, ItemCategory } from '@/types';
+import { useState } from 'react';
 
 interface ItemSelectorProps {
   category: ItemCategory;
@@ -33,7 +33,7 @@ const ItemSelector = ({
         <input
           type="text"
           placeholder="Search items..."
-          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          className="text-gray-100 w-full px-3 py-2 bg-[#30303071] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ddaf7aa6] focus:border-transparent"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -49,12 +49,12 @@ const ItemSelector = ({
               className={`
                 relative flex flex-col items-center 
                 p-2 rounded-md cursor-pointer 
-                ${isExcluded ? 'opacity-50 bg-gray-900' : 'bg-gray-800'} 
-                hover:bg-gray-700 transition-colors
+                ${isExcluded ? 'opacity-50 bg-[#30303025]' : 'bg-[#303030]'} 
+                hover:bg-[#474747] transition-colors
               `}
             >
               <div 
-                className="w-16 h-16 mb-2 bg-gray-700 rounded-md flex items-center justify-center"
+                className="w-16 h-16 mb-2 bg-[#1d1d1d] rounded-md flex items-center justify-center"
                 onClick={() => onItemSelect(item)}
               >
                 {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
@@ -74,8 +74,8 @@ const ItemSelector = ({
                 <button
                   className={`
                     absolute top-1 left-1 w-5 h-5 rounded-full flex items-center justify-center text-xs
-                    ${isExcluded ? 'bg-red-500 text-white' : 'bg-gray-600 text-gray-300'}
-                    hover:bg-red-600 transition-colors
+                    ${isExcluded ? 'bg-[#ddaf7aa6] text-white' : 'bg-gray-600 text-gray-300'}
+                    hover:bg-[#ddaf7ad8] transition-colors
                   `}
                   onClick={() => onItemExcludeToggle(item.id)}
                   title={isExcluded ? 'Include item' : 'Exclude item'}

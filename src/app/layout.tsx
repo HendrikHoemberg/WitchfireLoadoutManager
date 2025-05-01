@@ -2,6 +2,7 @@ import Navigation from '@/components/ui/Navigation';
 import { LoadoutProvider } from '@/context/LoadoutContext';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Image from 'next/image';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,12 +27,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-white min-h-screen`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased text-white min-h-screen`}>
         <LoadoutProvider>
           <div className="flex flex-col min-h-screen">
             <Navigation />
+            <div className="flex justify-center items-center py-8">
+              <Image
+                src="/images/wf-logo.png"
+                alt="Witchfire Logo"
+                width={0}
+                height={0}
+                sizes="(max-width: 1000px) 100vw, 25vh"
+                className="h-[15vh] w-auto object-contain"
+                priority
+              />
+            </div>
             <main className="flex-grow container mx-auto px-4 py-8">
               {children}
             </main>

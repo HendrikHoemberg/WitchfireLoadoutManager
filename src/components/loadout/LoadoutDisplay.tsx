@@ -1,6 +1,6 @@
 "use client";
 
-import { Loadout, Element } from '@/types';
+import { Element, Loadout } from '@/types';
 import LoadoutSlot from './LoadoutSlot';
 
 interface LoadoutDisplayProps {
@@ -43,18 +43,6 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot }: LoadoutDisplayPr
           onClick={() => onSlotClick && onSlotClick('demonicWeapon')}
         />
         <LoadoutSlot 
-          item={loadout.lightSpell} 
-          category="LightSpells" 
-          isSelected={selectedSlot === 'lightSpell'}
-          onClick={() => onSlotClick && onSlotClick('lightSpell')}
-        />
-        <LoadoutSlot 
-          item={loadout.heavySpell} 
-          category="HeavySpells" 
-          isSelected={selectedSlot === 'heavySpell'}
-          onClick={() => onSlotClick && onSlotClick('heavySpell')}
-        />
-        <LoadoutSlot 
           item={loadout.relic} 
           category="Relics" 
           isSelected={selectedSlot === 'relic'}
@@ -71,6 +59,18 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot }: LoadoutDisplayPr
           category="Rings" 
           isSelected={selectedSlot === 'ring'}
           onClick={() => onSlotClick && onSlotClick('ring')}
+        />
+        <LoadoutSlot 
+          item={loadout.lightSpell} 
+          category="LightSpells" 
+          isSelected={selectedSlot === 'lightSpell'}
+          onClick={() => onSlotClick && onSlotClick('lightSpell')}
+        />
+        <LoadoutSlot 
+          item={loadout.heavySpell} 
+          category="HeavySpells" 
+          isSelected={selectedSlot === 'heavySpell'}
+          onClick={() => onSlotClick && onSlotClick('heavySpell')}
         />
       </div>
 
