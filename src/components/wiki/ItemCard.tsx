@@ -2,24 +2,12 @@
 "use client";
 
 import { BaseItem, isWeapon } from '@/types';
-import { useState } from 'react';
 
 interface ItemCardProps {
   item: BaseItem;
 }
 
 const ItemCard = ({ item }: ItemCardProps) => {
-  const [expandedMysterium, setExpandedMysterium] = useState<number | null>(null);
-  
-  // Toggle mysterium expansion
-  const toggleMysterium = (level: number) => {
-    if (expandedMysterium === level) {
-      setExpandedMysterium(null);
-    } else {
-      setExpandedMysterium(level);
-    }
-  };
-
   return (
     <div className="bg-[#1A1A1A] relative rounded-lg overflow-hidden border border-[#818181] hover:border-[#ddaf7aa6] transition-colors">
       <img
@@ -68,31 +56,25 @@ const ItemCard = ({ item }: ItemCardProps) => {
         </div>
       )}
       
-      {/* Mysterium Levels */}
+      {/* Mysterium Levels - All expanded by default */}
       <div className="p-2 sm:p-4 border-t border-[#818181]">
         <h4 className="text-base sm:text-lg text-white font-semibold mb-2 sm:mb-3">Mysterium Levels</h4>
         
         <MysteriumLevel 
           level={1} 
           mysterium={item.mysterium1} 
-          isExpanded={expandedMysterium === 1}
-          onToggle={() => toggleMysterium(1)}
           isWeapon={isWeapon(item)}
         />
         
         <MysteriumLevel 
           level={2} 
           mysterium={item.mysterium2} 
-          isExpanded={expandedMysterium === 2}
-          onToggle={() => toggleMysterium(2)}
           isWeapon={isWeapon(item)}
         />
         
         <MysteriumLevel 
           level={3} 
           mysterium={item.mysterium3} 
-          isExpanded={expandedMysterium === 3}
-          onToggle={() => toggleMysterium(3)}
           isWeapon={isWeapon(item)}
         />
       </div>
@@ -119,49 +101,41 @@ interface MysteriumLevelProps {
     effect?: string;
     requirements: string[];
   };
-  isExpanded: boolean;
-  onToggle: () => void;
   isWeapon: boolean;
 }
 
-const MysteriumLevel = ({ level, mysterium, isExpanded, onToggle, isWeapon }: MysteriumLevelProps) => (
+const MysteriumLevel = ({ level, mysterium, isWeapon }: MysteriumLevelProps) => (
   <div className="mb-2 sm:mb-3 last:mb-0">
-    <button 
-      className="w-full flex cursor-pointer items-center justify-between p-1 sm:p-2 bg-[#ddaf7aa6] rounded-md hover:bg-[#ddaf7ada] transition-colors"
-      onClick={onToggle}
-    >
+    <div className="p-1 sm:p-2 bg-[#ddaf7aa6] rounded-md">
       <span className="text-sm sm:text-base font-medium text-white">Mysterium {level}</span>
-      <span>{isExpanded ? '▼' : '▶'}</span>
-    </button>
+    </div>
     
-    {isExpanded && (
-      <div className="mt-1 sm:mt-2 pl-2 sm:pl-4 border-l-2 border-[#818181]">
-        {isWeapon && mysterium.effect ? (
-          <div className="mb-2">
-            <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Effect:</span>
-            <p className="text-xs sm:text-sm text-gray-300 mt-1">{mysterium.effect}</p>
-          </div>
-        ) : mysterium.charismata && (
-          <div className="mb-2">
-            <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Charismata:</span>
-            <ul className="list-disc list-inside mt-1">
-              {mysterium.charismata.map((effect, index) => (
-                <li key={index} className="text-xs sm:text-sm text-gray-300">{effect}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        
-        <div>
-          <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Requirements:</span>
+    <div className="mt-1 sm:mt-2 pl-2 sm:pl-4 border-l-2 border-[#818181]">
+      {isWeapon && mysterium.effect ? (
+        <div className="mb-2">
+          <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Effect:</span>
+          <p className="text-xs sm:text-sm text-gray-300 mt-1">{mysterium.effect}</p>
+        </div>
+      ) : mysterium.charismata && (
+        <div className="mb-2">
+          <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Charismata:</span>
           <ul className="list-disc list-inside mt-1">
-            {mysterium.requirements.map((req, index) => (
-              <li key={index} className="text-sm text-gray-300">{req}</li>
+            {mysterium.charismata.map((effect, index) => (
+              <li key={index} className="text-xs sm:text-sm text-gray-300">{effect}</li>
             ))}
           </ul>
         </div>
+      )}
+      
+      <div>
+        <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Requirements:</span>
+        <ul className="list-disc list-inside mt-1">
+          {mysterium.requirements.map((req, index) => (
+            <li key={index} className="text-sm text-gray-300">{req}</li>
+          ))}
+        </ul>
       </div>
-    )}
+    </div>
   </div>
 );
 
@@ -170,6 +144,8 @@ function getCategoryDisplayName(category: string): string {
   switch (category) {
     case 'LightSpells': return 'Light Spell';
     case 'HeavySpells': return 'Heavy Spell';
+    case 'Weapons': return 'Weapon';
+    case 'DemonicWeapons': return 'Demonic Weapon';
     default: return category.slice(0, -1); // Remove trailing 's'
   }
 }
