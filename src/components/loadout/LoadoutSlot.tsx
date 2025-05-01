@@ -29,7 +29,7 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
   return (
     <div 
       className={`
-        relative flex flex-col items-center justify-center 
+        relative flex flex-col items-center 
         w-24 h-24 sm:w-34 sm:h-34 rounded-lg 
         ${isSelected ? 'border-2 border-[#ddaf7aa6]' : 'border border-[#818181]'} 
         ${item ? 'bg-[#505050]' : 'bg-opacity-50 bg-[#30303025]'} 
@@ -39,14 +39,18 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
     >
       {item ? (
         <>
-          <div className="relative w-16 h-16 sm:w-24 sm:h-24">
-            {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-md">
-              {/* This is a placeholder. In a real app, you'd use Image component with the actual image */}
-              <span className="text-2xl text-black">{item.name.charAt(0)}</span>
+          <div className="flex-grow flex items-center justify-center pt-2">
+            <div className="relative w-16 h-16 sm:w-24 sm:h-24">
+              {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-md">
+                {/* This is a placeholder. In a real app, you'd use Image component with the actual image */}
+                <span className="text-2xl text-black">{item.name.charAt(0)}</span>
+              </div>
             </div>
           </div>
-          <span className="mt-1 text-xs text-center text-white truncate w-full px-1">{item.name}</span>
+          <div className="mt-auto mb-1">
+            <span className="text-xs text-center text-white truncate w-full px-1 block">{item.name}</span>
+          </div>
           {item.element && (
             <div className="absolute top-1 right-1 w-4 h-4 rounded-full" 
                  style={{ backgroundColor: getElementColor(item.element) }}>
@@ -55,10 +59,14 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
         </>
       ) : (
         <>
-          <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-[#868686b9] rounded-md opacity-30">
-            <span className="text-3xl text-white">+</span>
+          <div className="flex-grow flex items-center justify-center pt-2">
+            <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-[#868686b9] rounded-md opacity-30">
+              <span className="text-3xl text-white">+</span>
+            </div>
           </div>
-          <span className="mt-1 text-xs text-white">{getCategoryDisplayName(category, slotIndex)}</span>
+          <div className="mt-auto mb-1">
+            <span className="text-xs text-center text-white block px-1">{getCategoryDisplayName(category, slotIndex)}</span>
+          </div>
         </>
       )}
     </div>

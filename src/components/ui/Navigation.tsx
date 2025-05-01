@@ -28,7 +28,7 @@ const Navigation = () => {
               <li key={item.path}>
                 <Link 
                   href={item.path}
-                  className={`py-2 px-3 rounded-md transition-colors ${isActive 
+                  className={`py-2 px-3 rounded-md transition-colors whitespace-nowrap ${isActive 
                     ? 'bg-[#ddaf7aa6] text-white' 
                     : 'text-gray-100 hover:text-white hover:bg-[#ddaf7aa6]'}`}
                 >

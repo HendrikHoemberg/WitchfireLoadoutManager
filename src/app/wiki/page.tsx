@@ -52,15 +52,15 @@ export default function WikiPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3 sm:gap-4">
       {/* Search and Filters */}
-      <div className="bg-[#1A1A1A] rounded-lg p-6 relative border border-[#818181]">
+      <div className="bg-[#1A1A1A] rounded-lg p-3 sm:p-6 relative border border-[#818181]">
         <img
           src="/images/texture-transparent.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />
-        <div className="mb-6">
+        <div className="mb-3 sm:mb-6">
           <input
             type="text"
             placeholder="Search items..."
@@ -70,16 +70,16 @@ export default function WikiPage() {
           />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
           {/* Category Filter */}
           <div>
-            <h3 className="text-lg text-white font-medium mb-3">Filter by Category</h3>
-            <div className="flex flex-wrap gap-2">
+            <h3 className="text-base sm:text-lg text-white font-medium mb-2 sm:mb-3">Filter by Category</h3>
+            <div className="flex flex-wrap gap-1 sm:gap-2">
               {categories.map(category => (
                 <button
                   key={category || 'none'}
                   className={`
-                    px-3 py-1 cursor-pointer rounded-md text-sm
+                    px-2 sm:px-3 py-1 cursor-pointer rounded-md text-xs sm:text-sm
                     ${selectedCategory === category 
                       ? 'bg-[#ddaf7aa6] text-white' 
                       : 'bg-[#646464] text-white hover:bg-[#ddaf7aa6]'}
@@ -94,13 +94,13 @@ export default function WikiPage() {
           
           {/* Element Filter */}
           <div>
-            <h3 className="text-lg text-white font-medium mb-3">Filter by Element</h3>
-            <div className="flex flex-wrap gap-2">
+            <h3 className="text-base sm:text-lg text-white font-medium mb-2 sm:mb-3">Filter by Element</h3>
+            <div className="flex flex-wrap gap-1 sm:gap-2">
               {elements.map(element => (
                 <button
                   key={element || 'none'}
                   className={`
-                    px-3 py-1 cursor-pointer rounded-md text-sm
+                    px-2 sm:px-3 py-1 cursor-pointer rounded-md text-xs sm:text-sm
                     ${selectedElement === element 
                       ? 'bg-[#ddaf7aa6] text-white' 
                       : 'bg-[#646464] text-white hover:bg-[#ddaf7aa6]'}
@@ -121,7 +121,7 @@ export default function WikiPage() {
       </div>
       
       {/* Item Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
         {filteredItems.map(item => (
           <ItemCard key={item.id} item={item} />
         ))}
@@ -129,7 +129,7 @@ export default function WikiPage() {
       
       {/* No Results */}
       {filteredItems.length === 0 && (
-        <div className="bg-[#1A1A1A] rounded-lg p-6 relative border border-[#818181]">
+        <div className="bg-[#1A1A1A] rounded-lg p-3 sm:p-6 relative border border-[#818181]">
         <img
           src="/images/texture-transparent.png"
           alt=""

@@ -28,14 +28,14 @@ const ItemCard = ({ item }: ItemCardProps) => {
         className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
       />
       {/* Item Header */}
-      <div className="p-4 bg-[#5c5b5bb9] flex items-center gap-4">
-        <div className="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center">
+      <div className="p-2 sm:p-4 bg-[#5c5b5bb9] flex items-center gap-2 sm:gap-4">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-md flex items-center justify-center">
           {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
           <span className="text-black text-2xl">{item.name.charAt(0)}</span>
         </div>
         
         <div className="flex-grow">
-          <h3 className="text-xl font-bold text-white">{item.name}</h3>
+          <h3 className="text-base sm:text-xl font-bold text-white">{item.name}</h3>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-sm text-gray-400">{getCategoryDisplayName(item.category)}</span>
             {item.element && (
@@ -55,7 +55,7 @@ const ItemCard = ({ item }: ItemCardProps) => {
       
       {/* Weapon Stats (if applicable) */}
       {isWeapon(item) && (
-        <div className="p-4 border-t border-[#818181] grid grid-cols-2 gap-x-6 gap-y-2">
+        <div className="p-2 sm:p-4 border-t border-[#818181] grid grid-cols-2 gap-x-2 sm:gap-x-6 gap-y-1 sm:gap-y-2">
           <WeaponStat label="Damage" value={item.damage.toString()} />
           <WeaponStat label="Stun Power" value={item.stunPower} />
           <WeaponStat label="Hipfire Range" value={`${item.hipfireRange}m`} />
@@ -69,8 +69,8 @@ const ItemCard = ({ item }: ItemCardProps) => {
       )}
       
       {/* Mysterium Levels */}
-      <div className="p-4 border-t border-[#818181]">
-        <h4 className="text-lg text-white font-semibold mb-3">Mysterium Levels</h4>
+      <div className="p-2 sm:p-4 border-t border-[#818181]">
+        <h4 className="text-base sm:text-lg text-white font-semibold mb-2 sm:mb-3">Mysterium Levels</h4>
         
         <MysteriumLevel 
           level={1} 
@@ -125,35 +125,35 @@ interface MysteriumLevelProps {
 }
 
 const MysteriumLevel = ({ level, mysterium, isExpanded, onToggle, isWeapon }: MysteriumLevelProps) => (
-  <div className="mb-3 last:mb-0">
+  <div className="mb-2 sm:mb-3 last:mb-0">
     <button 
-      className="w-full flex cursor-pointer items-center justify-between p-2 bg-[#ddaf7aa6] rounded-md hover:bg-[#ddaf7ada] transition-colors"
+      className="w-full flex cursor-pointer items-center justify-between p-1 sm:p-2 bg-[#ddaf7aa6] rounded-md hover:bg-[#ddaf7ada] transition-colors"
       onClick={onToggle}
     >
-      <span className="font-medium text-white">Mysterium {level}</span>
+      <span className="text-sm sm:text-base font-medium text-white">Mysterium {level}</span>
       <span>{isExpanded ? '▼' : '▶'}</span>
     </button>
     
     {isExpanded && (
-      <div className="mt-2 pl-4 border-l-2 border-[#818181]">
+      <div className="mt-1 sm:mt-2 pl-2 sm:pl-4 border-l-2 border-[#818181]">
         {isWeapon && mysterium.effect ? (
           <div className="mb-2">
-            <span className="text-sm text-[#ddaf7aa6]">Effect:</span>
-            <p className="text-sm text-gray-300 mt-1">{mysterium.effect}</p>
+            <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Effect:</span>
+            <p className="text-xs sm:text-sm text-gray-300 mt-1">{mysterium.effect}</p>
           </div>
         ) : mysterium.charismata && (
           <div className="mb-2">
-            <span className="text-sm text-[#ddaf7aa6]">Charismata:</span>
+            <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Charismata:</span>
             <ul className="list-disc list-inside mt-1">
               {mysterium.charismata.map((effect, index) => (
-                <li key={index} className="text-sm text-gray-300">{effect}</li>
+                <li key={index} className="text-xs sm:text-sm text-gray-300">{effect}</li>
               ))}
             </ul>
           </div>
         )}
         
         <div>
-          <span className="text-sm text-[#ddaf7aa6]">Requirements:</span>
+          <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Requirements:</span>
           <ul className="list-disc list-inside mt-1">
             {mysterium.requirements.map((req, index) => (
               <li key={index} className="text-sm text-gray-300">{req}</li>

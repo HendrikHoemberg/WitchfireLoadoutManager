@@ -31,7 +31,7 @@ export default function RootLayout({
         <LoadoutProvider>
           <div className="flex flex-col min-h-screen">
             <Navigation />
-            <div className="flex justify-center items-center py-8">
+            <div className="flex justify-center items-center py-4 sm:py-8">
               <Image
                 src="/images/wf-logo2.png"
                 alt="Witchfire Logo"
@@ -42,7 +42,7 @@ export default function RootLayout({
                 priority
               />
             </div>
-            <main className="flex-grow container mx-auto px-24 py-8">
+            <main className="flex-grow container mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-4 sm:py-8">
               {children}
             </main>
             <footer className="bg-[#1a1a1abb] text-gray-100 py-2">
