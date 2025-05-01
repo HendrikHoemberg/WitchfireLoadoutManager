@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -53,7 +53,7 @@ const Navigation = () => {
       
       {/* Sidebar */}
       <div 
-        className={`sidebar fixed top-0 left-0 h-full w-48 transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`sidebar fixed top-0 left-0 h-full w-64 transform transition-transform duration-300 ease-in-out z-40 ${
           isSidebarOpen ? 'translate-x-0' : 'translate-x-[-100%]'
         }`}
         style={{ 

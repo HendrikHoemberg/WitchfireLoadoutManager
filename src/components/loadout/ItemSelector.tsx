@@ -2,7 +2,8 @@
 
 import { getItemsByCategory } from '@/data/items';
 import { BaseItem, ItemCategory } from '@/types';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import ItemCardPopup from '../common/ItemCardPopup';
 
 interface ItemSelectorProps {
   category: ItemCategory;
@@ -18,6 +19,56 @@ const ItemSelector = ({
   onItemExcludeToggle 
 }: ItemSelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [hoveredItem, setHoveredItem] = useState<BaseItem | null>(null);
+  const [popupPosition, setPopupPosition] = useState<{top: number, left: number} | null>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
+  
+  // Detect if device is a touch device (mobile or tablet)
+  useEffect(() => {
+    const checkTouchDevice = () => {
+      // Check for touch capability
+      const hasTouchCapability = 'ontouchstart' in window || 
+                               navigator.maxTouchPoints > 0 || 
+                               (navigator as any).msMaxTouchPoints > 0;
+      
+      // Use a higher breakpoint (1024px) to include tablets in landscape mode
+      const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches;
+      
+      // Check for tablet-specific dimensions (both portrait and landscape)
+      const isTabletSize = (window.innerWidth >= 600 && window.innerWidth <= 1200) || 
+                          (window.innerHeight >= 600 && window.innerHeight <= 1200);
+      
+      // Consider it a touch device if it has touch capability AND (small screen OR tablet dimensions)
+      setIsTouchDevice(hasTouchCapability && (isSmallScreen || isTabletSize));
+    };
+    
+    checkTouchDevice();
+    window.addEventListener('resize', checkTouchDevice);
+    return () => window.removeEventListener('resize', checkTouchDevice);
+  }, []);
+  
+  // Handle touch events on touch devices (mobile/tablet)
+  useEffect(() => {
+    if (isTouchDevice && hoveredItem) {
+      // For touch devices, any touch anywhere should close the popup
+      const handleTouchAnywhere = () => {
+        // Add a small delay to allow the touch to register properly
+        setTimeout(() => {
+          setHoveredItem(null);
+          setPopupPosition(null);
+        }, 10);
+      };
+      
+      // Add the event listener to the document
+      document.addEventListener('touchstart', handleTouchAnywhere);
+      
+      // Clean up the event listener when component unmounts or popup closes
+      return () => {
+        document.removeEventListener('touchstart', handleTouchAnywhere);
+      };
+    }
+  }, [isTouchDevice, hoveredItem]);
   
   // Get items for the selected category
   const items = getItemsByCategory(category);
@@ -39,8 +90,19 @@ const ItemSelector = ({
         />
       </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-      {filteredItems.map(item => {
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 relative">
+        {hoveredItem && popupPosition && (
+          <div 
+            className="fixed z-50" 
+            style={{
+              top: `${popupPosition.top}px`,
+              left: `${popupPosition.left}px`
+            }}
+          >
+            <ItemCardPopup item={hoveredItem} />
+          </div>
+        )}
+        {filteredItems.map(item => {
         const isExcluded = excludedItems.includes(item.id);
 
         // Click behavior: toggle exclude if toggle is available, else select
@@ -65,7 +127,87 @@ const ItemSelector = ({
               } 
               hover:bg-[#474747]
               border-1 transition-colors
-            `}            
+            `}
+            onMouseEnter={(e) => {
+              if (!isTouchDevice) {
+                setHoveredItem(item);
+                const rect = e.currentTarget.getBoundingClientRect();
+                
+                // Calculate optimal position for the popup
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+              
+              // Estimate popup dimensions
+              const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
+              const popupHeight = 500; // Increased height estimate to prevent cut-off
+              
+              // Default position (to the right)
+              let top = rect.top;
+              let left = rect.right + 10;
+              
+              // Check if popup would go off the right edge of the screen
+              if (left + popupWidth > viewportWidth) {
+                // Try left placement
+                left = rect.left - popupWidth - 10;
+                
+                // If left placement doesn't work, try centering horizontally
+                if (left < 0) {
+                  left = Math.max(10, (viewportWidth - popupWidth) / 2);
+                }
+              }
+              
+              // Check if popup would go off the bottom of the screen
+              if (top + popupHeight > viewportHeight) {
+                // Adjust top position to keep popup within viewport
+                top = Math.max(10, viewportHeight - popupHeight - 10);
+              }
+              
+              setPopupPosition({ top, left });
+              }
+            }}
+            onMouseLeave={() => {
+              if (!isTouchDevice) {
+                setHoveredItem(null);
+                setPopupPosition(null);
+              }
+            }}
+            onTouchStart={(e) => {
+              if (isTouchDevice) {
+                const element = e.currentTarget;
+                const timer = setTimeout(() => {
+                  setHoveredItem(item);
+                  const rect = element.getBoundingClientRect();
+                  
+                  // Calculate optimal position for the popup
+                  const viewportWidth = window.innerWidth;
+                  const viewportHeight = window.innerHeight;
+                  
+                  // For mobile, prefer centering the popup
+                  let top = Math.max(10, rect.top - 100); // Position above the finger
+                  let left = Math.max(10, (viewportWidth - 288) / 2); // Center horizontally
+                  
+                  // Ensure it doesn't go off bottom
+                  if (top + 500 > viewportHeight) {
+                    top = Math.max(10, viewportHeight - 500 - 10);
+                  }
+                  
+                  setPopupPosition({ top, left });
+                }, 500); // 500ms longpress
+                setLongPressTimer(timer);
+              }
+            }}
+            onTouchEnd={() => {
+              if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                setLongPressTimer(null);
+              }
+            }}
+            onTouchMove={() => {
+              if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                setLongPressTimer(null);
+              }
+            }}
           >
             <div className="w-16 h-16 mb-2 bg-[#e2e2e2] rounded-md flex items-center justify-center">
               {/* Placeholder for the actual image */}
