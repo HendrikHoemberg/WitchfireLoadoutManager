@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { BaseItem, isWeapon } from '@/types';
 import { useState } from 'react';
-import { BaseItem, Weapon, isWeapon } from '@/types';
 
 interface ItemCardProps {
   item: BaseItem;
@@ -20,12 +21,17 @@ const ItemCard = ({ item }: ItemCardProps) => {
   };
 
   return (
-    <div className="bg-[#1A1A1A] rounded-lg overflow-hidden border border-gray-700 hover:border-red-500 transition-colors">
+    <div className="bg-[#1A1A1A] relative rounded-lg overflow-hidden border border-[#818181] hover:border-[#ddaf7aa6] transition-colors">
+      <img
+        src="/images/texture-transparent.png"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+      />
       {/* Item Header */}
-      <div className="p-4 bg-gray-800 flex items-center gap-4">
-        <div className="w-16 h-16 bg-gray-700 rounded-md flex items-center justify-center">
+      <div className="p-4 bg-[#5c5b5bb9] flex items-center gap-4">
+        <div className="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center">
           {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
-          <span className="text-2xl">{item.name.charAt(0)}</span>
+          <span className="text-black text-2xl">{item.name.charAt(0)}</span>
         </div>
         
         <div className="flex-grow">
@@ -34,7 +40,6 @@ const ItemCard = ({ item }: ItemCardProps) => {
             <span className="text-sm text-gray-400">{getCategoryDisplayName(item.category)}</span>
             {item.element && (
               <div className="flex items-center gap-1">
-                <span className="text-gray-400">•</span>
                 <div 
                   className="w-2 h-2 rounded-full" 
                   style={{ backgroundColor: getElementColor(item.element) }}
@@ -50,7 +55,7 @@ const ItemCard = ({ item }: ItemCardProps) => {
       
       {/* Weapon Stats (if applicable) */}
       {isWeapon(item) && (
-        <div className="p-4 border-t border-gray-700 grid grid-cols-2 gap-x-6 gap-y-2">
+        <div className="p-4 border-t border-[#818181] grid grid-cols-2 gap-x-6 gap-y-2">
           <WeaponStat label="Damage" value={item.damage.toString()} />
           <WeaponStat label="Stun Power" value={item.stunPower} />
           <WeaponStat label="Hipfire Range" value={`${item.hipfireRange}m`} />
@@ -64,8 +69,8 @@ const ItemCard = ({ item }: ItemCardProps) => {
       )}
       
       {/* Mysterium Levels */}
-      <div className="p-4 border-t border-gray-700">
-        <h4 className="text-lg font-semibold mb-3">Mysterium Levels</h4>
+      <div className="p-4 border-t border-[#818181]">
+        <h4 className="text-lg text-white font-semibold mb-3">Mysterium Levels</h4>
         
         <MysteriumLevel 
           level={1} 
@@ -90,12 +95,6 @@ const ItemCard = ({ item }: ItemCardProps) => {
           onToggle={() => toggleMysterium(3)}
           isWeapon={isWeapon(item)}
         />
-      </div>
-      
-      {/* Metadata */}
-      <div className="p-3 bg-gray-800 text-xs text-gray-500 flex justify-between">
-        <span>Added: {formatDate(item.addedOn)}</span>
-        <span>Updated: {formatDate(item.updatedOn)}</span>
       </div>
     </div>
   );
@@ -128,23 +127,23 @@ interface MysteriumLevelProps {
 const MysteriumLevel = ({ level, mysterium, isExpanded, onToggle, isWeapon }: MysteriumLevelProps) => (
   <div className="mb-3 last:mb-0">
     <button 
-      className="w-full flex items-center justify-between p-2 bg-gray-800 rounded-md hover:bg-gray-700 transition-colors"
+      className="w-full flex cursor-pointer items-center justify-between p-2 bg-[#ddaf7aa6] rounded-md hover:bg-[#ddaf7ada] transition-colors"
       onClick={onToggle}
     >
-      <span className="font-medium">Mysterium {level}</span>
+      <span className="font-medium text-white">Mysterium {level}</span>
       <span>{isExpanded ? '▼' : '▶'}</span>
     </button>
     
     {isExpanded && (
-      <div className="mt-2 pl-4 border-l-2 border-gray-700">
+      <div className="mt-2 pl-4 border-l-2 border-[#818181]">
         {isWeapon && mysterium.effect ? (
           <div className="mb-2">
-            <span className="text-sm text-red-400">Effect:</span>
+            <span className="text-sm text-[#ddaf7aa6]">Effect:</span>
             <p className="text-sm text-gray-300 mt-1">{mysterium.effect}</p>
           </div>
         ) : mysterium.charismata && (
           <div className="mb-2">
-            <span className="text-sm text-red-400">Charismata:</span>
+            <span className="text-sm text-[#ddaf7aa6]">Charismata:</span>
             <ul className="list-disc list-inside mt-1">
               {mysterium.charismata.map((effect, index) => (
                 <li key={index} className="text-sm text-gray-300">{effect}</li>
@@ -154,7 +153,7 @@ const MysteriumLevel = ({ level, mysterium, isExpanded, onToggle, isWeapon }: My
         )}
         
         <div>
-          <span className="text-sm text-blue-400">Requirements:</span>
+          <span className="text-sm text-[#ddaf7aa6]">Requirements:</span>
           <ul className="list-disc list-inside mt-1">
             {mysterium.requirements.map((req, index) => (
               <li key={index} className="text-sm text-gray-300">{req}</li>
@@ -186,12 +185,6 @@ function getElementColor(element: string | null): string {
     case 'Decay': return '#66cc66';
     default: return '#cccccc';
   }
-}
-
-// Helper function to format date
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString();
 }
 
 export default ItemCard;

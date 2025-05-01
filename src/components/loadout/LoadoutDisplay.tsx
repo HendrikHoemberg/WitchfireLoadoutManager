@@ -81,7 +81,7 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot }: LoadoutDisplayPr
           return (
             <div 
               key={element}
-              className={`flex items-center gap-1 px-3 py-1 rounded-full ${isActive ? 'bg-gray-700' : 'bg-gray-900 opacity-50'}`}
+              className={`flex items-center gap-1 px-3 py-1 rounded-full ${isActive ? 'bg-[#646464]' : 'bg-[#30303071] opacity-50'}`}
             >
               <div 
                 className="w-3 h-3 rounded-full" 

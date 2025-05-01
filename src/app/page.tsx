@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 
 export default function Home() {
@@ -33,7 +34,7 @@ interface FeatureCardProps {
 function FeatureCard({ title, icon, link }: FeatureCardProps) {
   return (
     <Link href={link} className="block">
-      <div className="relative bg-[#30303071] rounded-lg p-8 h-64 w-64 hover:bg-[#3D3D3D] transition-colors border border-gray-600 hover:border-red-800 flex flex-col items-center justify-center text-center overflow-hidden">
+      <div className="relative bg-[#30303071] rounded-lg p-8 h-64 w-64 hover:bg-[#3D3D3D] transition-colors border border-gray-600 hover:border-[#ddaf7aa6] flex flex-col items-center justify-center text-center overflow-hidden">
         <img
           src="/images/texture-transparent.png"
           alt=""

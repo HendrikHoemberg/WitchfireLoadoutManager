@@ -30,9 +30,9 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
     <div 
       className={`
         relative flex flex-col items-center justify-center 
-        w-24 h-24 sm:w-32 sm:h-32 rounded-lg 
-        ${isSelected ? 'border-2 border-[#ddaf7aa6]' : 'border border-gray-700'} 
-        ${item ? 'bg-[#303030]' : 'bg-opacity-50 bg-[#30303025]'} 
+        w-24 h-24 sm:w-34 sm:h-34 rounded-lg 
+        ${isSelected ? 'border-2 border-[#ddaf7aa6]' : 'border border-[#818181]'} 
+        ${item ? 'bg-[#505050]' : 'bg-opacity-50 bg-[#30303025]'} 
         transition-all duration-200 cursor-pointer hover:border-[#ddaf7aa6]
       `}
       onClick={onClick}
@@ -41,12 +41,12 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
         <>
           <div className="relative w-16 h-16 sm:w-24 sm:h-24">
             {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
-            <div className="absolute inset-0 flex items-center justify-center bg-[#1d1d1d] rounded-md">
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-md">
               {/* This is a placeholder. In a real app, you'd use Image component with the actual image */}
-              <span className="text-2xl">{item.name.charAt(0)}</span>
+              <span className="text-2xl text-black">{item.name.charAt(0)}</span>
             </div>
           </div>
-          <span className="mt-1 text-xs text-center text-gray-100 truncate w-full px-1">{item.name}</span>
+          <span className="mt-1 text-xs text-center text-white truncate w-full px-1">{item.name}</span>
           {item.element && (
             <div className="absolute top-1 right-1 w-4 h-4 rounded-full" 
                  style={{ backgroundColor: getElementColor(item.element) }}>
@@ -55,10 +55,10 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
         </>
       ) : (
         <>
-          <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-[#30303025] rounded-md opacity-30">
-            <span className="text-3xl">+</span>
+          <div className="flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 bg-[#868686b9] rounded-md opacity-30">
+            <span className="text-3xl text-white">+</span>
           </div>
-          <span className="mt-1 text-xs text-gray-100">{getCategoryDisplayName(category, slotIndex)}</span>
+          <span className="mt-1 text-xs text-white">{getCategoryDisplayName(category, slotIndex)}</span>
         </>
       )}
     </div>

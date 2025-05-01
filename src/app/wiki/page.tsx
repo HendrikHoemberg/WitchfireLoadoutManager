@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useMemo } from 'react';
-import { BaseItem, ItemCategory, Element } from '@/types';
-import { allItems } from '@/data/items';
 import ItemCard from '@/components/wiki/ItemCard';
+import { allItems } from '@/data/items';
+import { Element, ItemCategory } from '@/types';
+import { useMemo, useState } from 'react';
 
 export default function WikiPage() {
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory | 'All'>('All');
@@ -51,21 +52,19 @@ export default function WikiPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-red-500 mb-4">Item Wiki</h1>
-        <p className="text-gray-300 max-w-2xl mx-auto">
-          Browse all game items with detailed information, filtering, and sorting options.
-        </p>
-      </div>
-      
+    <div className="flex flex-col gap-4">
       {/* Search and Filters */}
-      <div className="bg-[#1A1A1A] rounded-lg p-6">
+      <div className="bg-[#1A1A1A] rounded-lg p-6 relative border border-[#818181]">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
         <div className="mb-6">
           <input
             type="text"
             placeholder="Search items..."
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            className="text-gray-100 w-full px-3 py-2 bg-[#30303071] border border-[#818181] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ddaf7aa6] focus:border-transparent"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -74,16 +73,16 @@ export default function WikiPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Category Filter */}
           <div>
-            <h3 className="text-lg font-medium mb-3">Filter by Category</h3>
+            <h3 className="text-lg text-white font-medium mb-3">Filter by Category</h3>
             <div className="flex flex-wrap gap-2">
               {categories.map(category => (
                 <button
                   key={category || 'none'}
                   className={`
-                    px-3 py-1 rounded-md text-sm
+                    px-3 py-1 cursor-pointer rounded-md text-sm
                     ${selectedCategory === category 
-                      ? 'bg-red-600 text-white' 
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}
+                      ? 'bg-[#ddaf7aa6] text-white' 
+                      : 'bg-[#646464] text-white hover:bg-[#ddaf7aa6]'}
                   `}
                   onClick={() => setSelectedCategory(category)}
                 >
@@ -95,16 +94,16 @@ export default function WikiPage() {
           
           {/* Element Filter */}
           <div>
-            <h3 className="text-lg font-medium mb-3">Filter by Element</h3>
+            <h3 className="text-lg text-white font-medium mb-3">Filter by Element</h3>
             <div className="flex flex-wrap gap-2">
               {elements.map(element => (
                 <button
                   key={element || 'none'}
                   className={`
-                    px-3 py-1 rounded-md text-sm
+                    px-3 py-1 cursor-pointer rounded-md text-sm
                     ${selectedElement === element 
-                      ? 'bg-red-600 text-white' 
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}
+                      ? 'bg-[#ddaf7aa6] text-white' 
+                      : 'bg-[#646464] text-white hover:bg-[#ddaf7aa6]'}
                   `}
                   onClick={() => setSelectedElement(element)}
                 >
@@ -117,7 +116,7 @@ export default function WikiPage() {
       </div>
       
       {/* Results Count */}
-      <div className="text-sm text-gray-400">
+      <div className="text-sm text-white">
         Showing {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
       </div>
       
@@ -130,10 +129,15 @@ export default function WikiPage() {
       
       {/* No Results */}
       {filteredItems.length === 0 && (
-        <div className="bg-gray-900 rounded-lg p-8 text-center">
-          <p className="text-gray-400">No items found matching your filters.</p>
+        <div className="bg-[#1A1A1A] rounded-lg p-6 relative border border-[#818181]">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
+          <p className="text-white">No items found matching your filters.</p>
           <button
-            className="mt-4 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors"
+            className="px-3 py-1 mt-3 bg-[#646464] hover:bg-red-600 text-sm text-white rounded-md transition-colors"
             onClick={() => {
               setSelectedCategory('All');
               setSelectedElement('All');

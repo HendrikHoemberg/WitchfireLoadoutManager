@@ -33,59 +33,58 @@ const ItemSelector = ({
         <input
           type="text"
           placeholder="Search items..."
-          className="text-gray-100 w-full px-3 py-2 bg-[#30303071] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ddaf7aa6] focus:border-transparent"
+          className="text-gray-100 w-full px-3 py-2 bg-[#30303071] border border-[#818181] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ddaf7aa6] focus:border-transparent"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {filteredItems.map(item => {
-          const isExcluded = excludedItems.includes(item.id);
-          
-          return (
-            <div 
-              key={item.id}
-              className={`
-                relative flex flex-col items-center 
-                p-2 rounded-md cursor-pointer 
-                ${isExcluded ? 'opacity-50 bg-[#30303025]' : 'bg-[#303030]'} 
-                hover:bg-[#474747] transition-colors
-              `}
-            >
-              <div 
-                className="w-16 h-16 mb-2 bg-[#1d1d1d] rounded-md flex items-center justify-center"
-                onClick={() => onItemSelect(item)}
-              >
-                {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
-                <span className="text-2xl">{item.name.charAt(0)}</span>
-              </div>
-              
-              <span className="text-xs text-center text-gray-300 truncate w-full">{item.name}</span>
-              
-              {item.element && (
-                <div 
-                  className="absolute top-1 right-1 w-3 h-3 rounded-full" 
-                  style={{ backgroundColor: getElementColor(item.element) }}
-                />
-              )}
-              
-              {onItemExcludeToggle && (
-                <button
-                  className={`
-                    absolute top-1 left-1 w-5 h-5 rounded-full flex items-center justify-center text-xs
-                    ${isExcluded ? 'bg-[#ddaf7aa6] text-white' : 'bg-gray-600 text-gray-300'}
-                    hover:bg-[#ddaf7ad8] transition-colors
-                  `}
-                  onClick={() => onItemExcludeToggle(item.id)}
-                  title={isExcluded ? 'Include item' : 'Exclude item'}
-                >
-                  {isExcluded ? '✕' : '–'}
-                </button>
-              )}
+      {filteredItems.map(item => {
+        const isExcluded = excludedItems.includes(item.id);
+
+        // Click behavior: toggle exclude if toggle is available, else select
+        const handleClick = () => {
+          if (onItemExcludeToggle) {
+            onItemExcludeToggle(item.id);
+          } else {
+            onItemSelect(item);
+          }
+        };
+
+        return (
+          <div 
+            key={item.id}
+            onClick={handleClick}
+            className={`
+              relative flex flex-col items-center 
+              p-2 rounded-md cursor-pointer
+              ${isExcluded 
+                ? 'opacity-50 bg-[#30303025] hover:border-[#ddaf7aa6]' 
+                : 'bg-[#303030] border-[#818181] hover:border-[#ddaf7aa6]'
+              } 
+              hover:bg-[#474747]
+              border-1 transition-colors
+            `}            
+          >
+            <div className="w-16 h-16 mb-2 bg-[#e2e2e2] rounded-md flex items-center justify-center">
+              {/* Placeholder for the actual image */}
+              <span className="text-2xl text-black">{item.name.charAt(0)}</span>
             </div>
-          );
-        })}
+
+            <span className="text-xs text-center text-gray-100 truncate w-full">{item.name}</span>
+
+            {item.element && (
+              <div 
+                className="absolute top-1 right-1 w-3 h-3 rounded-full" 
+                style={{ backgroundColor: getElementColor(item.element) }}
+              />
+            )}
+
+            
+          </div>
+        );
+      })}
       </div>
     </div>
   );

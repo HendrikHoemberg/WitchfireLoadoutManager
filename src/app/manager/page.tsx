@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useEffect } from 'react';
-import { ItemCategory, Loadout } from '@/types';
-import { useLoadout } from '@/context/LoadoutContext';
-import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
 import ItemSelector from '@/components/loadout/ItemSelector';
+import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
+import { useLoadout } from '@/context/LoadoutContext';
+import { ItemCategory, Loadout } from '@/types';
+import { useEffect, useState } from 'react';
 
 export default function ManagerPage() {
   const { loadout, setItemInLoadout, clearLoadout } = useLoadout();
@@ -45,19 +46,17 @@ export default function ManagerPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-red-600 mb-4">Loadout Manager</h1>
-        <p className="text-gray-100 max-w-2xl mx-auto">
-          Create and customize your perfect loadout by selecting items for each slot.
-        </p>
-      </div>
-      
       {/* Loadout Display */}
-      <div className="bg-[#1A1A1A] rounded-lg p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Current Loadout</h2>
+      <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] flex flex-col items-center justify-center text-center overflow-hidden">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
+        <div className="flex w-full justify-between items-center mb-4">
+          <h2 className="text-xl text-white font-semibold">Current Loadout</h2>
           <button
-            className="px-3 py-1 bg-[#4D4D4D] hover:bg-[#696969] text-sm rounded-md transition-colors"
+            className="px-3 py-1 bg-[#646464] hover:bg-red-600 text-sm text-white rounded-md transition-colors"
             onClick={clearLoadout}
           >
             Clear All
@@ -79,8 +78,13 @@ export default function ManagerPage() {
       
       {/* Item Selection */}
       {currentCategory && (
-        <div className="bg-[#1A1A1A] rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">{getCategoryDisplayName(currentCategory)} Selection</h2>
+        <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
+          <h2 className="text-xl text-white font-semibold mb-4">{getCategoryDisplayName(currentCategory)}</h2>
           
           <ItemSelector
             category={currentCategory}
@@ -90,8 +94,13 @@ export default function ManagerPage() {
       )}
       
       {!currentCategory && (
-        <div className="bg-[#1A1A1A] rounded-lg p-6 text-center">
-          <p className="text-gray-400">Click on a loadout slot above to select an item for that slot.</p>
+        <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] flex flex-col items-center justify-center text-center overflow-hidden">
+        <img
+          src="/images/texture-transparent.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+        />
+          <p className="text-white">Click on a loadout slot above to select an item for that slot.</p>
         </div>
       )}
     </div>

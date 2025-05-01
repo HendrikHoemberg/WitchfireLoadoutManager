@@ -33,16 +33,16 @@ export default function RootLayout({
             <Navigation />
             <div className="flex justify-center items-center py-8">
               <Image
-                src="/images/wf-logo.png"
+                src="/images/wf-logo2.png"
                 alt="Witchfire Logo"
                 width={0}
                 height={0}
                 sizes="(max-width: 1000px) 100vw, 25vh"
-                className="h-[15vh] w-auto object-contain"
+                className="h-50 w-auto"
                 priority
               />
             </div>
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="flex-grow container mx-auto px-24 py-8">
               {children}
             </main>
             <footer className="bg-[#1a1a1abb] text-gray-100 py-2">
