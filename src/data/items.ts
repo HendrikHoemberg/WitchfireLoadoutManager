@@ -1,6 +1,7 @@
 import { BaseItem, Weapon } from '@/types';
 
-// Sample Weapons
+
+// Weapons
 export const weapons: Weapon[] = [
   {
     id: 'w001',
@@ -13,27 +14,33 @@ export const weapons: Weapon[] = [
     hipfireRange: 15,
     adsRange: 25,
     stability: 'High',
-    rateOfFire: 1.5,
+    rateOfFire: 3,
     mobility: 'High',
     clipSize: 1,
     ammoReserves: 24,
     mysterium1: {
       effect: 'Increased damage at close range',
       charismata: null,
-      requirements: ['Kill 50 enemies with this weapon']
+      requirements: [
+        'Kill 50 enemies with this weapon'
+      ]
     },
     mysterium2: {
       effect: 'Critical hits cause enemies to stagger',
       charismata: null,
-      requirements: ['Get 25 critical hits with this weapon']
+      requirements: [
+        'Get 25 critical hits with this weapon'
+      ]
     },
     mysterium3: {
       effect: 'Final shot in clip deals 50% more damage',
       charismata: null,
-      requirements: ['Kill 10 elite enemies with this weapon']
+      requirements: [
+        'Kill 10 elite enemies with this weapon'
+      ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    updatedOn: '2025-05-02'
   },
   {
     id: 'w002',
@@ -43,7 +50,7 @@ export const weapons: Weapon[] = [
     element: 'Fire',
     damage: 120,
     stunPower: 'High',
-    hipfireRange: 8,
+    hipfireRange: 12,
     adsRange: 12,
     stability: 'Low',
     rateOfFire: 0.8,
@@ -53,20 +60,26 @@ export const weapons: Weapon[] = [
     mysterium1: {
       effect: 'Shots ignite enemies, dealing fire damage over time',
       charismata: null,
-      requirements: ['Kill 40 enemies with this weapon']
+      requirements: [
+        'Kill 40 enemies with this weapon'
+      ]
     },
     mysterium2: {
       effect: 'Increased pellet count',
       charismata: null,
-      requirements: ['Kill 3 enemies with a single shot 10 times']
+      requirements: [
+        'Kill 3 enemies with a single shot 10 times'
+      ]
     },
     mysterium3: {
       effect: 'Killing an enemy causes them to explode, dealing fire damage to nearby enemies',
       charismata: null,
-      requirements: ['Kill 15 elite enemies with this weapon']
+      requirements: [
+        'Kill 15 elite enemies with this weapon'
+      ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    updatedOn: '2025-05-02'
   },
   {
     id: 'w003',
@@ -86,24 +99,31 @@ export const weapons: Weapon[] = [
     mysterium1: {
       effect: 'Increased headshot damage',
       charismata: null,
-      requirements: ['Get 30 headshots with this weapon']
+      requirements: [
+        'Get 30 headshots with this weapon'
+      ]
     },
     mysterium2: {
       effect: 'Each consecutive hit on the same target increases damage',
       charismata: null,
-      requirements: ['Hit the same enemy 5 times in a row without missing 15 times']
+      requirements: [
+        'Hit the same enemy 5 times in a row without missing 15 times'
+      ]
     },
     mysterium3: {
       effect: 'Killing an enemy instantly reloads 2 bullets into the magazine',
       charismata: null,
-      requirements: ['Get 50 kills without reloading']
+      requirements: [
+        'Get 50 kills without reloading'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
   }
 ];
 
-// Sample Light Spells
+
+// LightSpells
 export const lightSpells: BaseItem[] = [
   {
     id: 'ls001',
@@ -112,16 +132,30 @@ export const lightSpells: BaseItem[] = [
     iconUrl: '/images/spells/firebolt.png',
     element: 'Fire',
     mysterium1: {
-      charismata: ['Deals fire damage', 'Medium range'],
-      requirements: ['Cast this spell 30 times']
+      charismata: [
+        'Deals fire damage',
+        'Medium range'
+      ],
+      requirements: [
+        'Cast this spell 30 times'
+      ]
     },
     mysterium2: {
-      charismata: ['Increased damage', 'Chance to ignite enemies'],
-      requirements: ['Kill 25 enemies with this spell']
+      charismata: [
+        'Increased damage',
+        'Chance to ignite enemies'
+      ],
+      requirements: [
+        'Kill 25 enemies with this spell'
+      ]
     },
     mysterium3: {
-      charismata: ['Splits into 3 smaller projectiles on impact'],
-      requirements: ['Kill 3 enemies with a single cast 5 times']
+      charismata: [
+        'Splits into 3 smaller projectiles on impact'
+      ],
+      requirements: [
+        'Kill 3 enemies with a single cast 5 times'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
@@ -133,23 +167,38 @@ export const lightSpells: BaseItem[] = [
     iconUrl: '/images/spells/frost-spike.png',
     element: 'Ice',
     mysterium1: {
-      charismata: ['Deals ice damage', 'Slows enemies'],
-      requirements: ['Cast this spell 30 times']
+      charismata: [
+        'Deals ice damage',
+        'Slows enemies'
+      ],
+      requirements: [
+        'Cast this spell 30 times'
+      ]
     },
     mysterium2: {
-      charismata: ['Increased slow effect', 'Chance to freeze weaker enemies'],
-      requirements: ['Slow 50 enemies with this spell']
+      charismata: [
+        'Increased slow effect',
+        'Chance to freeze weaker enemies'
+      ],
+      requirements: [
+        'Slow 50 enemies with this spell'
+      ]
     },
     mysterium3: {
-      charismata: ['Frozen enemies shatter when killed, damaging nearby enemies'],
-      requirements: ['Freeze 25 enemies with this spell']
+      charismata: [
+        'Frozen enemies shatter when killed, damaging nearby enemies'
+      ],
+      requirements: [
+        'Freeze 25 enemies with this spell'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
   }
 ];
 
-// Sample Heavy Spells
+
+// HeavySpells
 export const heavySpells: BaseItem[] = [
   {
     id: 'hs001',
@@ -158,16 +207,31 @@ export const heavySpells: BaseItem[] = [
     iconUrl: '/images/spells/lightning-storm.png',
     element: 'Lightning',
     mysterium1: {
-      charismata: ['Summons lightning strikes in target area', 'Deals lightning damage'],
-      requirements: ['Cast this spell 20 times']
+      charismata: [
+        'Summons lightning strikes in target area',
+        'Deals lightning damage'
+      ],
+      requirements: [
+        'Cast this spell 20 times'
+      ]
     },
     mysterium2: {
-      charismata: ['Increased area of effect', 'Lightning strikes more frequently'],
-      requirements: ['Kill 30 enemies with this spell']
+      charismata: [
+        'Increased area of effect',
+        'Lightning strikes more frequently'
+      ],
+      requirements: [
+        'Kill 30 enemies with this spell'
+      ]
     },
     mysterium3: {
-      charismata: ['Lightning chains between enemies', 'Stunned enemies take increased damage'],
-      requirements: ['Kill 5 enemies with a single cast 3 times']
+      charismata: [
+        'Lightning chains between enemies',
+        'Stunned enemies take increased damage'
+      ],
+      requirements: [
+        'Kill 5 enemies with a single cast 3 times'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
@@ -179,23 +243,39 @@ export const heavySpells: BaseItem[] = [
     iconUrl: '/images/spells/decay-nova.png',
     element: 'Decay',
     mysterium1: {
-      charismata: ['Releases a wave of decay energy', 'Deals decay damage over time'],
-      requirements: ['Cast this spell 20 times']
+      charismata: [
+        'Releases a wave of decay energy',
+        'Deals decay damage over time'
+      ],
+      requirements: [
+        'Cast this spell 20 times'
+      ]
     },
     mysterium2: {
-      charismata: ['Increased radius', 'Enemies affected by decay take more damage from all sources'],
-      requirements: ['Kill 30 enemies with this spell']
+      charismata: [
+        'Increased radius',
+        'Enemies affected by decay take more damage from all sources'
+      ],
+      requirements: [
+        'Kill 30 enemies with this spell'
+      ]
     },
     mysterium3: {
-      charismata: ['Healing received from all sources increased while active', 'Enemies killed by decay explode'],
-      requirements: ['Have 5 enemies affected by decay simultaneously 10 times']
+      charismata: [
+        'Healing received from all sources increased while active',
+        'Enemies killed by decay explode'
+      ],
+      requirements: [
+        'Have 5 enemies affected by decay simultaneously 10 times'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
   }
 ];
 
-// Sample Relics
+
+// Relics
 export const relics: BaseItem[] = [
   {
     id: 'r001',
@@ -204,16 +284,31 @@ export const relics: BaseItem[] = [
     iconUrl: '/images/relics/ember-heart.png',
     element: 'Fire',
     mysterium1: {
-      charismata: ['Increases fire damage by 15%', 'Reduces fire damage taken by 10%'],
-      requirements: ['Deal 1000 fire damage']
+      charismata: [
+        'Increases fire damage by 15%',
+        'Reduces fire damage taken by 10%'
+      ],
+      requirements: [
+        'Deal 1000 fire damage'
+      ]
     },
     mysterium2: {
-      charismata: ['Killing enemies with fire damage restores health', 'Further increases fire damage by 10%'],
-      requirements: ['Kill 50 enemies with fire damage']
+      charismata: [
+        'Killing enemies with fire damage restores health',
+        'Further increases fire damage by 10%'
+      ],
+      requirements: [
+        'Kill 50 enemies with fire damage'
+      ]
     },
     mysterium3: {
-      charismata: ['Creates a fire explosion around you when health drops below 25%', 'Cooldown: 60 seconds'],
-      requirements: ['Survive with less than 25% health for a cumulative 5 minutes']
+      charismata: [
+        'Creates a fire explosion around you when health drops below 25%',
+        'Cooldown: 60 seconds'
+      ],
+      requirements: [
+        'Survive with less than 25% health for a cumulative 5 minutes'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
@@ -225,23 +320,38 @@ export const relics: BaseItem[] = [
     iconUrl: '/images/relics/frost-anchor.png',
     element: 'Ice',
     mysterium1: {
-      charismata: ['Increases ice damage by 15%', 'Enemies you damage have 20% chance to be slowed'],
-      requirements: ['Deal 1000 ice damage']
+      charismata: [
+        'Increases ice damage by 15%',
+        'Enemies you damage have 20% chance to be slowed'
+      ],
+      requirements: [
+        'Deal 1000 ice damage'
+      ]
     },
     mysterium2: {
-      charismata: ['Creates a frost barrier when taking damage that reduces incoming damage by 30% for 5 seconds', 'Cooldown: 30 seconds'],
-      requirements: ['Take damage 100 times']
+      charismata: [
+        'Creates a frost barrier when taking damage that reduces incoming damage by 30% for 5 seconds',
+        'Cooldown: 30 seconds'
+      ],
+      requirements: [
+        'Take damage 100 times'
+      ]
     },
     mysterium3: {
-      charismata: ['Frozen enemies have a 50% chance to drop additional resources when killed'],
-      requirements: ['Freeze 30 enemies']
+      charismata: [
+        'Frozen enemies have a 50% chance to drop additional resources when killed'
+      ],
+      requirements: [
+        'Freeze 30 enemies'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
   }
 ];
 
-// Sample Fetishes
+
+// Fetishes
 export const fetishes: BaseItem[] = [
   {
     id: 'f001',
@@ -250,16 +360,30 @@ export const fetishes: BaseItem[] = [
     iconUrl: '/images/fetishes/thunderstone.png',
     element: 'Lightning',
     mysterium1: {
-      charismata: ['Increases lightning damage by 15%', 'Lightning spells have 10% reduced cooldown'],
-      requirements: ['Cast 30 lightning spells']
+      charismata: [
+        'Increases lightning damage by 15%',
+        'Lightning spells have 10% reduced cooldown'
+      ],
+      requirements: [
+        'Cast 30 lightning spells'
+      ]
     },
     mysterium2: {
-      charismata: ['Critical hits have a 25% chance to call down a lightning strike on the target'],
-      requirements: ['Get 50 critical hits']
+      charismata: [
+        'Critical hits have a 25% chance to call down a lightning strike on the target'
+      ],
+      requirements: [
+        'Get 50 critical hits'
+      ]
     },
     mysterium3: {
-      charismata: ['When your health drops below 30%, you emit a lightning nova that stuns nearby enemies', 'Cooldown: 45 seconds'],
-      requirements: ['Kill 20 enemies while below 30% health']
+      charismata: [
+        'When your health drops below 30%, you emit a lightning nova that stuns nearby enemies',
+        'Cooldown: 45 seconds'
+      ],
+      requirements: [
+        'Kill 20 enemies while below 30% health'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
@@ -271,23 +395,39 @@ export const fetishes: BaseItem[] = [
     iconUrl: '/images/fetishes/plague-idol.png',
     element: 'Decay',
     mysterium1: {
-      charismata: ['Increases decay damage by 15%', 'Decay effects last 20% longer'],
-      requirements: ['Deal 1000 decay damage']
+      charismata: [
+        'Increases decay damage by 15%',
+        'Decay effects last 20% longer'
+      ],
+      requirements: [
+        'Deal 1000 decay damage'
+      ]
     },
     mysterium2: {
-      charismata: ['Enemies affected by decay take 10% more damage from all sources', 'Killing enemies affected by decay has a 20% chance to spread decay to nearby enemies'],
-      requirements: ['Kill 40 enemies affected by decay']
+      charismata: [
+        'Enemies affected by decay take 10% more damage from all sources',
+        'Killing enemies affected by decay has a 20% chance to spread decay to nearby enemies'
+      ],
+      requirements: [
+        'Kill 40 enemies affected by decay'
+      ]
     },
     mysterium3: {
-      charismata: ['When you take damage, you release a cloud of decay that damages enemies over time', 'Cooldown: 20 seconds'],
-      requirements: ['Take damage from 50 different enemy attacks']
+      charismata: [
+        'When you take damage, you release a cloud of decay that damages enemies over time',
+        'Cooldown: 20 seconds'
+      ],
+      requirements: [
+        'Take damage from 50 different enemy attacks'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
   }
 ];
 
-// Sample Rings
+
+// Rings
 export const rings: BaseItem[] = [
   {
     id: 'rg001',
@@ -296,16 +436,30 @@ export const rings: BaseItem[] = [
     iconUrl: '/images/rings/band-of-embers.png',
     element: 'Fire',
     mysterium1: {
-      charismata: ['Weapon attacks have a 10% chance to ignite enemies', 'Ignited enemies take 5 fire damage per second for 5 seconds'],
-      requirements: ['Kill 30 enemies with weapons']
+      charismata: [
+        'Weapon attacks have a 10% chance to ignite enemies',
+        'Ignited enemies take 5 fire damage per second for 5 seconds'
+      ],
+      requirements: [
+        'Kill 30 enemies with weapons'
+      ]
     },
     mysterium2: {
-      charismata: ['Ignited enemies have a 15% chance to spread fire to nearby enemies when killed'],
-      requirements: ['Kill 25 ignited enemies']
+      charismata: [
+        'Ignited enemies have a 15% chance to spread fire to nearby enemies when killed'
+      ],
+      requirements: [
+        'Kill 25 ignited enemies'
+      ]
     },
     mysterium3: {
-      charismata: ['Killing 3 ignited enemies in quick succession creates a fire explosion', 'Fire explosion deals 50 fire damage to nearby enemies'],
-      requirements: ['Kill 3 ignited enemies within 5 seconds 10 times']
+      charismata: [
+        'Killing 3 ignited enemies in quick succession creates a fire explosion',
+        'Fire explosion deals 50 fire damage to nearby enemies'
+      ],
+      requirements: [
+        'Kill 3 ignited enemies within 5 seconds 10 times'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
@@ -317,23 +471,38 @@ export const rings: BaseItem[] = [
     iconUrl: '/images/rings/signet-of-frost.png',
     element: 'Ice',
     mysterium1: {
-      charismata: ['Critical hits have a 20% chance to slow enemies', 'Slowed enemies move and attack 30% slower for 3 seconds'],
-      requirements: ['Get 50 critical hits']
+      charismata: [
+        'Critical hits have a 20% chance to slow enemies',
+        'Slowed enemies move and attack 30% slower for 3 seconds'
+      ],
+      requirements: [
+        'Get 50 critical hits'
+      ]
     },
     mysterium2: {
-      charismata: ['Slowed enemies take 15% more damage from all sources'],
-      requirements: ['Deal 1000 damage to slowed enemies']
+      charismata: [
+        'Slowed enemies take 15% more damage from all sources'
+      ],
+      requirements: [
+        'Deal 1000 damage to slowed enemies'
+      ]
     },
     mysterium3: {
-      charismata: ['Killing a slowed enemy creates a frost nova that slows nearby enemies', 'Enemies already slowed by this effect have a 25% chance to be frozen for 2 seconds'],
-      requirements: ['Kill 30 slowed enemies']
+      charismata: [
+        'Killing a slowed enemy creates a frost nova that slows nearby enemies',
+        'Enemies already slowed by this effect have a 25% chance to be frozen for 2 seconds'
+      ],
+      requirements: [
+        'Kill 30 slowed enemies'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
   }
 ];
 
-// Sample Demonic Weapons
+
+// DemonicWeapons
 export const demonicWeapons: BaseItem[] = [
   {
     id: 'dw001',
@@ -342,16 +511,31 @@ export const demonicWeapons: BaseItem[] = [
     iconUrl: '/images/weapons/hellfire-blade.png',
     element: 'Fire',
     mysterium1: {
-      charismata: ['Deals fire damage on hit', 'Ignites enemies with a 20% chance'],
-      requirements: ['Use this weapon 30 times']
+      charismata: [
+        'Deals fire damage on hit',
+        'Ignites enemies with a 20% chance'
+      ],
+      requirements: [
+        'Use this weapon 30 times'
+      ]
     },
     mysterium2: {
-      charismata: ['Increased fire damage', 'Burning enemies take 15% more damage from all sources'],
-      requirements: ['Kill 25 enemies with this weapon']
+      charismata: [
+        'Increased fire damage',
+        'Burning enemies take 15% more damage from all sources'
+      ],
+      requirements: [
+        'Kill 25 enemies with this weapon'
+      ]
     },
     mysterium3: {
-      charismata: ['Killing a burning enemy creates a fire explosion', 'Explosion deals 40 fire damage to nearby enemies'],
-      requirements: ['Kill 3 burning enemies in quick succession 5 times']
+      charismata: [
+        'Killing a burning enemy creates a fire explosion',
+        'Explosion deals 40 fire damage to nearby enemies'
+      ],
+      requirements: [
+        'Kill 3 burning enemies in quick succession 5 times'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
@@ -363,21 +547,37 @@ export const demonicWeapons: BaseItem[] = [
     iconUrl: '/images/weapons/soul-reaper.png',
     element: 'Decay',
     mysterium1: {
-      charismata: ['Deals decay damage', 'Heals the user for 5% of damage dealt'],
-      requirements: ['Use this weapon 30 times']
+      charismata: [
+        'Deals decay damage',
+        'Heals the user for 5% of damage dealt'
+      ],
+      requirements: [
+        'Use this weapon 30 times'
+      ]
     },
     mysterium2: {
-      charismata: ['Increased decay damage', 'Healing increased to 10% of damage dealt'],
-      requirements: ['Kill 25 enemies with this weapon']
+      charismata: [
+        'Increased decay damage',
+        'Healing increased to 10% of damage dealt'
+      ],
+      requirements: [
+        'Kill 25 enemies with this weapon'
+      ]
     },
     mysterium3: {
-      charismata: ['Killing an enemy grants a soul fragment', 'Collecting 3 soul fragments grants 50% increased damage for 10 seconds'],
-      requirements: ['Kill 50 enemies with this weapon']
+      charismata: [
+        'Killing an enemy grants a soul fragment',
+        'Collecting 3 soul fragments grants 50% increased damage for 10 seconds'
+      ],
+      requirements: [
+        'Kill 50 enemies with this weapon'
+      ]
     },
     addedOn: '2025-04-01',
     updatedOn: '2025-04-01'
   }
 ];
+
 
 // Export all items in a single array
 export const allItems: BaseItem[] = [

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Witchfire Item Editor</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- JSON Editor -->
+    <link href="https://cdn.jsdelivr.net/npm/jsoneditor@9.10.0/dist/jsoneditor.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .item-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .json-editor {
+            height: 500px;
+        }
+        .btn-action {
+            margin-right: 5px;
+        }
+        .category-badge {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4 text-center">Witchfire Item Editor</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Select TypeScript File</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="fileInput" class="form-label">Choose a TypeScript file:</label>
+                            <input type="file" class="form-control" id="fileInput" accept=".ts">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Or use File System Access API (Edge, Chrome):</label>
+                            <button id="openFileBtn" class="btn btn-primary w-100">Open File</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="fileInfo" class="alert alert-info d-none">
+                    <span id="fileName"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="editorContainer" class="d-none">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">Categories</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group" id="categoryList">
+                                <!-- Categories will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-3">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">Items</h5>
+                        </div>
+                        <div class="card-body item-list">
+                            <div class="list-group" id="itemList">
+                                <!-- Items will be populated here -->
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button id="addItemBtn" class="btn btn-success w-100">Add New Item</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Item Editor</h5>
+                            <div>
+                                <button id="saveItemBtn" class="btn btn-primary btn-sm">Save Item</button>
+                                <button id="deleteItemBtn" class="btn btn-danger btn-sm ms-2">Delete Item</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="jsonEditor" class="json-editor"></div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-3">
+                        <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">Actions</h5>
+                        </div>
+                        <div class="card-body">
+                            <button id="saveFileBtn" class="btn btn-primary me-2">Save to File</button>
+                            <button id="exportFileBtn" class="btn btn-success me-2">Download File</button>
+                            <button id="resetBtn" class="btn btn-warning">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Templates for new items -->
+        <div class="d-none">
+            <div id="templateBaseItem" class="template-data">
+                {
+                    "id": "",
+                    "name": "New Item",
+                    "category": "",
+                    "iconUrl": "/images/default.png",
+                    "element": null,
+                    "mysterium1": {
+                        "charismata": ["Effect 1", "Effect 2"],
+                        "requirements": ["Requirement 1"]
+                    },
+                    "mysterium2": {
+                        "charismata": ["Effect 1", "Effect 2"],
+                        "requirements": ["Requirement 1"]
+                    },
+                    "mysterium3": {
+                        "charismata": ["Effect 1", "Effect 2"],
+                        "requirements": ["Requirement 1"]
+                    },
+                    "addedOn": "",
+                    "updatedOn": ""
+                }
+            </div>
+            <div id="templateWeapon" class="template-data">
+                {
+                    "id": "",
+                    "name": "New Weapon",
+                    "category": "Weapons",
+                    "iconUrl": "/images/weapons/default.png",
+                    "element": null,
+                    "damage": 100,
+                    "stunPower": "Medium",
+                    "hipfireRange": 20,
+                    "adsRange": 30,
+                    "stability": "Medium",
+                    "rateOfFire": 1.0,
+                    "mobility": "Medium",
+                    "clipSize": 6,
+                    "ammoReserves": 30,
+                    "mysterium1": {
+                        "effect": "Effect description",
+                        "charismata": null,
+                        "requirements": ["Requirement 1"]
+                    },
+                    "mysterium2": {
+                        "effect": "Effect description",
+                        "charismata": null,
+                        "requirements": ["Requirement 1"]
+                    },
+                    "mysterium3": {
+                        "effect": "Effect description",
+                        "charismata": null,
+                        "requirements": ["Requirement 1"]
+                    },
+                    "addedOn": "",
+                    "updatedOn": ""
+                }
+            </div>
+        </div>
+
+        <!-- Modal for confirmation -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalTitle">Confirm Action</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="confirmModalBody">
+                        Are you sure you want to proceed?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmModalAction">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JSON Editor -->
+    <script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.10.0/dist/jsoneditor.min.js"></script>
+    <!-- Main Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const editorContainer = document.getElementById('editorContainer');
+            const categoryList = document.getElementById('categoryList');
+            const itemList = document.getElementById('itemList');
+            const addItemBtn = document.getElementById('addItemBtn');
+            const saveItemBtn = document.getElementById('saveItemBtn');
+            const deleteItemBtn = document.getElementById('deleteItemBtn');
+            const saveFileBtn = document.getElementById('saveFileBtn');
+            const exportFileBtn = document.getElementById('exportFileBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            const confirmModalAction = document.getElementById('confirmModalAction');
+            const confirmModalTitle = document.getElementById('confirmModalTitle');
+            const confirmModalBody = document.getElementById('confirmModalBody');
+
+            // State variables
+            let fileContent = null;
+            let parsedData = null;
+            let categories = [];
+            let currentCategory = null;
+            let currentItem = null;
+            let editor = null;
+            let fileHandle = null; // File handle for File System Access API
+
+            // Initialize JSON Editor
+            function initJsonEditor() {
+                const container = document.getElementById('jsonEditor');
+                const options = {
+                    mode: 'tree',
+                    modes: ['tree', 'code', 'form', 'text'],
+                    onChangeJSON: function(json) {
+                        // Update current item when JSON changes
+                        if (currentItem) {
+                            currentItem = json;
+                        }
+                    }
+                };
+                editor = new JSONEditor(container, options);
+            }
+
+            // Parse TypeScript file content
+            function parseTypeScriptFile(content) {
+                // Reset state
+                parsedData = {};
+                categories = [];
+                
+                // Extract export const arrays
+                const regex = /export\s+const\s+(\w+)\s*:\s*(?:BaseItem|Weapon)\[\]\s*=\s*(\[\s*\{[\s\S]*?\}\s*\];)/g;
+                let match;
+                
+                while ((match = regex.exec(content)) !== null) {
+                    const categoryName = match[1];
+                    let jsonString = match[2];
+                    
+                    // Clean up the TypeScript to make it valid JSON
+                    jsonString = jsonString
+                        .replace(/\s*\/\/.*?\n/g, '') // Remove comments
+                        .replace(/,\s*\]/g, ']') // Remove trailing commas
+                        .replace(/'/g, '"') // Replace single quotes with double quotes
+                        .replace(/([{,])\s*(\w+)\s*:/g, '$1"$2":'); // Add quotes to property names
+                    
+                    try {
+                        // Remove the trailing semicolon
+                        if (jsonString.endsWith(';')) {
+                            jsonString = jsonString.slice(0, -1);
+                        }
+                        
+                        const items = JSON.parse(jsonString);
+                        parsedData[categoryName] = items;
+                        categories.push(categoryName);
+                    } catch (e) {
+                        console.error(`Error parsing ${categoryName}:`, e);
+                        alert(`Error parsing ${categoryName}: ${e.message}`);
+                    }
+                }
+                
+                return Object.keys(parsedData).length > 0;
+            }
+
+            // Populate category list
+            function populateCategories() {
+                categoryList.innerHTML = '';
+                categories.forEach(category => {
+                    const item = document.createElement('a');
+                    item.href = '#';
+                    item.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                    item.textContent = category;
+                    
+                    const badge = document.createElement('span');
+                    badge.className = 'badge bg-primary rounded-pill';
+                    badge.textContent = parsedData[category].length;
+                    
+                    item.appendChild(badge);
+                    item.addEventListener('click', () => selectCategory(category));
+                    categoryList.appendChild(item);
+                });
+            }
+
+            // Select a category
+            function selectCategory(category) {
+                currentCategory = category;
+                document.querySelectorAll('#categoryList .list-group-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                document.querySelector(`#categoryList .list-group-item:nth-child(${categories.indexOf(category) + 1})`).classList.add('active');
+                populateItems(category);
+            }
+
+            // Populate item list for a category
+            function populateItems(category) {
+                itemList.innerHTML = '';
+                parsedData[category].forEach(item => {
+                    const listItem = document.createElement('a');
+                    listItem.href = '#';
+                    listItem.className = 'list-group-item list-group-item-action';
+                    listItem.textContent = `${item.name} (${item.id})`;
+                    listItem.addEventListener('click', () => selectItem(item));
+                    itemList.appendChild(listItem);
+                });
+            }
+
+            // Select an item
+            function selectItem(item) {
+                currentItem = item;
+                document.querySelectorAll('#itemList .list-group-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                const index = parsedData[currentCategory].findIndex(i => i.id === item.id);
+                if (index !== -1) {
+                    document.querySelector(`#itemList .list-group-item:nth-child(${index + 1})`).classList.add('active');
+                }
+                editor.set(item);
+            }
+
+            // Generate a new ID for an item
+            function generateId(category) {
+                const prefix = category === 'weapons' ? 'w' : 
+                              category === 'lightSpells' ? 'ls' :
+                              category === 'heavySpells' ? 'hs' :
+                              category === 'relics' ? 'r' :
+                              category === 'fetishes' ? 'f' :
+                              category === 'rings' ? 'rg' :
+                              category === 'demonicWeapons' ? 'dw' : 'x';
+                
+                const items = parsedData[category] || [];
+                const existingIds = items.map(item => item.id);
+                let counter = 1;
+                let newId;
+                
+                do {
+                    newId = `${prefix}${String(counter).padStart(3, '0')}`;
+                    counter++;
+                } while (existingIds.includes(newId));
+                
+                return newId;
+            }
+
+            // Add a new item
+            function addNewItem() {
+                if (!currentCategory) {
+                    alert('Please select a category first');
+                    return;
+                }
+                
+                // Get the appropriate template
+                let template;
+                if (currentCategory === 'weapons') {
+                    template = JSON.parse(document.getElementById('templateWeapon').textContent);
+                } else {
+                    template = JSON.parse(document.getElementById('templateBaseItem').textContent);
+                }
+                
+                // Set category-specific fields
+                template.id = generateId(currentCategory);
+                template.category = currentCategory === 'weapons' ? 'Weapons' :
+                                    currentCategory === 'lightSpells' ? 'LightSpells' :
+                                    currentCategory === 'heavySpells' ? 'HeavySpells' :
+                                    currentCategory === 'relics' ? 'Relics' :
+                                    currentCategory === 'fetishes' ? 'Fetishes' :
+                                    currentCategory === 'rings' ? 'Rings' : '';
+                
+                // Set dates
+                const today = new Date().toISOString().split('T')[0];
+                template.addedOn = today;
+                template.updatedOn = today;
+                
+                // Add to data and update UI
+                parsedData[currentCategory].push(template);
+                populateItems(currentCategory);
+                selectItem(template);
+            }
+
+            // Save current item
+            function saveCurrentItem() {
+                if (!currentItem || !currentCategory) {
+                    alert('No item selected');
+                    return;
+                }
+                
+                try {
+                    const updatedItem = editor.get();
+                    updatedItem.updatedOn = new Date().toISOString().split('T')[0];
+                    
+                    // Find and update the item in the array
+                    const index = parsedData[currentCategory].findIndex(item => item.id === currentItem.id);
+                    if (index !== -1) {
+                        parsedData[currentCategory][index] = updatedItem;
+                        currentItem = updatedItem;
+                        populateItems(currentCategory);
+                        selectItem(updatedItem);
+                        alert('Item saved successfully!');
+                    } else {
+                        alert('Error: Item not found in the current category');
+                    }
+                } catch (e) {
+                    alert(`Error saving item: ${e.message}`);
+                }
+            }
+
+            // Delete current item
+            function deleteCurrentItem() {
+                if (!currentItem || !currentCategory) {
+                    alert('No item selected');
+                    return;
+                }
+                
+                confirmModalTitle.textContent = 'Delete Item';
+                confirmModalBody.textContent = `Are you sure you want to delete the item "${currentItem.name}" (${currentItem.id})?`;
+                confirmModalAction.onclick = function() {
+                    const index = parsedData[currentCategory].findIndex(item => item.id === currentItem.id);
+                    if (index !== -1) {
+                        parsedData[currentCategory].splice(index, 1);
+                        populateItems(currentCategory);
+                        if (parsedData[currentCategory].length > 0) {
+                            selectItem(parsedData[currentCategory][0]);
+                        } else {
+                            currentItem = null;
+                            editor.set({});
+                        }
+                        confirmModal.hide();
+                        alert('Item deleted successfully!');
+                    } else {
+                        alert('Error: Item not found in the current category');
+                    }
+                };
+                confirmModal.show();
+            }
+
+            // Generate TypeScript file content
+            function generateTypeScriptFile() {
+                let content = 'import { BaseItem, Weapon } from \'@/types\';\n\n';
+                
+                for (const category of categories) {
+                    const itemType = category === 'weapons' ? 'Weapon' : 'BaseItem';
+                    
+                    // Add a proper comment line and export statement on a new line
+                    content += `\n// ${category.charAt(0).toUpperCase() + category.slice(1)}\n`;
+                    content += `export const ${category}: ${itemType}[] = ${JSON.stringify(parsedData[category], null, 2)};\n\n`;
+                }
+                
+                // Add allItems export
+                content += '\n// Export all items in a single array\n';
+                content += 'export const allItems: BaseItem[] = [\n';
+                content += '  ...weapons,\n';
+                if (categories.includes('demonicWeapons')) content += '  ...demonicWeapons,\n';
+                if (categories.includes('lightSpells')) content += '  ...lightSpells,\n';
+                if (categories.includes('heavySpells')) content += '  ...heavySpells,\n';
+                if (categories.includes('relics')) content += '  ...relics,\n';
+                if (categories.includes('fetishes')) content += '  ...fetishes,\n';
+                if (categories.includes('rings')) content += '  ...rings\n';
+                content += '];\n\n';
+
+                // Add helper functions
+                content += '// Helper function to get items by category\n';
+                content += 'export const getItemsByCategory = (category: string): BaseItem[] => {\n';
+                content += '  switch (category) {\n';
+                content += '    case \'Weapons\':\n';
+                content += '      return weapons;\n';
+                if (categories.includes('demonicWeapons')) content += '    case \'DemonicWeapons\':\n      return demonicWeapons;\n';
+                if (categories.includes('lightSpells')) content += '    case \'LightSpells\':\n      return lightSpells;\n';
+                if (categories.includes('heavySpells')) content += '    case \'HeavySpells\':\n      return heavySpells;\n';
+                if (categories.includes('relics')) content += '    case \'Relics\':\n      return relics;\n';
+                if (categories.includes('fetishes')) content += '    case \'Fetishes\':\n      return fetishes;\n';
+                if (categories.includes('rings')) content += '    case \'Rings\':\n      return rings;\n';
+                content += '    default:\n';
+                content += '      return [];\n';
+                content += '  }\n';
+                content += '};\n\n';
+
+                content += '// Helper function to get item by ID\n';
+                content += 'export const getItemById = (id: string): BaseItem | undefined => {\n';
+                content += '  return allItems.find(item => item.id === id);\n';
+                content += '};\n'
+                
+                // Format TypeScript style: replace property quotes and string quotes
+                content = content
+                    // Remove quotes around property names (not needed in TypeScript)
+                    .replace(/"([^"]+)":/g, '$1:')
+                    // Replace double quotes with single quotes for strings
+                    .replace(/"([^"]*)"(?!:)/g, '\'$1\'');
+                
+                return content;
+            }
+
+            // Save to file
+            async function saveToFile() {
+                try {
+                    const content = generateTypeScriptFile();
+                    
+                    // If we have a file handle from File System Access API
+                    if (fileHandle && isFileSystemAccessSupported) {
+                        try {
+                            // Check if we have write permission
+                            if ((await fileHandle.queryPermission({ mode: 'readwrite' })) !== 'granted') {
+                                // Request write permission
+                                const permission = await fileHandle.requestPermission({ mode: 'readwrite' });
+                                if (permission !== 'granted') {
+                                    throw new Error('Write permission denied');
+                                }
+                            }
+                            
+                            // Create a writable stream
+                            const writable = await fileHandle.createWritable();
+                            // Write the content
+                            await writable.write(content);
+                            // Close the file
+                            await writable.close();
+                            
+                            alert('File saved successfully!');
+                            return;
+                        } catch (error) {
+                            console.error('Error saving with File System Access API:', error);
+                            // Fall back to download if direct save fails
+                            alert(`Could not save directly to file: ${error.message}\nFalling back to download method.`);
+                        }
+                    }
+                    
+                    // Fall back to download method if File System Access API is not available or failed
+                    const blob = new Blob([content], { type: 'text/typescript' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = fileHandle ? fileHandle.name : (fileInput.files[0] ? fileInput.files[0].name : 'items.ts');
+                    a.click();
+                    URL.revokeObjectURL(a.href);
+                    alert('File downloaded successfully!');
+                } catch (e) {
+                    alert(`Error saving file: ${e.message}`);
+                }
+            }
+
+            // Reset the application
+            function resetApp() {
+                confirmModalTitle.textContent = 'Reset Application';
+                confirmModalBody.textContent = 'Are you sure you want to reset? All unsaved changes will be lost.';
+                confirmModalAction.onclick = function() {
+                    fileInput.value = '';
+                    fileContent = null;
+                    parsedData = null;
+                    categories = [];
+                    currentCategory = null;
+                    currentItem = null;
+                    fileHandle = null;
+                    editor.set({});
+                    fileInfo.classList.add('d-none');
+                    editorContainer.classList.add('d-none');
+                    confirmModal.hide();
+                };
+                confirmModal.show();
+            }
+
+            // Check if File System Access API is available
+            const isFileSystemAccessSupported = 'showOpenFilePicker' in window;
+
+            // Open file using File System Access API
+            async function openFileWithFileSystemAccess() {
+                try {
+                    const options = {
+                        types: [
+                            {
+                                description: 'TypeScript Files',
+                                accept: {
+                                    'text/typescript': ['.ts']
+                                }
+                            }
+                        ],
+                        multiple: false
+                    };
+                    
+                    const [handle] = await window.showOpenFilePicker(options);
+                    fileHandle = handle;
+                    const file = await handle.getFile();
+                    const content = await file.text();
+                    
+                    fileContent = content;
+                    if (parseTypeScriptFile(fileContent)) {
+                        fileName.textContent = file.name;
+                        fileInfo.classList.remove('d-none');
+                        editorContainer.classList.remove('d-none');
+                        populateCategories();
+                        if (categories.length > 0) {
+                            selectCategory(categories[0]);
+                        }
+                    } else {
+                        alert('No valid data found in the file');
+                    }
+                } catch (error) {
+                    if (error.name !== 'AbortError') {
+                        console.error('Error opening file:', error);
+                        alert(`Error opening file: ${error.message}`);
+                    }
+                }
+            }
+
+            // Event Listeners
+            fileInput.addEventListener('change', function(e) {
+                if (this.files.length === 0) return;
+                
+                const file = this.files[0];
+                if (!file.name.endsWith('.ts')) {
+                    alert('Please select a TypeScript (.ts) file');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    fileContent = event.target.result;
+                    if (parseTypeScriptFile(fileContent)) {
+                        fileName.textContent = file.name;
+                        fileInfo.classList.remove('d-none');
+                        editorContainer.classList.remove('d-none');
+                        populateCategories();
+                        if (categories.length > 0) {
+                            selectCategory(categories[0]);
+                        }
+                    } else {
+                        alert('No valid data found in the file');
+                    }
+                };
+                reader.readAsText(file);
+                
+                // Reset fileHandle since we're using the traditional file input
+                fileHandle = null;
+            });
+
+            addItemBtn.addEventListener('click', addNewItem);
+            saveItemBtn.addEventListener('click', saveCurrentItem);
+            deleteItemBtn.addEventListener('click', deleteCurrentItem);
+            saveFileBtn.addEventListener('click', saveToFile);
+            exportFileBtn.addEventListener('click', saveToFile); // Same as save for now
+            resetBtn.addEventListener('click', resetApp);
+            
+            // Add event listener for the open file button if File System Access API is supported
+            const openFileBtn = document.getElementById('openFileBtn');
+            if (isFileSystemAccessSupported) {
+                openFileBtn.addEventListener('click', openFileWithFileSystemAccess);
+            } else {
+                openFileBtn.disabled = true;
+                openFileBtn.textContent = 'Not Supported in This Browser';
+            }
+
+            // Initialize the editor
+            initJsonEditor();
+        });
+    </script>
+</body>
+</html>
