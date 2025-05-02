@@ -3,6 +3,7 @@ import { LoadoutProvider } from '@/context/LoadoutContext';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from 'next/image';
+import Link from 'next/link';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Witchfire Loadout Manager & Randomizer",
+  title: "Witchfire Randomizer",
   description: "Create, manage, and randomize loadouts for Witchfire",
 };
 
@@ -32,15 +33,17 @@ export default function RootLayout({
           <div className="flex flex-col min-h-screen pt-16">
             <Navigation />
             <div className="flex justify-center items-center py-4 sm:py-8 mt-2">
-              <Image
-                src="/images/wf-logo2.png"
-                alt="Witchfire Logo"
-                width={0}
-                height={0}
-                sizes="(max-width: 1000px) 100vw, 25vh"
-                className="h-50 w-auto"
-                priority
-              />
+              <Link href="/">
+                <Image
+                  src="/images/wf-logo2.png"
+                  alt="Witchfire Logo"
+                  width={0}
+                  height={0}
+                  sizes="(max-width: 1000px) 100vw, 25vh"
+                  className="h-50 w-auto"
+                  priority
+                />
+              </Link>
             </div>
             <main className="flex-grow container mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-4 sm:py-8">
               {children}

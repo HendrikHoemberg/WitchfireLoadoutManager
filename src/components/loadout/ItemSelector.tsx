@@ -2,7 +2,7 @@
 
 import { getItemsByCategory } from '@/data/items';
 import { BaseItem, ItemCategory } from '@/types';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ItemCardPopup from '../common/ItemCardPopup';
 
 interface ItemSelectorProps {
@@ -51,19 +51,20 @@ const ItemSelector = ({
   // Handle touch events on touch devices (mobile/tablet)
   useEffect(() => {
     if (isTouchDevice && hoveredItem) {
-      // For touch devices, any touch anywhere should close the popup
-      const handleTouchAnywhere = () => {
-        // Add a small delay to allow the touch to register properly
+      // For touch devices, any touch anywhere should close the popup (unless inside the popup)
+      const handleTouchAnywhere = (e: TouchEvent) => {
+        const popupElement = document.querySelector('.item-card-popup');
+        if (popupElement && e.target instanceof Node) {
+          if (popupElement.contains(e.target)) {
+            return;
+          }
+        }
         setTimeout(() => {
           setHoveredItem(null);
           setPopupPosition(null);
         }, 10);
       };
-      
-      // Add the event listener to the document
       document.addEventListener('touchstart', handleTouchAnywhere);
-      
-      // Clean up the event listener when component unmounts or popup closes
       return () => {
         document.removeEventListener('touchstart', handleTouchAnywhere);
       };
@@ -143,7 +144,7 @@ const ItemSelector = ({
               
               // Position the popup so its bottom edge is significantly above the bottom edge of the item card
               // First calculate the bottom position with an offset to move it higher
-              let bottom = rect.bottom - 100; // Add a 100px offset to move it higher
+              let bottom = rect.bottom - 200; // Add a 100px offset to move it higher
               let left = rect.right + 10;
               
               // Calculate top based on bottom position and popup height
@@ -192,7 +193,7 @@ const ItemSelector = ({
                   
                   // Position the popup so its bottom edge is significantly above the bottom edge of the item card
                   // For mobile, we'll still center horizontally but position higher
-                  let bottom = rect.bottom - 100; // Add a 100px offset to move it higher
+                  let bottom = rect.bottom - 200; // Add a 100px offset to move it higher
                   let left = Math.max(10, (viewportWidth - popupWidth) / 2); // Center horizontally
                   
                   // Calculate top based on bottom position and popup height
@@ -222,9 +223,15 @@ const ItemSelector = ({
               }
             }}
           >
-            <div className="w-16 h-16 mb-2 bg-[#e2e2e2] rounded-md flex items-center justify-center">
-              {/* Placeholder for the actual image */}
-              <span className="text-2xl text-black">{item.name.charAt(0)}</span>
+            <div className="w-16 h-16 mb-2 bg-black rounded-md flex items-center justify-center">
+              {item.iconUrl ? (
+                <img 
+                  src={item.iconUrl} 
+                  alt={item.name} 
+                  className="w-full h-full object-contain rounded-md"
+                />
+              ) : null}
+              <span className={`text-2xl text-black ${item.iconUrl ? 'hidden' : ''}`}>{item.name.charAt(0)}</span>
             </div>
 
             <span className="text-xs text-center text-gray-100 truncate w-full">{item.name}</span>

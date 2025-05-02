@@ -17,13 +17,19 @@ const ItemCard = ({ item }: ItemCardProps) => {
       />
       {/* Item Header */}
       <div className="p-2 sm:p-4 bg-[#5c5b5bb9] flex items-center gap-2 sm:gap-4">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-md flex items-center justify-center">
-          {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
-          <span className="text-black text-2xl">{item.name.charAt(0)}</span>
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-black rounded-md flex items-center justify-center">
+          {item.iconUrl ? (
+            <img 
+              src={item.iconUrl} 
+              alt={item.name} 
+              className="w-full h-full object-contain rounded-md"
+            />
+          ) : null}
+          <span className={`text-black text-2xl ${item.iconUrl ? 'hidden' : ''}`}>{item.name.charAt(0)}</span>
         </div>
         
         <div className="flex-grow">
-          <h3 className="text-base sm:text-xl font-bold text-white">{item.name}</h3>
+          <h3 className="text-base sm:text-2xl font-bold text-white">{item.name}</h3>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-sm text-gray-400">{getCategoryDisplayName(item.category)}</span>
             {item.element && (
@@ -58,7 +64,7 @@ const ItemCard = ({ item }: ItemCardProps) => {
       
       {/* Mysterium Levels - All expanded by default */}
       <div className="p-2 sm:p-4 border-t border-[#818181]">
-        <h4 className="text-base sm:text-lg text-white font-semibold mb-2 sm:mb-3">Mysterium Levels</h4>
+        <h4 className="text-base sm:text-lg text-white text-center font-semibold mb-2 sm:mb-3">Mysterium Levels</h4>
         
         <MysteriumLevel 
           level={1} 
@@ -113,12 +119,12 @@ const MysteriumLevel = ({ level, mysterium, isWeapon }: MysteriumLevelProps) => 
     <div className="mt-1 sm:mt-2 pl-2 sm:pl-4 border-l-2 border-[#818181]">
       {isWeapon && mysterium.effect ? (
         <div className="mb-2">
-          <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Effect:</span>
+          <span className="text-xs font-bold sm:text-sm text-[#ddaf7aa6]">Effect:</span>
           <p className="text-xs sm:text-sm text-gray-300 mt-1">{mysterium.effect}</p>
         </div>
       ) : mysterium.charismata && (
         <div className="mb-2">
-          <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Charismata:</span>
+          <span className="text-xs sm:text-sm font-bold text-[#ddaf7aa6]">Charismata:</span>
           <ul className="list-disc list-inside mt-1">
             {mysterium.charismata.map((effect, index) => (
               <li key={index} className="text-xs sm:text-sm text-gray-300">{effect}</li>
@@ -128,7 +134,7 @@ const MysteriumLevel = ({ level, mysterium, isWeapon }: MysteriumLevelProps) => 
       )}
       
       <div>
-        <span className="text-xs sm:text-sm text-[#ddaf7aa6]">Requirements:</span>
+        <span className="text-xs font-bold sm:text-sm text-[#ddaf7aa6]">Requirements:</span>
         <ul className="list-disc list-inside mt-1">
           {mysterium.requirements.map((req, index) => (
             <li key={index} className="text-sm text-gray-300">{req}</li>

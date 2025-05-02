@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { BaseItem } from '@/types';
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ItemCardPopup from '../common/ItemCardPopup';
 
 interface LoadoutSlotProps {
@@ -105,7 +106,16 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
   useEffect(() => {
     if (isTouchDevice && showPopup) {
       // For touch devices, any touch anywhere should close the popup
-      const handleTouchAnywhere = () => {
+      const handleTouchAnywhere = (e: TouchEvent) => {
+        // Check if the touch is inside the popup
+        const popupElement = document.querySelector('.item-card-popup');
+        if (popupElement && e.target instanceof Node) {
+          // If the touch is inside the popup, don't close it
+          if (popupElement.contains(e.target)) {
+            return;
+          }
+        }
+        
         // Add a small delay to allow the touch to register properly
         setTimeout(() => {
           setShowPopup(false);
@@ -175,10 +185,16 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
         <>
           <div className="flex-grow flex items-center justify-center pt-2">
             <div className="relative w-16 h-16 sm:w-24 sm:h-24">
-              {/* Placeholder for the actual image - in a real app you'd use the item.iconUrl */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-md">
-                {/* This is a placeholder. In a real app, you'd use Image component with the actual image */}
-                <span className="text-2xl text-black">{item.name.charAt(0)}</span>
+              {/* Display the item icon or fallback to first letter */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black rounded-md">
+                {item.iconUrl ? (
+                  <img 
+                    src={item.iconUrl} 
+                    alt={item.name} 
+                    className="w-full h-full object-contain rounded-md"
+                  />
+                ) : null}
+                <span className={`text-2xl text-black ${item.iconUrl ? 'hidden' : ''}`}>{item.name.charAt(0)}</span>
               </div>
             </div>
           </div>

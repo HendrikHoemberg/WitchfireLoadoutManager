@@ -45,7 +45,7 @@ export interface Weapon extends BaseItem {
 
 // Type guards for item categories
 export function isWeapon(item: BaseItem): item is Weapon {
-  return item.category === 'Weapons';
+  return item.category === 'Weapons' || item.category === 'DemonicWeapons';
 }
 
 // Loadout Structure

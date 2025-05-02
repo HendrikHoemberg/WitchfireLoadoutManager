@@ -176,6 +176,41 @@
                     "updatedOn": ""
                 }
             </div>
+            <div id="templateDemonicWeapon" class="template-data">
+                {
+                    "id": "",
+                    "name": "New Weapon",
+                    "category": "DemonicWeapons",
+                    "iconUrl": "/images/weapons/default.png",
+                    "element": null,
+                    "damage": 100,
+                    "stunPower": "Medium",
+                    "hipfireRange": 20,
+                    "adsRange": 30,
+                    "stability": "Medium",
+                    "rateOfFire": 1.0,
+                    "mobility": "Medium",
+                    "clipSize": 6,
+                    "ammoReserves": 30,
+                    "mysterium1": {
+                        "effect": "Effect description",
+                        "charismata": null,
+                        "requirements": ["Requirement 1"]
+                    },
+                    "mysterium2": {
+                        "effect": "Effect description",
+                        "charismata": null,
+                        "requirements": ["Requirement 1"]
+                    },
+                    "mysterium3": {
+                        "effect": "Effect description",
+                        "charismata": null,
+                        "requirements": ["Requirement 1"]
+                    },
+                    "addedOn": "",
+                    "updatedOn": ""
+                }
+            </div>
         </div>
 
         <!-- Modal for confirmation -->
@@ -376,6 +411,8 @@
                 let template;
                 if (currentCategory === 'weapons') {
                     template = JSON.parse(document.getElementById('templateWeapon').textContent);
+                } else if (currentCategory === 'demonicWeapons') {
+                    template = JSON.parse(document.getElementById('templateDemonicWeapon').textContent);
                 } else {
                     template = JSON.parse(document.getElementById('templateBaseItem').textContent);
                 }

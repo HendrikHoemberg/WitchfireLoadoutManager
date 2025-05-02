@@ -5,38 +5,38 @@ import { BaseItem, Weapon } from '@/types';
 export const weapons: Weapon[] = [
   {
     id: 'w001',
-    name: 'Flintlock Pistol',
+    name: 'Cricket',
     category: 'Weapons',
-    iconUrl: '/images/weapons/flintlock-pistol.png',
+    iconUrl: '/images/weapons/Cricket.png',
     element: null,
-    damage: 80,
-    stunPower: 'Medium',
-    hipfireRange: 15,
-    adsRange: 25,
-    stability: 'High',
-    rateOfFire: 3,
-    mobility: 'High',
-    clipSize: 1,
-    ammoReserves: 24,
+    damage: 17,
+    stunPower: 'very low',
+    hipfireRange: 9,
+    adsRange: 9.9,
+    stability: 'low',
+    rateOfFire: 10,
+    mobility: 'very high',
+    clipSize: 20,
+    ammoReserves: 340,
     mysterium1: {
-      effect: 'Increased damage at close range',
+      effect: 'More potent regenerating witchfire essence from killed enemies',
       charismata: null,
       requirements: [
-        'Kill 50 enemies with this weapon'
+        'Enemies killed: 25'
       ]
     },
     mysterium2: {
-      effect: 'Critical hits cause enemies to stagger',
+      effect: 'Dashing right after the kill reloads the firearm.',
       charismata: null,
       requirements: [
-        'Get 25 critical hits with this weapon'
+        'Enemies killed: 100 | 1st Mysterium actions: 60  '
       ]
     },
     mysterium3: {
-      effect: 'Final shot in clip deals 50% more damage',
+      effect: 'Dashing right after the kill temporarily boosts the firearms damage. Consecutive kills and dashes increase the damage boost.',
       charismata: null,
       requirements: [
-        'Kill 10 elite enemies with this weapon'
+        'Enemies killed: 190 | 2nd Mysterium actions: 80'
       ]
     },
     addedOn: '2025-04-01',
@@ -44,38 +44,38 @@ export const weapons: Weapon[] = [
   },
   {
     id: 'w002',
-    name: 'Blunderbuss',
+    name: 'Echo',
     category: 'Weapons',
-    iconUrl: '/images/weapons/blunderbuss.png',
+    iconUrl: '/images/weapons/Echo.png',
     element: 'Fire',
-    damage: 120,
-    stunPower: 'High',
-    hipfireRange: 12,
-    adsRange: 12,
-    stability: 'Low',
-    rateOfFire: 0.8,
-    mobility: 'Medium',
-    clipSize: 1,
-    ammoReserves: 18,
+    damage: 111,
+    stunPower: 'average',
+    hipfireRange: 7,
+    adsRange: 7.7,
+    stability: 'low',
+    rateOfFire: 1.7,
+    mobility: 'very high',
+    clipSize: 6,
+    ammoReserves: 42,
     mysterium1: {
-      effect: 'Shots ignite enemies, dealing fire damage over time',
+      effect: 'Pellets have a delayed explosion that applies Burn. Lethal shots push enemies back with great force.',
       charismata: null,
       requirements: [
-        'Kill 40 enemies with this weapon'
+        'Enemies killed: 25'
       ]
     },
     mysterium2: {
-      effect: 'Increased pellet count',
+      effect: 'Lethal pellet explosion has more range and applies Burn to nearby enemies.',
       charismata: null,
       requirements: [
-        'Kill 3 enemies with a single shot 10 times'
+        'Enemies killed: 70 | 1st Mysterium actions: 80'
       ]
     },
     mysterium3: {
-      effect: 'Killing an enemy causes them to explode, dealing fire damage to nearby enemies',
+      effect: 'Sliding reloads two shells and temporarily doubles the damage.',
       charismata: null,
       requirements: [
-        'Kill 15 elite enemies with this weapon'
+        'Enemies killed: 120 | 2nd Mysterium actions: 100'
       ]
     },
     addedOn: '2025-04-01',
@@ -83,42 +83,588 @@ export const weapons: Weapon[] = [
   },
   {
     id: 'w003',
-    name: 'Repeater Rifle',
+    name: 'Psychopomp',
     category: 'Weapons',
-    iconUrl: '/images/weapons/repeater-rifle.png',
+    iconUrl: '/images/weapons/Psychopomp.png',
     element: null,
-    damage: 65,
-    stunPower: 'Medium',
-    hipfireRange: 30,
-    adsRange: 50,
-    stability: 'Medium',
-    rateOfFire: 2.5,
-    mobility: 'Medium',
-    clipSize: 8,
-    ammoReserves: 48,
+    damage: 80,
+    stunPower: 'low',
+    hipfireRange: 9,
+    adsRange: 9,
+    stability: 'very low',
+    rateOfFire: 4.3,
+    mobility: 'very high',
+    clipSize: 10,
+    ammoReserves: 44,
     mysterium1: {
-      effect: 'Increased headshot damage',
+      effect: 'Kills with a charged melee regenerate up to half a magazine.',
       charismata: null,
       requirements: [
-        'Get 30 headshots with this weapon'
+        'Enemies killed: 25'
       ]
     },
     mysterium2: {
-      effect: 'Each consecutive hit on the same target increases damage',
+      effect: 'Consecutive shots at the same target deal increased damage.',
       charismata: null,
       requirements: [
-        'Hit the same enemy 5 times in a row without missing 15 times'
+        'Enemies killed: 60 | 1st Mysterium actions: 40'
       ]
     },
     mysterium3: {
-      effect: 'Killing an enemy instantly reloads 2 bullets into the magazine',
+      effect: 'Kills recharge the melee attack.',
       charismata: null,
       requirements: [
-        'Get 50 kills without reloading'
+        'Enemies killed: 120 | 2nd Mysterium actions: 240 '
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w004',
+    name: 'Rotweaver',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Rotweaver.png',
+    element: 'Decay',
+    damage: 8,
+    stunPower: 'low',
+    hipfireRange: 10,
+    adsRange: 11,
+    stability: 'low',
+    rateOfFire: 15.2,
+    mobility: 'very high',
+    clipSize: 60,
+    ammoReserves: 480,
+    mysterium1: {
+      effect: 'Shots apply decay. The longer the burst, the more powerful the curse. The effect wanes when the gun is not in use.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'When an enemy dies from decay, a few bullets are regenerated in the magazine.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 1st Mysterium actions: 50'
+      ]
+    },
+    mysterium3: {
+      effect: 'After a few seconds, cysts form on decaying enemies. When shot, these cysts explode, spreading decay to nearby enemies.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 190 | 2nd Mysterium actions: 75'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w005',
+    name: 'Judgement',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Judgement.png',
+    element: 'Decay',
+    damage: 140,
+    stunPower: 'High',
+    hipfireRange: 7,
+    adsRange: 7.7,
+    stability: 'low',
+    rateOfFire: 1,
+    mobility: 'very low',
+    clipSize: 6,
+    ammoReserves: 30,
+    mysterium1: {
+      effect: 'Aiming down sights fires a slow-moving, long-range projectile.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Shots can be charged to increase power and projectile speed.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 75 | 1st Mysterium actions: 40'
+      ]
+    },
+    mysterium3: {
+      effect: 'Enemies surviving a shot with low health begin to Decay.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 120 | 2nd Mysterium actions: 60'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w006',
+    name: 'Midas',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Midas.png',
+    element: 'Fire',
+    damage: 9,
+    stunPower: 'very low',
+    hipfireRange: 17,
+    adsRange: 25.5,
+    stability: 'average',
+    rateOfFire: 11.1,
+    mobility: 'medium',
+    clipSize: 60,
+    ammoReserves: 490,
+    mysterium1: {
+      effect: 'Continuous fire heats up the weapon. Bullets deal more damage when Heated and less when Overheated.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Overheated bullets apply Burn to enemies.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 1st Mysterium actions: 75'
+      ]
+    },
+    mysterium3: {
+      effect: 'Reloading while Overheated damages Burning enemies. Very fast reload when the gun is Overheated.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 190 | 2nd Mysterium actions: 50'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w007',
+    name: 'Ricochet',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Ricochet.png',
+    element: 'Lightning',
+    damage: 16,
+    stunPower: 'High',
+    hipfireRange: 20,
+    adsRange: 26.6,
+    stability: 'average',
+    rateOfFire: 6.7,
+    mobility: 'medium',
+    clipSize: 30,
+    ammoReserves: 270,
+    mysterium1: {
+      effect: 'Up to three enemies can be tagged while aiming down sights. Shooting one ricochets the bullet to the others. The link breaks on reload or when all targets die.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'The first shot on a tagged enemy deals massively increased stun damage.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 75 | 1st Mysterium actions: 50'
+      ]
+    },
+    mysterium3: {
+      effect: 'A powerful lightning each time an enemy is hit with seven ricocheted bullets.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 2nd Mysterium actions: 50'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w008',
+    name: 'Angelus',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Angelus.png',
+    element: null,
+    damage: 13,
+    stunPower: 'average',
+    hipfireRange: 18,
+    adsRange: 21.6,
+    stability: 'low',
+    rateOfFire: 8.3,
+    mobility: 'medium',
+    clipSize: 70,
+    ammoReserves: 560,
+    mysterium1: {
+      effect: 'Aiming down sights conjures ethereal shield wings.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Successful blocks briefly grant reduced fire rate with massively increased damage.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 75 | 1st Mysterium actions: 25'
+      ]
+    },
+    mysterium3: {
+      effect: 'Last-moment blocking reduces shield cooldown and stuns melee attackers.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 2nd Mysterium actions: 35'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w009',
+    name: 'Hangfire',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Hangfire.png',
+    element: 'Fire',
+    damage: 35,
+    stunPower: 'average',
+    hipfireRange: 15,
+    adsRange: 19.5,
+    stability: 'low',
+    rateOfFire: 0.9,
+    mobility: 'very high',
+    clipSize: 6,
+    ammoReserves: 84,
+    mysterium1: {
+      effect: 'Bullets lodge into enemies or the environment and explode on reload.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'The more enemies with lodged bullets, the bigger the damage of each bullet explosion.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 1st Mysterium actions: 50'
+      ]
+    },
+    mysterium3: {
+      effect: 'Bullet explosions Burn enemies. Bullets lodged in the environment have significantly increased explosion range.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 2nd Mysterium actions: 75'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w010',
+    name: 'Hunger',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Hunger.png',
+    element: 'Ice',
+    damage: 38,
+    stunPower: 'very high',
+    hipfireRange: 15,
+    adsRange: 21,
+    stability: 'low',
+    rateOfFire: 2.8,
+    mobility: 'very high',
+    clipSize: 6,
+    ammoReserves: 84,
+    mysterium1: {
+      effect: 'Reloading grants one Charged Bullet for each Critical Hit before the reload. Charged Bullets deal increased damage.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'The more Critical Hits before reload, the more powerful each Charged Bullet after.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 1st Mysterium actions: 50'
+      ]
+    },
+    mysterium3: {
+      effect: 'The first body shot after reload counts as Critical Hit. Reloading grants Freeze for the first bullet if every shot was a Critical Hit.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 190 | 2nd Mysterium actions: 75'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w011',
+    name: 'Duelist',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Duelist.png',
+    element: 'Fire',
+    damage: 25,
+    stunPower: 'very high',
+    hipfireRange: 16,
+    adsRange: 19.2,
+    stability: 'high',
+    rateOfFire: 4.2,
+    mobility: 'very low',
+    clipSize: 12,
+    ammoReserves: 192,
+    mysterium1: {
+      effect: 'After any kill, a duel can be initiated by shooting an enemy while aiming down sights. Landing a critical hit right after the mark empowers the gun temporarily. Dueling is disabled while empowered.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Duel victory also reloads the gun, adds Burn to bullets and quickens the reload while the empowerement lasts.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 1st Mysterium actions: 25'
+      ]
+    },
+    mysterium3: {
+      effect: 'Killing enemies extends the empowerement duration.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 190 | 2nd Mysterium actions: 40'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w012',
+    name: 'Striga',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Striga.png',
+    element: 'Fire',
+    damage: 80,
+    stunPower: 'high',
+    hipfireRange: 30,
+    adsRange: 30,
+    stability: 'high',
+    rateOfFire: 0.7,
+    mobility: 'very high',
+    clipSize: 7,
+    ammoReserves: 83,
+    mysterium1: {
+      effect: 'Stakes ignite mid-flight, Burning the target upon impact.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Ignited stakes hit with a fiery explosion that Burns all nearby foes.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 50 | 1st Mysterium actions: 20'
+      ]
+    },
+    mysterium3: {
+      effect: 'Critical hits Shock all nearby foes.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100| 2nd Mysterium actions: 75'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w013',
+    name: 'All-seeing Eye',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/AllSeeingEye.png',
+    element: 'Decay',
+    damage: 38,
+    stunPower: 'low',
+    hipfireRange: 18,
+    adsRange: 32.4,
+    stability: 'high',
+    rateOfFire: 0.8,
+    mobility: 'low',
+    clipSize: 5,
+    ammoReserves: 95,
+    mysterium1: {
+      effect: 'Increased damage against enemies with more than 75 % HP.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Critical Hits trigger radial shockwave, damaging all enemies inside the shockwaves circle.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 1st Mysterium actions: 75'
+      ]
+    },
+    mysterium3: {
+      effect: 'If Critical Hits deal increased damage, the shockwave also applies Decay.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 190 | 2nd Mysterium actions: 100'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w014',
+    name: 'Basilisk',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Basilisk.png',
+    element: 'Fire',
+    damage: 60,
+    stunPower: 'average',
+    hipfireRange: 20,
+    adsRange: 36,
+    stability: 'high',
+    rateOfFire: 1.1,
+    mobility: 'low',
+    clipSize: 10,
+    ammoReserves: 50,
+    mysterium1: {
+      effect: 'Critical hits ignite the scope for a few seconds, causing enemies viewed through the fiery scope to burn.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Shooting a burning enemy extends the burn duration.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 50 | 1st Mysterium actions: 25'
+      ]
+    },
+    mysterium3: {
+      effect: 'Killing a burning enemy with a critical hit triggers an enhanced fiery scope that continuously damages enemies.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 2nd Mysterium actions: 100'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w015',
+    name: 'Hypnosis',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Hypnosis.png',
+    element: 'Lightning',
+    damage: 40,
+    stunPower: 'average',
+    hipfireRange: 20,
+    adsRange: 36,
+    stability: 'low',
+    rateOfFire: 0.9,
+    mobility: 'medium',
+    clipSize: 10,
+    ammoReserves: 70,
+    mysterium1: {
+      effect: 'Aiming down sights slowly charges the bullet with bonus damage.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Increased damage is weighted towards the end of the time window. A shot perfectly timed at the end of it inflicts even more damage.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 1st Mysterium actions: 80'
+      ]
+    },
+    mysterium3: {
+      effect: 'After the third Perfect Shot in a row, Perfect Shots deal Lightning damage.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 190 | 2nd Mysterium actions: 120'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w016',
+    name: 'Frostbite',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Frostbite.png',
+    element: 'Ice',
+    damage: 77,
+    stunPower: 'high',
+    hipfireRange: 26,
+    adsRange: 46.8,
+    stability: 'low',
+    rateOfFire: 0.8,
+    mobility: 'medium',
+    clipSize: 6,
+    ammoReserves: 74,
+    mysterium1: {
+      effect: 'Well-timed secondary reload boosts damage for three shots.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Perect Reload adds Freeze, duration scales with shots fired before reloading. Chaining Perfect Reload further boosts Mysterium I damage.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 75 | 1st Mysterium actions: 25'
+      ]
+    },
+    mysterium3: {
+      effect: 'Three consecutive perfect reloads empower next shot with double damage and Freezing trail.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 2nd Mysterium actions: 50'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'w017',
+    name: 'Hailstorm',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Hailstorm.png',
+    element: 'Ice',
+    damage: 160,
+    stunPower: 'average',
+    hipfireRange: 15,
+    adsRange: 67.5,
+    stability: 'very low',
+    rateOfFire: 0.8,
+    mobility: 'very low',
+    clipSize: 5,
+    ammoReserves: 20,
+    mysterium1: {
+      effect: 'Every third consecutive Critical Hit recharges the magazine with two extra bullets.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 25'
+      ]
+    },
+    mysterium2: {
+      effect: 'Consecutive Critical Hits decrease zoom and flinch and increase handling and bullet bending. Mistakes or reloading reset the buff.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 50 | 1st Mysterium actions: 20'
+      ]
+    },
+    mysterium3: {
+      effect: 'Every third consecutive Critical Hit makes the target explode with a Freezing shockwave.',
+      charismata: null,
+      requirements: [
+        'Enemies killed: 100 | 2nd Mysterium actions: 75'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
   }
 ];
 
@@ -127,38 +673,37 @@ export const weapons: Weapon[] = [
 export const lightSpells: BaseItem[] = [
   {
     id: 'ls001',
-    name: 'Firebolt',
+    name: 'Blight Cyst',
     category: 'LightSpells',
-    iconUrl: '/images/spells/firebolt.png',
-    element: 'Fire',
+    iconUrl: '/images/spells/BlightCyst.png',
+    element: 'Decay',
     mysterium1: {
       charismata: [
-        'Deals fire damage',
-        'Medium range'
+        'Auto-explosion range: 8 m',
+        'Forced explosion range: 12 m'
       ],
       requirements: [
-        'Cast this spell 30 times'
+        '-'
       ]
     },
     mysterium2: {
       charismata: [
-        'Increased damage',
-        'Chance to ignite enemies'
+        'The Cyst grows even bigger, allowing for easier targeting'
       ],
       requirements: [
-        'Kill 25 enemies with this spell'
+        'Enemies hexed: 70'
       ]
     },
     mysterium3: {
       charismata: [
-        'Splits into 3 smaller projectiles on impact'
+        'Chance to regrow if attaching to an enemy: 50 %'
       ],
       requirements: [
-        'Kill 3 enemies with a single cast 5 times'
+        'Enemies hexed: 150'
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    updatedOn: '2025-05-02'
   },
   {
     id: 'ls002',
@@ -506,75 +1051,120 @@ export const rings: BaseItem[] = [
 export const demonicWeapons: BaseItem[] = [
   {
     id: 'dw001',
-    name: 'Hellfire Blade',
+    name: 'Vulture',
     category: 'DemonicWeapons',
-    iconUrl: '/images/weapons/hellfire-blade.png',
-    element: 'Fire',
+    iconUrl: '/images/weapons/Vulture.png',
+    element: null,
+    damage: 200,
+    stunPower: 'High',
+    hipfireRange: 20,
+    adsRange: 24,
+    stability: 'high',
+    rateOfFire: 0.5,
+    mobility: 'medium',
+    clipSize: 5,
+    ammoReserves: 10,
     mysterium1: {
-      charismata: [
-        'Deals fire damage on hit',
-        'Ignites enemies with a 20% chance'
-      ],
+      effect: '-',
+      charismata: null,
       requirements: [
-        'Use this weapon 30 times'
+        '-'
       ]
     },
     mysterium2: {
-      charismata: [
-        'Increased fire damage',
-        'Burning enemies take 15% more damage from all sources'
-      ],
+      effect: '-',
+      charismata: null,
       requirements: [
-        'Kill 25 enemies with this weapon'
+        '-'
       ]
     },
     mysterium3: {
-      charismata: [
-        'Killing a burning enemy creates a fire explosion',
-        'Explosion deals 40 fire damage to nearby enemies'
-      ],
+      effect: '-',
+      charismata: null,
       requirements: [
-        'Kill 3 burning enemies in quick succession 5 times'
+        '-'
       ]
     },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
   },
   {
     id: 'dw002',
-    name: 'Soul Reaper',
+    name: 'Falling Star',
     category: 'DemonicWeapons',
-    iconUrl: '/images/weapons/soul-reaper.png',
-    element: 'Decay',
+    iconUrl: '/images/weapons/FallingStar.png',
+    element: null,
+    damage: 250,
+    stunPower: 'average',
+    hipfireRange: 30,
+    adsRange: 30,
+    stability: 'average',
+    rateOfFire: 1,
+    mobility: 'low',
+    clipSize: 6,
+    ammoReserves: 14,
     mysterium1: {
-      charismata: [
-        'Deals decay damage',
-        'Heals the user for 5% of damage dealt'
-      ],
+      effect: '-',
+      charismata: null,
       requirements: [
-        'Use this weapon 30 times'
+        '-'
       ]
     },
     mysterium2: {
-      charismata: [
-        'Increased decay damage',
-        'Healing increased to 10% of damage dealt'
-      ],
+      effect: '-',
+      charismata: null,
       requirements: [
-        'Kill 25 enemies with this weapon'
+        '-'
       ]
     },
     mysterium3: {
-      charismata: [
-        'Killing an enemy grants a soul fragment',
-        'Collecting 3 soul fragments grants 50% increased damage for 10 seconds'
-      ],
+      effect: '-',
+      charismata: null,
       requirements: [
-        'Kill 50 enemies with this weapon'
+        '-'
       ]
     },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
+  },
+  {
+    id: 'dw003',
+    name: 'Whisper',
+    category: 'DemonicWeapons',
+    iconUrl: '/images/weapons/Whisper.png',
+    element: null,
+    damage: 220,
+    stunPower: 'very high',
+    hipfireRange: 20,
+    adsRange: 20,
+    stability: 'very low',
+    rateOfFire: 2,
+    mobility: 'very high',
+    clipSize: 3,
+    ammoReserves: 17,
+    mysterium1: {
+      effect: '-',
+      charismata: null,
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      effect: '-',
+      charismata: null,
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium3: {
+      effect: '-',
+      charismata: null,
+      requirements: [
+        '-'
+      ]
+    },
+    addedOn: '2025-05-02',
+    updatedOn: '2025-05-02'
   }
 ];
 
