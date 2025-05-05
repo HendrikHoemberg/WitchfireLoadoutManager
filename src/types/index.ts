@@ -1,6 +1,6 @@
 // Item Categories and Element Types
 export type ItemCategory = 'Weapons' | 'DemonicWeapons' | 'LightSpells' | 'HeavySpells' | 'Relics' | 'Fetishes' | 'Rings';
-export type Element = 'Fire' | 'Decay' | 'Ice' | 'Lightning' | null;
+export type Element = 'Fire' | 'Earth' | 'Water' | 'Air' | null;
 
 // Base Item Structure
 export interface BaseItem {

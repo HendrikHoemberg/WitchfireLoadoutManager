@@ -209,9 +209,9 @@ function getElementColor(element: string | null): string {
   
   switch (element) {
     case 'Fire': return '#ff4d4d';
-    case 'Ice': return '#4da6ff';
-    case 'Lightning': return '#ffcc00';
-    case 'Decay': return '#66cc66';
+    case 'Water': return '#4da6ff';
+    case 'Air': return '#ffcc00';
+    case 'Earth': return '#66cc66';
     default: return '#cccccc';
   }
 }

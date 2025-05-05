@@ -91,7 +91,7 @@ export default function RandomizerPage() {
         </div>
         
         <div className="flex flex-wrap gap-3 justify-center">
-          {['Fire', 'Ice', 'Lightning', 'Decay'].map((element) => {
+          {['Fire', 'Water', 'Air', 'Earth'].map((element) => {
             const isSelected = randomizerSettings.preferredElements.includes(element as Exclude<Element, null>);
             return (
               <button
@@ -202,9 +202,9 @@ function getElementColor(element: Element): string {
   
   switch (element) {
     case 'Fire': return '#ff4d4d';
-    case 'Ice': return '#4da6ff';
-    case 'Lightning': return '#ffcc00';
-    case 'Decay': return '#66cc66';
+    case 'Water': return '#4da6ff';
+    case 'Air': return '#ffcc00';
+    case 'Earth': return '#66cc66';
     default: return '#cccccc';
   }
 }

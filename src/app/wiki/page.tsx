@@ -74,7 +74,7 @@ export default function WikiPage() {
   
   // All available elements
   const elements: (Element | 'All')[] = [
-    'All', 'Fire', 'Ice', 'Lightning', 'Decay', null
+    'All', 'Fire', 'Water', 'Air', 'Earth', null
   ];
 
   return (

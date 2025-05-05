@@ -134,7 +134,7 @@ export const weapons: Weapon[] = [
     name: 'Rotweaver',
     category: 'Weapons',
     iconUrl: '/images/weapons/Rotweaver.png',
-    element: 'Decay',
+    element: 'Earth',
     description: 'Designed for crowd control, spreads Decay among attacking hordes.',
     damage: 8,
     stunPower: 'low',
@@ -176,7 +176,7 @@ export const weapons: Weapon[] = [
     name: 'Judgement',
     category: 'Weapons',
     iconUrl: '/images/weapons/Judgement.png',
-    element: 'Decay',
+    element: 'Earth',
     description: 'Hard-hitting weapon with two firing modes. Both can be charged for extra damage.',
     damage: 140,
     stunPower: 'High',
@@ -260,7 +260,7 @@ export const weapons: Weapon[] = [
     name: 'Ricochet',
     category: 'Weapons',
     iconUrl: '/images/weapons/Ricochet.png',
-    element: 'Lightning',
+    element: 'Air',
     description: 'Bullets ricochet among marked enemies.',
     damage: 16,
     stunPower: 'High',
@@ -386,7 +386,7 @@ export const weapons: Weapon[] = [
     name: 'Hunger',
     category: 'Weapons',
     iconUrl: '/images/weapons/Hunger.png',
-    element: 'Ice',
+    element: 'Water',
     description: 'Rewards perfect aim with increasingly potent bullets.',
     damage: 38,
     stunPower: 'very high',
@@ -512,7 +512,7 @@ export const weapons: Weapon[] = [
     name: 'All-seeing Eye',
     category: 'Weapons',
     iconUrl: '/images/weapons/AllSeeingEye.png',
-    element: 'Decay',
+    element: 'Earth',
     description: 'Critical hits hurt all enemies inside the All-Seeing Eye.',
     damage: 38,
     stunPower: 'low',
@@ -596,7 +596,7 @@ export const weapons: Weapon[] = [
     name: 'Hypnosis',
     category: 'Weapons',
     iconUrl: '/images/weapons/Hypnosis.png',
-    element: 'Lightning',
+    element: 'Air',
     description: 'Rewards a patient marksman with increased damage.',
     damage: 40,
     stunPower: 'average',
@@ -638,7 +638,7 @@ export const weapons: Weapon[] = [
     name: 'Frostbite',
     category: 'Weapons',
     iconUrl: '/images/weapons/Frostbite.png',
-    element: 'Ice',
+    element: 'Water',
     description: 'Perfect reloading rythm imbues shots with freezing power.',
     damage: 77,
     stunPower: 'high',
@@ -680,7 +680,7 @@ export const weapons: Weapon[] = [
     name: 'Hailstorm',
     category: 'Weapons',
     iconUrl: '/images/weapons/Hailstorm.png',
-    element: 'Ice',
+    element: 'Water',
     description: 'Reloads bullets for Critical Hits. Uses Stamina.',
     damage: 160,
     stunPower: 'average',
@@ -727,7 +727,7 @@ export const lightSpells: BaseItem[] = [
     name: 'Blight Cyst',
     category: 'LightSpells',
     iconUrl: '/images/items/BlightCyst.png',
-    element: 'Decay',
+    element: 'Earth',
     description: 'A cyst that attaches to the environment or enemies. Explodes after a while but can be shot for a more powerful explosion.',
     mysterium1: {
       charismata: [
@@ -844,7 +844,7 @@ export const lightSpells: BaseItem[] = [
     name: 'Frost Cone',
     category: 'LightSpells',
     iconUrl: '/images/items/FrostCone.png',
-    element: 'Ice',
+    element: 'Water',
     description: 'An icy cloud that freezes any enemies on its path.',
     mysterium1: {
       charismata: [
@@ -881,7 +881,7 @@ export const lightSpells: BaseItem[] = [
     name: 'Ice Stiletto',
     category: 'LightSpells',
     iconUrl: '/images/items/IceStiletto.png',
-    element: 'Ice',
+    element: 'Water',
     description: 'An icy stiletto that freezes the targeted enemy.',
     mysterium1: {
       charismata: [
@@ -918,7 +918,7 @@ export const lightSpells: BaseItem[] = [
     name: 'Lightning Bolt',
     category: 'LightSpells',
     iconUrl: '/images/items/LightningBolt.png',
-    element: 'Lightning',
+    element: 'Air',
     description: 'A lightning bolt that knocks back and shocks enemies.',
     mysterium1: {
       charismata: [
@@ -995,7 +995,7 @@ export const lightSpells: BaseItem[] = [
     name: 'Stigma Diabolicum',
     category: 'LightSpells',
     iconUrl: '/images/items/StigmaDiabolicum.png',
-    element: 'Decay',
+    element: 'Earth',
     description: 'A cyst that attaches to enemies, becoming their additional weak spot.',
     mysterium1: {
       charismata: [
@@ -1035,7 +1035,7 @@ export const lightSpells: BaseItem[] = [
     name: 'Stormball',
     category: 'LightSpells',
     iconUrl: '/images/items/Stormball.png',
-    element: 'Lightning',
+    element: 'Air',
     description: 'A ball lightning that shocks any enemy near its path',
     mysterium1: {
       charismata: [
@@ -1118,7 +1118,7 @@ export const heavySpells: BaseItem[] = [
     category: 'HeavySpells',
     iconUrl: '/images/items/BurningStake.png',
     element: 'Fire',
-    description: 'Spawns a burning stake that ignite enemies. Damaging them charges the stake. Full charged, the stake releases a fiery explosion',
+    description: 'Spawns a burning stake that ignite enemies. Damaging them charges the stake. Full charged, the stake releases a fiery explosion.',
     mysterium1: {
       charismata: [
         'Duration: 30 s',
@@ -1151,6 +1151,239 @@ export const heavySpells: BaseItem[] = [
     },
     addedOn: '2025-05-05',
     updatedOn: '2025-05-05'
+  },
+  {
+    id: 'hs002',
+    name: 'Cornucopia',
+    category: 'HeavySpells',
+    iconUrl: '/images/items/Cornucopia.png',
+    element: null,
+    description: 'The last bullet regenerates right after firing. Manual reload can still be executed. Does not work with Demonic Weapons.',
+    mysterium1: {
+      charismata: [
+        'Duration: 12 s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Duration: 16 s',
+        'Improved handling, stability and reload.'
+      ],
+      requirements: [
+        'Spell casts: 20'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Duration: 20 s',
+        'Improved handling, stability and reload.',
+        'Duration extended per kill: +1 s'
+      ],
+      requirements: [
+        'Spell casts: 40'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'hs003',
+    name: 'Cursed Bell',
+    category: 'HeavySpells',
+    iconUrl: '/images/items/CursedBell.png',
+    element: null,
+    description: 'Spawns a cursed bell. Firing at the bell tolls it, stunning all nearby Minor enemies.',
+    mysterium1: {
+      charismata: [
+        'Shockwave range: 30 m',
+        'Duration: 20 s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Shockwave range: 35 m',
+        'Duration: 25 s',
+        'Recharge speed reduction: 1 s'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Shockwave range: 40 m',
+        'Duration: 30 s',
+        'Recharge speed reduction: 2 s',
+        'The final toll also stuns Major enemies.'
+      ],
+      requirements: [
+        'Enemies hexed: 100'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'hs004',
+    name: 'Ice Sphere',
+    category: 'HeavySpells',
+    iconUrl: '/images/items/IceSphere.png',
+    element: 'Water',
+    description: 'Spawns an icy sphere that protects the caster from damage and freezes any enemy that gets inside it.',
+    mysterium1: {
+      charismata: [
+        'Sphere HP: 300 HP'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Sphere HP: 400 HP',
+        'Double range for all weapons when inside the sphere.'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Sphere HP: 500 HP',
+        'Double range for all weapons when inside the sphere.',
+        'Double reload speed for all weapons when inside the sphere.'
+      ],
+      requirements: [
+        'Enemies hexed: 100'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'hs005',
+    name: 'Iron Cross',
+    category: 'HeavySpells',
+    iconUrl: '/images/items/IronCross.png',
+    element: 'Air',
+    description: 'Spawns an iron cross with lightning bolts that bind all nearby enemies to it.',
+    mysterium1: {
+      charismata: [
+        'Range: 25 m',
+        'Duration: +10 s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Range: 30 m',
+        'Duration: +15 s',
+        'Shock duration: +50 %'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Range: 35 m',
+        'Duration: +20 s',
+        'Shock duration: +100 %',
+        'When finished, the cross Shocks all enemies in a double-range zone.'
+      ],
+      requirements: [
+        'Enemies hexed: 100'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'hs006',
+    name: 'Miasma',
+    category: 'HeavySpells',
+    iconUrl: '/images/items/Miasma.png',
+    element: 'Earth',
+    description: 'Summons a swinging incense burner that decays nearby enemies. Shooting the burner before it stops prolongs its duration.',
+    mysterium1: {
+      charismata: [
+        'Radius: 15m',
+        'Duration: 25s',
+        'Enemies take increasing damage the longer they remain in the deadly cloud.'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Radius: 15m',
+        'Duration: 30s',
+        'Enemies take increasing damage the longer they remain in the deadly cloud.',
+        'Burner spills acid when in full swing.'
+      ],
+      requirements: [
+        'Enemies hexed: 125'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Radius: 15m',
+        'Duration: 35s',
+        'Enemies take increasing damage the longer they remain in the deadly cloud.',
+        'Burner spills acid when in full swing.'
+      ],
+      requirements: [
+        'Enemies hexed: 200'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'hs007',
+    name: 'Rotten Fiend',
+    category: 'HeavySpells',
+    iconUrl: '/images/items/RottenFiend.png',
+    element: 'Earth',
+    description: 'Resurrects a Grenadier who now attacks his former allies with incredible ferocity.',
+    mysterium1: {
+      charismata: [
+        'Grenadier HP: 200'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Grenadier HP: 300',
+        'Decay Aura around the Fiend. Affects all nearby enemies.'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Grenadier HP: 400',
+        'Decay Aura around the Fiend. Affects all nearby enemies.',
+        'Taunts all nearby enemies when spawned.'
+      ],
+      requirements: [
+        'Enemies hexed: 100'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
   }
 ];
 
@@ -1159,74 +1392,43 @@ export const heavySpells: BaseItem[] = [
 export const relics: BaseItem[] = [
   {
     id: 'r001',
-    name: 'Ember Heart',
+    name: 'Blood Of A Banshee',
     category: 'Relics',
-    iconUrl: '/images/relics/ember-heart.png',
+    iconUrl: '/images/items/BloodOfABanshee.png',
     element: 'Fire',
+    description: 'Bloods spilled by a banshee burned on the stake. Overkill causes the victim to explode, igniting nearby enemies.',
     mysterium1: {
       charismata: [
-        'Increases fire damage by 15%',
-        'Reduces fire damage taken by 10%'
+        'Explosion range: 6 m',
+        'Overkill value: 60 HP'
       ],
       requirements: [
-        'Deal 1000 fire damage'
+        '-'
       ]
     },
     mysterium2: {
       charismata: [
-        'Killing enemies with fire damage restores health',
-        'Further increases fire damage by 10%'
+        'Explosion range: 8 m',
+        'Overkill value: 55 HP',
+        'Explosion damage: 20'
       ],
       requirements: [
-        'Kill 50 enemies with fire damage'
+        'Kills with item equipped: 150'
       ]
     },
     mysterium3: {
       charismata: [
-        'Creates a fire explosion around you when health drops below 25%',
-        'Cooldown: 60 seconds'
+        'Explosion range: 10 m',
+        'Overkill value: 50 HP',
+        'Explosion damage: 30',
+        'The explosion knocks back Minor enemies.'
       ],
       requirements: [
-        'Survive with less than 25% health for a cumulative 5 minutes'
+        'Kills with item equipped: 250'
       ]
     },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
-  },
-  {
-    id: 'r002',
-    name: 'Frost Anchor',
-    category: 'Relics',
-    iconUrl: '/images/relics/frost-anchor.png',
-    element: 'Ice',
-    mysterium1: {
-      charismata: [
-        'Increases ice damage by 15%',
-        'Enemies you damage have 20% chance to be slowed'
-      ],
-      requirements: [
-        'Deal 1000 ice damage'
-      ]
-    },
-    mysterium2: {
-      charismata: [
-        'Creates a frost barrier when taking damage that reduces incoming damage by 30% for 5 seconds',
-        'Cooldown: 30 seconds'
-      ],
-      requirements: [
-        'Take damage 100 times'
-      ]
-    },
-    mysterium3: {
-      charismata: [
-        'Frozen enemies have a 50% chance to drop additional resources when killed'
-      ],
-      requirements: [
-        'Freeze 30 enemies'
-      ]
-    },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
   }
 ];
 
@@ -1235,76 +1437,40 @@ export const relics: BaseItem[] = [
 export const fetishes: BaseItem[] = [
   {
     id: 'f001',
-    name: 'Thunderstone',
+    name: 'New Item',
     category: 'Fetishes',
-    iconUrl: '/images/fetishes/thunderstone.png',
-    element: 'Lightning',
+    iconUrl: '/images/items/default.png',
+    element: null,
     description: '',
     mysterium1: {
       charismata: [
-        'Increases lightning damage by 15%',
-        'Lightning spells have 10% reduced cooldown'
+        'Effect 1',
+        'Effect 2'
       ],
       requirements: [
-        'Cast 30 lightning spells'
+        'Requirement 1'
       ]
     },
     mysterium2: {
       charismata: [
-        'Critical hits have a 25% chance to call down a lightning strike on the target'
+        'Effect 1',
+        'Effect 2'
       ],
       requirements: [
-        'Get 50 critical hits'
+        'Requirement 1'
       ]
     },
     mysterium3: {
       charismata: [
-        'When your health drops below 30%, you emit a lightning nova that stuns nearby enemies',
-        'Cooldown: 45 seconds'
+        'Effect 1',
+        'Effect 2'
       ],
       requirements: [
-        'Kill 20 enemies while below 30% health'
+        'Requirement 1'
       ]
     },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
-  },
-  {
-    id: 'f002',
-    name: 'Plague Idol',
-    category: 'Fetishes',
-    iconUrl: '/images/fetishes/plague-idol.png',
-    element: 'Decay',
-    description: '',
-    mysterium1: {
-      charismata: [
-        'Increases decay damage by 15%',
-        'Decay effects last 20% longer'
-      ],
-      requirements: [
-        'Deal 1000 decay damage'
-      ]
-    },
-    mysterium2: {
-      charismata: [
-        'Enemies affected by decay take 10% more damage from all sources',
-        'Killing enemies affected by decay has a 20% chance to spread decay to nearby enemies'
-      ],
-      requirements: [
-        'Kill 40 enemies affected by decay'
-      ]
-    },
-    mysterium3: {
-      charismata: [
-        'When you take damage, you release a cloud of decay that damages enemies over time',
-        'Cooldown: 20 seconds'
-      ],
-      requirements: [
-        'Take damage from 50 different enemy attacks'
-      ]
-    },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
   }
 ];
 
@@ -1313,73 +1479,40 @@ export const fetishes: BaseItem[] = [
 export const rings: BaseItem[] = [
   {
     id: 'rg001',
-    name: 'Band of Embers',
+    name: 'New Item',
     category: 'Rings',
-    iconUrl: '/images/rings/band-of-embers.png',
-    element: 'Fire',
+    iconUrl: '/images/items/default.png',
+    element: null,
+    description: 'test',
     mysterium1: {
       charismata: [
-        'Weapon attacks have a 10% chance to ignite enemies',
-        'Ignited enemies take 5 fire damage per second for 5 seconds'
+        'Effect 1',
+        'Effect 2'
       ],
       requirements: [
-        'Kill 30 enemies with weapons'
+        'Requirement 1'
       ]
     },
     mysterium2: {
       charismata: [
-        'Ignited enemies have a 15% chance to spread fire to nearby enemies when killed'
+        'Effect 1',
+        'Effect 2'
       ],
       requirements: [
-        'Kill 25 ignited enemies'
+        'Requirement 1'
       ]
     },
     mysterium3: {
       charismata: [
-        'Killing 3 ignited enemies in quick succession creates a fire explosion',
-        'Fire explosion deals 50 fire damage to nearby enemies'
+        'Effect 1',
+        'Effect 2'
       ],
       requirements: [
-        'Kill 3 ignited enemies within 5 seconds 10 times'
+        'Requirement 1'
       ]
     },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
-  },
-  {
-    id: 'rg002',
-    name: 'Signet of Frost',
-    category: 'Rings',
-    iconUrl: '/images/rings/signet-of-frost.png',
-    element: 'Ice',
-    mysterium1: {
-      charismata: [
-        'Critical hits have a 20% chance to slow enemies',
-        'Slowed enemies move and attack 30% slower for 3 seconds'
-      ],
-      requirements: [
-        'Get 50 critical hits'
-      ]
-    },
-    mysterium2: {
-      charismata: [
-        'Slowed enemies take 15% more damage from all sources'
-      ],
-      requirements: [
-        'Deal 1000 damage to slowed enemies'
-      ]
-    },
-    mysterium3: {
-      charismata: [
-        'Killing a slowed enemy creates a frost nova that slows nearby enemies',
-        'Enemies already slowed by this effect have a 25% chance to be frozen for 2 seconds'
-      ],
-      requirements: [
-        'Kill 30 slowed enemies'
-      ]
-    },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
   }
 ];
 
