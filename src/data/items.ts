@@ -29,18 +29,20 @@ export const weapons: Weapon[] = [
       effect: 'Dashing right after the kill reloads the firearm.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 60  '
+        'Enemies killed: 100  ',
+        '1st Mysterium actions: 60'
       ]
     },
     mysterium3: {
       effect: 'Dashing right after the kill temporarily boosts the firearms damage. Consecutive kills and dashes increase the damage boost.',
       charismata: null,
       requirements: [
-        'Enemies killed: 190 | 2nd Mysterium actions: 80'
+        'Enemies killed: 190',
+        '2nd Mysterium actions: 80'
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w002',
@@ -68,18 +70,20 @@ export const weapons: Weapon[] = [
       effect: 'Lethal pellet explosion has more range and applies Burn to nearby enemies.',
       charismata: null,
       requirements: [
-        'Enemies killed: 70 | 1st Mysterium actions: 80'
+        'Enemies killed: 70',
+        '1st Mysterium actions: 80'
       ]
     },
     mysterium3: {
       effect: 'Sliding reloads two shells and temporarily doubles the damage.',
       charismata: null,
       requirements: [
-        'Enemies killed: 120 | 2nd Mysterium actions: 100'
+        'Enemies killed: 120',
+        '2nd Mysterium actions: 100'
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w003',
@@ -107,18 +111,20 @@ export const weapons: Weapon[] = [
       effect: 'Consecutive shots at the same target deal increased damage.',
       charismata: null,
       requirements: [
-        'Enemies killed: 60 | 1st Mysterium actions: 40'
+        'Enemies killed: 60',
+        '1st Mysterium actions: 40'
       ]
     },
     mysterium3: {
       effect: 'Kills recharge the melee attack.',
       charismata: null,
       requirements: [
-        'Enemies killed: 120 | 2nd Mysterium actions: 240 '
+        'Enemies killed: 120',
+        '2nd Mysterium actions: 240 '
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w004',
@@ -146,18 +152,20 @@ export const weapons: Weapon[] = [
       effect: 'When an enemy dies from decay, a few bullets are regenerated in the magazine.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 50'
+        'Enemies killed: 100',
+        '1st Mysterium actions: 50'
       ]
     },
     mysterium3: {
       effect: 'After a few seconds, cysts form on decaying enemies. When shot, these cysts explode, spreading decay to nearby enemies.',
       charismata: null,
       requirements: [
-        'Enemies killed: 190 | 2nd Mysterium actions: 75'
+        'Enemies killed: 190',
+        '2nd Mysterium actions: 75'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w005',
@@ -185,18 +193,20 @@ export const weapons: Weapon[] = [
       effect: 'Shots can be charged to increase power and projectile speed.',
       charismata: null,
       requirements: [
-        'Enemies killed: 75 | 1st Mysterium actions: 40'
+        'Enemies killed: 75',
+        '1st Mysterium actions: 40'
       ]
     },
     mysterium3: {
       effect: 'Enemies surviving a shot with low health begin to Decay.',
       charismata: null,
       requirements: [
-        'Enemies killed: 120 | 2nd Mysterium actions: 60'
+        'Enemies killed: 120',
+        '2nd Mysterium actions: 60'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w006',
@@ -224,18 +234,20 @@ export const weapons: Weapon[] = [
       effect: 'Overheated bullets apply Burn to enemies.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 75'
+        'Enemies killed: 100',
+        '1st Mysterium actions: 75'
       ]
     },
     mysterium3: {
       effect: 'Reloading while Overheated damages Burning enemies. Very fast reload when the gun is Overheated.',
       charismata: null,
       requirements: [
-        'Enemies killed: 190 | 2nd Mysterium actions: 50'
+        'Enemies killed: 190',
+        '2nd Mysterium actions: 50'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w007',
@@ -263,18 +275,20 @@ export const weapons: Weapon[] = [
       effect: 'The first shot on a tagged enemy deals massively increased stun damage.',
       charismata: null,
       requirements: [
-        'Enemies killed: 75 | 1st Mysterium actions: 50'
+        'Enemies killed: 75',
+        '1st Mysterium actions: 50'
       ]
     },
     mysterium3: {
       effect: 'A powerful lightning each time an enemy is hit with seven ricocheted bullets.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 2nd Mysterium actions: 50'
+        'Enemies killed: 100',
+        '2nd Mysterium actions: 50'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w008',
@@ -302,18 +316,20 @@ export const weapons: Weapon[] = [
       effect: 'Successful blocks briefly grant reduced fire rate with massively increased damage.',
       charismata: null,
       requirements: [
-        'Enemies killed: 75 | 1st Mysterium actions: 25'
+        'Enemies killed: 75',
+        '1st Mysterium actions: 25'
       ]
     },
     mysterium3: {
       effect: 'Last-moment blocking reduces shield cooldown and stuns melee attackers.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 2nd Mysterium actions: 35'
+        'Enemies killed: 100',
+        '2nd Mysterium actions: 35'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w009',
@@ -341,18 +357,20 @@ export const weapons: Weapon[] = [
       effect: 'The more enemies with lodged bullets, the bigger the damage of each bullet explosion.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 50'
+        'Enemies killed: 100',
+        '1st Mysterium actions: 50'
       ]
     },
     mysterium3: {
       effect: 'Bullet explosions Burn enemies. Bullets lodged in the environment have significantly increased explosion range.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 2nd Mysterium actions: 75'
+        'Enemies killed: 100',
+        '2nd Mysterium actions: 75'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w010',
