@@ -1429,6 +1429,120 @@ export const relics: BaseItem[] = [
     },
     addedOn: '2025-05-05',
     updatedOn: '2025-05-05'
+  },
+  {
+    id: 'r002',
+    name: 'Book Of Serpents',
+    category: 'Relics',
+    iconUrl: '/images/items/BookOfSerpents.png',
+    element: 'Earth',
+    description: 'A powerful amulet disguised as a grimoire. Anyone who hurts its owner is cursed with Decay.',
+    mysterium1: {
+      charismata: [
+        'Minor enemies can die instantly: 8 %'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Minor enemies can die instantly: 10 %',
+        'Major enemies can die instantly: 6 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Minor enemies can die instantly: 12 %',
+        'Major enemies can die instantly: 6 %',
+        'The curse stuns minor enemies.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'r003',
+    name: 'Braid Of A Seductress',
+    category: 'Relics',
+    iconUrl: '/images/items/BraidOfASeductress.png',
+    element: 'Water',
+    description: 'Radiates an Aura that freezes any Minor enemy who wounds the owner of the relic with a melee attack.',
+    mysterium1: {
+      charismata: [
+        'Melee damage reduction: -20 %'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Melee damage reduction: -25 %',
+        'Killing the frozen attacker restores lost health: 25 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Melee damage reduction: -30 %',
+        'Killing the frozen attacker restores lost health: 50 %',
+        'The aura also works against Major enemies.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'r004',
+    name: 'Eye Of The Madwoman',
+    category: 'Relics',
+    iconUrl: '/images/items/EyeOfTheMadwoman.png',
+    element: 'Air',
+    description: 'An eye inked with the infant blood. The relic mercifully strikes any near-death enemy with heavenly lightning.',
+    mysterium1: {
+      charismata: [
+        'Lightning damage: 50',
+        'Health threshold: 10 %'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Lightning damage: 60',
+        'Health threshold: 10 %',
+        'Major enemy threshold: 20 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Lightning damage: 70',
+        'Health threshold: 10 %',
+        'Major enemy threshold: 30 %',
+        'Bonus effect: Stun'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
   }
 ];
 
@@ -1437,36 +1551,39 @@ export const relics: BaseItem[] = [
 export const fetishes: BaseItem[] = [
   {
     id: 'f001',
-    name: 'New Item',
+    name: 'Balewort',
     category: 'Fetishes',
-    iconUrl: '/images/items/default.png',
+    iconUrl: '/images/items/Balewort.png',
     element: null,
-    description: '',
+    description: 'When below half health, killing enemies can turn their witchfire into a healing essence that regenerates a bit of health when picked up.',
     mysterium1: {
       charismata: [
-        'Effect 1',
-        'Effect 2'
+        'Drop chance: 30 %',
+        'Essence time to live: 4 s'
       ],
       requirements: [
-        'Requirement 1'
+        '-'
       ]
     },
     mysterium2: {
       charismata: [
-        'Effect 1',
-        'Effect 2'
+        'Drop chance: 35 %',
+        'Essence time to live: 5 s',
+        'Pickup range: +2 m'
       ],
       requirements: [
-        'Requirement 1'
+        'Kills with item equipped: 150'
       ]
     },
     mysterium3: {
       charismata: [
-        'Effect 1',
-        'Effect 2'
+        'Drop chance: 40 %',
+        'Essence time to live: 6 s',
+        'Pickup range: +3 m',
+        'Spell recharge per essence: 20 %'
       ],
       requirements: [
-        'Requirement 1'
+        'Kills with item equipped: 250'
       ]
     },
     addedOn: '2025-05-05',
@@ -1479,36 +1596,36 @@ export const fetishes: BaseItem[] = [
 export const rings: BaseItem[] = [
   {
     id: 'rg001',
-    name: 'New Item',
+    name: 'Crown Of Fire',
     category: 'Rings',
-    iconUrl: '/images/items/default.png',
-    element: null,
-    description: 'test',
+    iconUrl: '/images/items/CrownOfFire.png',
+    element: 'Fire',
+    description: 'Dash applies the Fire elemental to a weapon for a short time.',
     mysterium1: {
       charismata: [
-        'Effect 1',
-        'Effect 2'
+        'Duration: 1 s'
       ],
       requirements: [
-        'Requirement 1'
+        '-'
       ]
     },
     mysterium2: {
       charismata: [
-        'Effect 1',
-        'Effect 2'
+        'Duration: 1.1 s',
+        'Igniting an enemy partially reloads the magazine.'
       ],
       requirements: [
-        'Requirement 1'
+        'Kills with item equipped: 150'
       ]
     },
     mysterium3: {
       charismata: [
-        'Effect 1',
-        'Effect 2'
+        'Duration 1.2 s',
+        'Igniting an enemy partially reloads the magazine.',
+        'Double dash triples the duration.'
       ],
       requirements: [
-        'Requirement 1'
+        'Kills with item equipped: 250'
       ]
     },
     addedOn: '2025-05-05',

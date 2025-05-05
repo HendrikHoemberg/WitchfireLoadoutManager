@@ -137,7 +137,7 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
       }
       
       // Check if we have enough items to randomize
-      if (availableItems.length < 2) {
+      if (availableItems.length < 1) {
         // Not enough items to randomize, skip this category
         return;
       }
