@@ -9,6 +9,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Cricket.png',
     element: null,
+    description: 'Dash after a kill reloads and boosts the gun.',
     damage: 17,
     stunPower: 'very low',
     hipfireRange: 9,
@@ -50,6 +51,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Echo.png',
     element: 'Fire',
+    description: 'Pellets explode and ignite targets. Uses Stamina.',
     damage: 111,
     stunPower: 'average',
     hipfireRange: 7,
@@ -91,6 +93,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Psychopomp.png',
     element: null,
+    description: 'Fast firing, regenerates more than ammo. Uses Stamina.',
     damage: 80,
     stunPower: 'low',
     hipfireRange: 9,
@@ -132,6 +135,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Rotweaver.png',
     element: 'Decay',
+    description: 'Designed for crowd control, spreads Decay among attacking hordes.',
     damage: 8,
     stunPower: 'low',
     hipfireRange: 10,
@@ -173,6 +177,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Judgement.png',
     element: 'Decay',
+    description: 'Hard-hitting weapon with two firing modes. Both can be charged for extra damage.',
     damage: 140,
     stunPower: 'High',
     hipfireRange: 7,
@@ -214,6 +219,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Midas.png',
     element: 'Fire',
+    description: 'Heats bullets, boosting damage or igniting enemies.',
     damage: 9,
     stunPower: 'very low',
     hipfireRange: 17,
@@ -255,6 +261,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Ricochet.png',
     element: 'Lightning',
+    description: 'Bullets ricochet among marked enemies.',
     damage: 16,
     stunPower: 'High',
     hipfireRange: 20,
@@ -296,6 +303,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Angelus.png',
     element: null,
+    description: 'Turns defense into devastating conterattacks.',
     damage: 13,
     stunPower: 'average',
     hipfireRange: 18,
@@ -337,6 +345,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Hangfire.png',
     element: 'Fire',
+    description: 'Fires slugs that detonate on command with a reload.',
     damage: 35,
     stunPower: 'average',
     hipfireRange: 15,
@@ -378,6 +387,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Hunger.png',
     element: 'Ice',
+    description: 'Rewards perfect aim with increasingly potent bullets.',
     damage: 38,
     stunPower: 'very high',
     hipfireRange: 15,
@@ -398,18 +408,20 @@ export const weapons: Weapon[] = [
       effect: 'The more Critical Hits before reload, the more powerful each Charged Bullet after.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 50'
+        'Enemies killed: 100',
+        '1st Mysterium actions: 50'
       ]
     },
     mysterium3: {
       effect: 'The first body shot after reload counts as Critical Hit. Reloading grants Freeze for the first bullet if every shot was a Critical Hit.',
       charismata: null,
       requirements: [
-        'Enemies killed: 190 | 2nd Mysterium actions: 75'
+        'Enemies killed: 190',
+        '2nd Mysterium actions: 75'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w011',
@@ -417,6 +429,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Duelist.png',
     element: 'Fire',
+    description: 'Rewards duel victory with bullets that ignite enemies.',
     damage: 25,
     stunPower: 'very high',
     hipfireRange: 16,
@@ -437,18 +450,20 @@ export const weapons: Weapon[] = [
       effect: 'Duel victory also reloads the gun, adds Burn to bullets and quickens the reload while the empowerement lasts.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 25'
+        'Enemies killed: 100',
+        '1st Mysterium actions: 25'
       ]
     },
     mysterium3: {
       effect: 'Killing enemies extends the empowerement duration.',
       charismata: null,
       requirements: [
-        'Enemies killed: 190 | 2nd Mysterium actions: 40'
+        'Enemies killed: 190',
+        '2nd Mysterium actions: 40'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w012',
@@ -456,6 +471,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Striga.png',
     element: 'Fire',
+    description: 'A dual-element stake gun that impales targets or shatters them on impact.',
     damage: 80,
     stunPower: 'high',
     hipfireRange: 30,
@@ -476,18 +492,20 @@ export const weapons: Weapon[] = [
       effect: 'Ignited stakes hit with a fiery explosion that Burns all nearby foes.',
       charismata: null,
       requirements: [
-        'Enemies killed: 50 | 1st Mysterium actions: 20'
+        'Enemies killed: 50',
+        '1st Mysterium actions: 20'
       ]
     },
     mysterium3: {
       effect: 'Critical hits Shock all nearby foes.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100| 2nd Mysterium actions: 75'
+        'Enemies killed: 100',
+        '2nd Mysterium actions: 75'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w013',
@@ -495,6 +513,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/AllSeeingEye.png',
     element: 'Decay',
+    description: 'Critical hits hurt all enemies inside the All-Seeing Eye.',
     damage: 38,
     stunPower: 'low',
     hipfireRange: 18,
@@ -515,18 +534,20 @@ export const weapons: Weapon[] = [
       effect: 'Critical Hits trigger radial shockwave, damaging all enemies inside the shockwaves circle.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 75'
+        'Enemies killed: 100',
+        '1st Mysterium actions: 75'
       ]
     },
     mysterium3: {
       effect: 'If Critical Hits deal increased damage, the shockwave also applies Decay.',
       charismata: null,
       requirements: [
-        'Enemies killed: 190 | 2nd Mysterium actions: 100'
+        'Enemies killed: 190',
+        '2nd Mysterium actions: 100'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w014',
@@ -534,6 +555,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Basilisk.png',
     element: 'Fire',
+    description: 'When ignited, the scope burns enemies. Uses Stamina.',
     damage: 60,
     stunPower: 'average',
     hipfireRange: 20,
@@ -554,18 +576,20 @@ export const weapons: Weapon[] = [
       effect: 'Shooting a burning enemy extends the burn duration.',
       charismata: null,
       requirements: [
-        'Enemies killed: 50 | 1st Mysterium actions: 25'
+        'Enemies killed: 50',
+        '1st Mysterium actions: 25'
       ]
     },
     mysterium3: {
       effect: 'Killing a burning enemy with a critical hit triggers an enhanced fiery scope that continuously damages enemies.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 2nd Mysterium actions: 100'
+        'Enemies killed: 100',
+        '2nd Mysterium actions: 100'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w015',
@@ -573,6 +597,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Hypnosis.png',
     element: 'Lightning',
+    description: 'Rewards a patient marksman with increased damage.',
     damage: 40,
     stunPower: 'average',
     hipfireRange: 20,
@@ -593,18 +618,20 @@ export const weapons: Weapon[] = [
       effect: 'Increased damage is weighted towards the end of the time window. A shot perfectly timed at the end of it inflicts even more damage.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 1st Mysterium actions: 80'
+        'Enemies killed: 100',
+        '1st Mysterium actions: 80'
       ]
     },
     mysterium3: {
       effect: 'After the third Perfect Shot in a row, Perfect Shots deal Lightning damage.',
       charismata: null,
       requirements: [
-        'Enemies killed: 190 | 2nd Mysterium actions: 120'
+        'Enemies killed: 190',
+        '2nd Mysterium actions: 120'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w016',
@@ -612,6 +639,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Frostbite.png',
     element: 'Ice',
+    description: 'Perfect reloading rythm imbues shots with freezing power.',
     damage: 77,
     stunPower: 'high',
     hipfireRange: 26,
@@ -632,18 +660,20 @@ export const weapons: Weapon[] = [
       effect: 'Perect Reload adds Freeze, duration scales with shots fired before reloading. Chaining Perfect Reload further boosts Mysterium I damage.',
       charismata: null,
       requirements: [
-        'Enemies killed: 75 | 1st Mysterium actions: 25'
+        'Enemies killed: 75',
+        '1st Mysterium actions: 25'
       ]
     },
     mysterium3: {
       effect: 'Three consecutive perfect reloads empower next shot with double damage and Freezing trail.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 2nd Mysterium actions: 50'
+        'Enemies killed: 100',
+        '2nd Mysterium actions: 50'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'w017',
@@ -651,6 +681,7 @@ export const weapons: Weapon[] = [
     category: 'Weapons',
     iconUrl: '/images/weapons/Hailstorm.png',
     element: 'Ice',
+    description: 'Reloads bullets for Critical Hits. Uses Stamina.',
     damage: 160,
     stunPower: 'average',
     hipfireRange: 15,
@@ -671,18 +702,20 @@ export const weapons: Weapon[] = [
       effect: 'Consecutive Critical Hits decrease zoom and flinch and increase handling and bullet bending. Mistakes or reloading reset the buff.',
       charismata: null,
       requirements: [
-        'Enemies killed: 50 | 1st Mysterium actions: 20'
+        'Enemies killed: 50',
+        '1st Mysterium actions: 20'
       ]
     },
     mysterium3: {
       effect: 'Every third consecutive Critical Hit makes the target explode with a Freezing shockwave.',
       charismata: null,
       requirements: [
-        'Enemies killed: 100 | 2nd Mysterium actions: 75'
+        'Enemies killed: 100',
+        '2nd Mysterium actions: 75'
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   }
 ];
 
@@ -693,8 +726,9 @@ export const lightSpells: BaseItem[] = [
     id: 'ls001',
     name: 'Blight Cyst',
     category: 'LightSpells',
-    iconUrl: '/images/spells/BlightCyst.png',
+    iconUrl: '/images/items/BlightCyst.png',
     element: 'Decay',
+    description: 'A cyst that attaches to the environment or enemies. Explodes after a while but can be shot for a more powerful explosion.',
     mysterium1: {
       charismata: [
         'Auto-explosion range: 8 m',
@@ -706,6 +740,8 @@ export const lightSpells: BaseItem[] = [
     },
     mysterium2: {
       charismata: [
+        'Auto-explosion range: 10 m',
+        'Forced explosion range: 14 m',
         'The Cyst grows even bigger, allowing for easier targeting'
       ],
       requirements: [
@@ -714,6 +750,9 @@ export const lightSpells: BaseItem[] = [
     },
     mysterium3: {
       charismata: [
+        'Auto-explosion range: 12 m',
+        'Forced explosion range: 16 m',
+        'The Cyst grows even bigger, allowing for easier targeting',
         'Chance to regrow if attaching to an enemy: 50 %'
       ],
       requirements: [
@@ -721,42 +760,352 @@ export const lightSpells: BaseItem[] = [
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'ls002',
-    name: 'Frost Spike',
+    name: 'Fireballs',
     category: 'LightSpells',
-    iconUrl: '/images/spells/frost-spike.png',
-    element: 'Ice',
+    iconUrl: '/images/items/Fireballs.png',
+    element: 'Fire',
+    description: 'Three Fireballs homing in onto multiple enemies.',
     mysterium1: {
       charismata: [
-        'Deals ice damage',
-        'Slows enemies'
+        'Direct hit damage: 35',
+        'Explosion range: 4 m'
       ],
       requirements: [
-        'Cast this spell 30 times'
+        '-'
       ]
     },
     mysterium2: {
       charismata: [
-        'Increased slow effect',
-        'Chance to freeze weaker enemies'
+        'Direct hit damage: 45',
+        'Explosion range: 5 m',
+        'Extra charge'
       ],
       requirements: [
-        'Slow 50 enemies with this spell'
+        'Enemies hexed: 70'
       ]
     },
     mysterium3: {
       charismata: [
-        'Frozen enemies shatter when killed, damaging nearby enemies'
+        'Direct hit damage: 50',
+        'Explosion range: 6 m',
+        'Extra charge',
+        'Casting when in ADS focuses fireballs on a single target.'
       ],
       requirements: [
-        'Freeze 25 enemies with this spell'
+        'Enemies hexed: 150'
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls003',
+    name: 'Firebreath',
+    category: 'LightSpells',
+    iconUrl: '/images/items/Firebreath.png',
+    element: 'Fire',
+    description: 'A fire breathers trick turned deadly, damaging enemies and recharging melee',
+    mysterium1: {
+      charismata: [
+        'Range: 4 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Range: 5 m',
+        'Deals bonus damage to already burning enemies'
+      ],
+      requirements: [
+        'Enemies hexed: 25'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Range: 6 m',
+        'Deals bonus damage to already burning enemies',
+        'Killing an enemy with the spell instantly recharges melee'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls004',
+    name: 'Frost Cone',
+    category: 'LightSpells',
+    iconUrl: '/images/items/FrostCone.png',
+    element: 'Ice',
+    description: 'An icy cloud that freezes any enemies on its path.',
+    mysterium1: {
+      charismata: [
+        'Damage: 20'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Damage: 30',
+        'Affecting three enemies or more instantly refills the clip from reserves.'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Damage: 40',
+        'Affecting three enemies or more instantly refills the clip from reserves.',
+        'Affecting five enemies or more instantly recharges the spell.'
+      ],
+      requirements: [
+        'Enemies hexed: 100'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls005',
+    name: 'Ice Stiletto',
+    category: 'LightSpells',
+    iconUrl: '/images/items/IceStiletto.png',
+    element: 'Ice',
+    description: 'An icy stiletto that freezes the targeted enemy.',
+    mysterium1: {
+      charismata: [
+        'Damage: 20'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Damage: 30',
+        'Critical hit with the stiletto doubles the damage and freeze time.'
+      ],
+      requirements: [
+        'Enemies hexed: 25'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Damage: 40',
+        'Critical hit with the stiletto doubles the damage and freeze time.',
+        'Instant spell recharge rate if the stiletto did not hit any enemy.'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls006',
+    name: 'Lightning Bolt',
+    category: 'LightSpells',
+    iconUrl: '/images/items/LightningBolt.png',
+    element: 'Lightning',
+    description: 'A lightning bolt that knocks back and shocks enemies.',
+    mysterium1: {
+      charismata: [
+        'Enemies affected: 3',
+        'Range 16 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Enemies affected: 4',
+        'Range 18 m',
+        'Damage: 20'
+      ],
+      requirements: [
+        'Enemies hexed: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Enemies affected: 5',
+        'Range 20 m',
+        'Damage: 40',
+        'The initial bolt stuns any full health Minor enemy.'
+      ],
+      requirements: [
+        'Enemies hexed: 300'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls007',
+    name: 'Shockwave',
+    category: 'LightSpells',
+    iconUrl: '/images/items/Shockwave.png',
+    element: null,
+    description: 'A shockwave that stuns nearby Minor enemies and exhausted Major ones.',
+    mysterium1: {
+      charismata: [
+        'Range 10 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Range 12 m',
+        'Damage: 20'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Range 14 m',
+        'Damage: 40',
+        'Instant recharge per enemy affected: +10 %'
+      ],
+      requirements: [
+        'Enemies hexed: 100'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls008',
+    name: 'Stigma Diabolicum',
+    category: 'LightSpells',
+    iconUrl: '/images/items/StigmaDiabolicum.png',
+    element: 'Decay',
+    description: 'A cyst that attaches to enemies, becoming their additional weak spot.',
+    mysterium1: {
+      charismata: [
+        'Damage Modifier: ×1.25',
+        'Duration: 20 s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Damage Modifier: ×1.29',
+        'Duration: 25 s',
+        'Applies Decay on contact.'
+      ],
+      requirements: [
+        'Enemies hexed: 25'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Damage Modifier: ×1.35',
+        'Duration: 30 s',
+        'Applies Decay on contact.',
+        'Killing an enemy with decay or a shot with the cyst partially regenerates the spell.'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls009',
+    name: 'Stormball',
+    category: 'LightSpells',
+    iconUrl: '/images/items/Stormball.png',
+    element: 'Lightning',
+    description: 'A ball lightning that shocks any enemy near its path',
+    mysterium1: {
+      charismata: [
+        'Range: 5 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Range: 6 m',
+        'After two seconds, the spell grows in power and range'
+      ],
+      requirements: [
+        'Enemies hexed: 25'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Range: 7 m',
+        'After two seconds, the spell grows in power and range',
+        'The ball explodes upon hitting an obstacle'
+      ],
+      requirements: [
+        'Enemies hexed: 50'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
+  },
+  {
+    id: 'ls010',
+    name: 'Twinshade',
+    category: 'LightSpells',
+    iconUrl: '/images/items/Twinshade.png',
+    element: null,
+    description: 'Strikes with a spectral sword or hammer, changing weapons mased on enemy health.',
+    mysterium1: {
+      charismata: [
+        'Hammer damage: 30',
+        'Sword damage: 60'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Hammer damage: 30',
+        'Sword damage: 60',
+        'Deals double damage to low health enemies.'
+      ],
+      requirements: [
+        'Enemies hexed: 30'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Hammer damage: 30',
+        'Sword damage: 60',
+        'Deals double damage to low health enemies.',
+        'Hammer deals double stun damage to uninjured foes.'
+      ],
+      requirements: [
+        'Enemies hexed: 60'
+      ]
+    },
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
   }
 ];
 
@@ -765,75 +1114,43 @@ export const lightSpells: BaseItem[] = [
 export const heavySpells: BaseItem[] = [
   {
     id: 'hs001',
-    name: 'Lightning Storm',
+    name: 'Burning Stake',
     category: 'HeavySpells',
-    iconUrl: '/images/spells/lightning-storm.png',
-    element: 'Lightning',
+    iconUrl: '/images/items/BurningStake.png',
+    element: 'Fire',
+    description: 'Spawns a burning stake that ignite enemies. Damaging them charges the stake. Full charged, the stake releases a fiery explosion',
     mysterium1: {
       charismata: [
-        'Summons lightning strikes in target area',
-        'Deals lightning damage'
+        'Duration: 30 s',
+        'Range: 20 m'
       ],
       requirements: [
-        'Cast this spell 20 times'
+        '-'
       ]
     },
     mysterium2: {
       charismata: [
-        'Increased area of effect',
-        'Lightning strikes more frequently'
+        'Duration: 35 s',
+        'Range: 25 m',
+        'Inferno burn damage boost: +25 %'
       ],
       requirements: [
-        'Kill 30 enemies with this spell'
+        'Enemies hexed: 50'
       ]
     },
     mysterium3: {
       charismata: [
-        'Lightning chains between enemies',
-        'Stunned enemies take increased damage'
+        'Duration: 40 s',
+        'Range: 30 m',
+        'Inferno burn damage boost: +50 %',
+        'Killed enemies also partially charge the stake.'
       ],
       requirements: [
-        'Kill 5 enemies with a single cast 3 times'
+        'Enemies hexed: 100'
       ]
     },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
-  },
-  {
-    id: 'hs002',
-    name: 'Decay Nova',
-    category: 'HeavySpells',
-    iconUrl: '/images/spells/decay-nova.png',
-    element: 'Decay',
-    mysterium1: {
-      charismata: [
-        'Releases a wave of decay energy',
-        'Deals decay damage over time'
-      ],
-      requirements: [
-        'Cast this spell 20 times'
-      ]
-    },
-    mysterium2: {
-      charismata: [
-        'Increased radius',
-        'Enemies affected by decay take more damage from all sources'
-      ],
-      requirements: [
-        'Kill 30 enemies with this spell'
-      ]
-    },
-    mysterium3: {
-      charismata: [
-        'Healing received from all sources increased while active',
-        'Enemies killed by decay explode'
-      ],
-      requirements: [
-        'Have 5 enemies affected by decay simultaneously 10 times'
-      ]
-    },
-    addedOn: '2025-04-01',
-    updatedOn: '2025-04-01'
+    addedOn: '2025-05-05',
+    updatedOn: '2025-05-05'
   }
 ];
 
@@ -922,6 +1239,7 @@ export const fetishes: BaseItem[] = [
     category: 'Fetishes',
     iconUrl: '/images/fetishes/thunderstone.png',
     element: 'Lightning',
+    description: '',
     mysterium1: {
       charismata: [
         'Increases lightning damage by 15%',
@@ -957,6 +1275,7 @@ export const fetishes: BaseItem[] = [
     category: 'Fetishes',
     iconUrl: '/images/fetishes/plague-idol.png',
     element: 'Decay',
+    description: '',
     mysterium1: {
       charismata: [
         'Increases decay damage by 15%',
@@ -1073,6 +1392,7 @@ export const demonicWeapons: BaseItem[] = [
     category: 'DemonicWeapons',
     iconUrl: '/images/weapons/Vulture.png',
     element: null,
+    description: 'Fires a difficult to satiate arrow that actively seeks the next target after wounding one.',
     damage: 200,
     stunPower: 'High',
     hipfireRange: 20,
@@ -1104,7 +1424,7 @@ export const demonicWeapons: BaseItem[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'dw002',
@@ -1112,6 +1432,7 @@ export const demonicWeapons: BaseItem[] = [
     category: 'DemonicWeapons',
     iconUrl: '/images/weapons/FallingStar.png',
     element: null,
+    description: 'When fired while aiming down sights, grenades home in onto the tagged enemy. The longer the grenades travel, the higher their damage.',
     damage: 250,
     stunPower: 'average',
     hipfireRange: 30,
@@ -1143,7 +1464,7 @@ export const demonicWeapons: BaseItem[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   },
   {
     id: 'dw003',
@@ -1151,6 +1472,7 @@ export const demonicWeapons: BaseItem[] = [
     category: 'DemonicWeapons',
     iconUrl: '/images/weapons/Whisper.png',
     element: null,
+    description: 'A device capable of stunning almost any enemy.',
     damage: 220,
     stunPower: 'very high',
     hipfireRange: 20,
@@ -1182,7 +1504,7 @@ export const demonicWeapons: BaseItem[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-02'
+    updatedOn: '2025-05-05'
   }
 ];
 

@@ -9,6 +9,7 @@ export interface BaseItem {
   category: ItemCategory;
   iconUrl: string;
   element: Element;
+  description: string;
   mysterium1: {
     charismata: string[] | null; // Array of effects (null for weapons)
     effect?: string; // For weapons only

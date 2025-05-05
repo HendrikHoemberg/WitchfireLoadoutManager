@@ -3,17 +3,20 @@
 
 import ItemCard from '@/components/wiki/ItemCard';
 import { allItems } from '@/data/items';
-import { Element, ItemCategory } from '@/types';
-import { useMemo, useState } from 'react';
+import { Element, ItemCategory, BaseItem } from '@/types';
+import { useMemo, useState, useCallback } from 'react';
+
+type SortCriteria = 'name-asc' | 'name-desc' | 'element-asc' | 'element-desc';
 
 export default function WikiPage() {
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory | 'All'>('All');
   const [selectedElement, setSelectedElement] = useState<Element | 'All'>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortCriteria, setSortCriteria] = useState<SortCriteria>('name-asc');
   
   // Filter items based on selected category, element, and search query
   const filteredItems = useMemo(() => {
-    return allItems.filter(item => {
+    let items = allItems.filter(item => {
       // Filter by category
       if (selectedCategory !== 'All' && item.category !== selectedCategory) {
         return false;
@@ -39,7 +42,30 @@ export default function WikiPage() {
       
       return true;
     });
-  }, [selectedCategory, selectedElement, searchQuery]);
+    
+    // Sort items based on sortCriteria
+    items.sort((a: BaseItem, b: BaseItem) => {
+      switch (sortCriteria) {
+        case 'name-asc':
+          return a.name.localeCompare(b.name);
+        case 'name-desc':
+          return b.name.localeCompare(a.name);
+        case 'element-asc':
+          // Handle null elements (consider them first or last based on preference)
+          const elementA = a.element ?? 'ZZZ'; // Place null elements last
+          const elementB = b.element ?? 'ZZZ';
+          return elementA.localeCompare(elementB);
+        case 'element-desc':
+          const elementDescA = a.element ?? 'AAA'; // Place null elements first
+          const elementDescB = b.element ?? 'AAA';
+          return elementDescB.localeCompare(elementDescA);
+        default:
+          return 0;
+      }
+    });
+
+    return items; // Return the sorted list
+  }, [selectedCategory, selectedElement, searchQuery, sortCriteria]);
   
   // All available categories
   const categories: (ItemCategory | 'All')[] = [
@@ -116,12 +142,30 @@ export default function WikiPage() {
       </div>
       
       {/* Results Count */}
-      <div className="text-sm text-white">
-        Showing {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
+      <div className="flex justify-between items-center mb-3 sm:mb-4">
+        <div className="text-sm text-white">
+          Showing {filteredItems.length} {filteredItems.length === 1 ? 'item' : 'items'}
+        </div>
+        
+        {/* Sort By */}
+        <div className="flex items-center gap-2">
+          <label htmlFor="sort" className="text-sm text-white font-medium hidden sm:block">Sort By:</label>
+          <select
+            id="sort"
+            className="text-gray-100 px-2 py-1 text-sm bg-[#30303071] border border-[#818181] rounded-md focus:outline-none focus:ring-1 focus:ring-[#ddaf7aa6] focus:border-transparent"
+            value={sortCriteria}
+            onChange={(e) => setSortCriteria(e.target.value as SortCriteria)}
+          >
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="element-asc">Element (A-Z)</option>
+            <option value="element-desc">Element (Z-A)</option>
+          </select>
+        </div>
       </div>
       
       {/* Item Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
         {filteredItems.map(item => (
           <ItemCard key={item.id} item={item} />
         ))}
