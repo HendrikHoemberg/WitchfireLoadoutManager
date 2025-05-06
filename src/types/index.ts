@@ -32,7 +32,7 @@ export interface BaseItem {
 
 // Weapon-Specific Properties
 export interface Weapon extends BaseItem {
-  category: 'Weapons';
+  category: 'Weapons' | 'DemonicWeapons';
   damage: number;
   stunPower: string;
   hipfireRange: number;

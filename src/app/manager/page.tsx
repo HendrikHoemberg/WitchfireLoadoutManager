@@ -4,7 +4,7 @@
 import ItemSelector from '@/components/loadout/ItemSelector';
 import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
 import { useLoadout } from '@/context/LoadoutContext';
-import { ItemCategory, Loadout } from '@/types';
+import { ItemCategory, Loadout, BaseItem } from '@/types';
 import { useEffect, useState } from 'react';
 
 export default function ManagerPage() {
@@ -35,7 +35,7 @@ export default function ManagerPage() {
   };
   
   // Handle item selection
-  const handleItemSelect = (item: any) => {
+  const handleItemSelect = (item: BaseItem) => {
     if (selectedSlot) {
       setItemInLoadout(selectedSlot, item);
     }
@@ -49,7 +49,7 @@ export default function ManagerPage() {
       {/* Loadout Display */}
       <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] flex flex-col items-center justify-center text-center overflow-hidden">
         <img
-          src="/images/texture-transparent.png"
+          src="/images/texture-transparent.PNG"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />
@@ -80,7 +80,7 @@ export default function ManagerPage() {
       {currentCategory && (
         <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
         <img
-          src="/images/texture-transparent.png"
+          src="/images/texture-transparent.PNG"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />
@@ -96,7 +96,7 @@ export default function ManagerPage() {
       {!currentCategory && (
         <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] flex flex-col items-center justify-center text-center overflow-hidden">
         <img
-          src="/images/texture-transparent.png"
+          src="/images/texture-transparent.PNG"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />

@@ -3,20 +3,42 @@
 
 import ItemCard from '@/components/wiki/ItemCard';
 import { allItems } from '@/data/items';
-import { Element, ItemCategory, BaseItem } from '@/types';
-import { useMemo, useState, useCallback } from 'react';
+import { BaseItem, Element, ItemCategory } from '@/types';
+import { useMemo, useState, useEffect, useRef } from 'react';
 
-type SortCriteria = 'name-asc' | 'name-desc' | 'element-asc' | 'element-desc';
+type SortCriteria = 'name-asc' | 'name-desc' | 'element-asc' | 'element-desc' | 'category';
 
 export default function WikiPage() {
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory | 'All'>('All');
   const [selectedElement, setSelectedElement] = useState<Element | 'All'>('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortCriteria, setSortCriteria] = useState<SortCriteria>('name-asc');
+  const [sortCriteria, setSortCriteria] = useState<SortCriteria>('category');
+  const isInitialMount = useRef(true);
+  
+  // All available categories - define this using useMemo
+  const categories = useMemo<(ItemCategory | 'All')[]>(() => [
+    'All', 'Weapons', 'DemonicWeapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings'
+  ], []);
+  
+  // Update sort criteria only when category changes, not when sort criteria changes
+  useEffect(() => {
+    // Skip on initial render
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    
+    // Only set default sort when category changes
+    if (selectedCategory === 'All') {
+      setSortCriteria('category');
+    } else if (sortCriteria === 'category') {
+      setSortCriteria('name-asc');
+    }
+  }, [selectedCategory, sortCriteria]);
   
   // Filter items based on selected category, element, and search query
   const filteredItems = useMemo(() => {
-    let items = allItems.filter(item => {
+    const items = allItems.filter(item => {
       // Filter by category
       if (selectedCategory !== 'All' && item.category !== selectedCategory) {
         return false;
@@ -59,18 +81,19 @@ export default function WikiPage() {
           const elementDescA = a.element ?? 'AAA'; // Place null elements first
           const elementDescB = b.element ?? 'AAA';
           return elementDescB.localeCompare(elementDescA);
+        case 'category':
+          // Order by the index in the categories array (match filter panel order)
+          const categoryOrderA = categories.indexOf(a.category as ItemCategory);
+          const categoryOrderB = categories.indexOf(b.category as ItemCategory);
+          // If in the same category, sort by name
+          return categoryOrderA - categoryOrderB || a.name.localeCompare(b.name);
         default:
           return 0;
       }
     });
 
     return items; // Return the sorted list
-  }, [selectedCategory, selectedElement, searchQuery, sortCriteria]);
-  
-  // All available categories
-  const categories: (ItemCategory | 'All')[] = [
-    'All', 'Weapons', 'DemonicWeapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings'
-  ];
+  }, [selectedCategory, selectedElement, searchQuery, sortCriteria, categories]);
   
   // All available elements
   const elements: (Element | 'All')[] = [
@@ -82,7 +105,7 @@ export default function WikiPage() {
       {/* Search and Filters */}
       <div className="bg-[#1A1A1A] rounded-lg p-3 sm:p-6 relative border border-[#818181]">
         <img
-          src="/images/texture-transparent.png"
+          src="/images/texture-transparent.PNG"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />
@@ -156,6 +179,9 @@ export default function WikiPage() {
             value={sortCriteria}
             onChange={(e) => setSortCriteria(e.target.value as SortCriteria)}
           >
+            {selectedCategory === 'All' && (
+              <option value="category">By Category</option>
+            )}
             <option value="name-asc">Name (A-Z)</option>
             <option value="name-desc">Name (Z-A)</option>
             <option value="element-asc">Element (A-Z)</option>
@@ -165,17 +191,48 @@ export default function WikiPage() {
       </div>
       
       {/* Item Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
-        {filteredItems.map(item => (
-          <ItemCard key={item.id} item={item} />
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-1 gap-3 sm:gap-6">
+        {sortCriteria === 'category' && selectedCategory === 'All' ? (
+          // Group items by category
+          Object.entries(
+            filteredItems.reduce((acc, item) => {
+              const category = item.category;
+              if (!acc[category]) acc[category] = [];
+              acc[category].push(item);
+              return acc;
+            }, {} as Record<string, BaseItem[]>)
+          )
+          .sort(([categoryA], [categoryB]) => {
+            // Sort category groups based on the same order as in the filter panel
+            const categoryOrderA = categories.indexOf(categoryA as ItemCategory);
+            const categoryOrderB = categories.indexOf(categoryB as ItemCategory);
+            return categoryOrderA - categoryOrderB;
+          })
+          .map(([category, items]) => (
+            <div key={category} className="mb-6">
+              <h2 className="text-xl font-bold text-white mb-3 border-b border-[#818181] pb-2">
+                {getCategoryDisplayName(category)}
+              </h2>
+              <div className="grid grid-cols-1 gap-3 sm:gap-6">
+                {items.map(item => (
+                  <ItemCard key={item.id} item={item} />
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
+          // Regular display without grouping
+          filteredItems.map(item => (
+            <ItemCard key={item.id} item={item} />
+          ))
+        )}
       </div>
       
       {/* No Results */}
       {filteredItems.length === 0 && (
         <div className="bg-[#1A1A1A] rounded-lg p-3 sm:p-6 relative border border-[#818181]">
         <img
-          src="/images/texture-transparent.png"
+          src="/images/texture-transparent.PNG"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />

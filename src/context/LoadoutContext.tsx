@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { BaseItem, Loadout, Element, RandomizerSettings } from '@/types';
-import { allItems, getItemsByCategory } from '@/data/items';
+import { getItemsByCategory } from '@/data/items';
 
 interface LoadoutContextType {
   // Current loadout state

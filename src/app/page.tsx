@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
         <FeatureCard 
           title="Loadout Manager" 
           icon="⚔️"
@@ -36,7 +36,7 @@ function FeatureCard({ title, icon, link }: FeatureCardProps) {
     <Link href={link} className="block">
       <div className="relative bg-[#30303071] rounded-lg p-8 h-64 w-64 hover:bg-[#3D3D3D] transition-colors border border-gray-600 hover:border-[#ddaf7aa6] flex flex-col items-center justify-center text-center overflow-hidden">
         <img
-          src="/images/texture-transparent.png"
+          src="/images/texture-transparent.PNG"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-50 pointer-events-none z-0"
         />

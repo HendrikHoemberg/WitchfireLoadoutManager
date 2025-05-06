@@ -11,7 +11,7 @@ const ItemCardPopup = ({ item }: ItemCardPopupProps) => {
   return (
     <div className="item-card-popup absolute z-50 w-72 bg-[#1A1A1A] rounded-lg overflow-hidden border border-[#818181] shadow-lg">
       <img
-        src="/images/texture-transparent.png"
+        src="/images/texture-transparent.PNG"
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
       />

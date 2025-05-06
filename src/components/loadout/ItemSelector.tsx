@@ -5,6 +5,11 @@ import { BaseItem, ItemCategory } from '@/types';
 import { useEffect, useState } from 'react';
 import ItemCardPopup from '../common/ItemCardPopup';
 
+// Define interface for Window with MSMaxTouchPoints
+interface WindowWithMSTouchPoints extends Window {
+  MSMaxTouchPoints?: number;
+}
+
 interface ItemSelectorProps {
   category: ItemCategory;
   onItemSelect: (item: BaseItem) => void;
@@ -30,7 +35,7 @@ const ItemSelector = ({
       // Check for touch capability
       const hasTouchCapability = 'ontouchstart' in window || 
                                navigator.maxTouchPoints > 0 || 
-                               (navigator as any).msMaxTouchPoints > 0;
+                               ((window as WindowWithMSTouchPoints).MSMaxTouchPoints || 0) > 0;
       
       // Use a higher breakpoint (1024px) to include tablets in landscape mode
       const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches;
@@ -136,38 +141,37 @@ const ItemSelector = ({
                 
                 // Calculate optimal position for the popup
                 const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
               
-              // Estimate popup dimensions
-              const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
-              const popupHeight = 500; // Increased height estimate to prevent cut-off
+                // Estimate popup dimensions
+                const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
+                const popupHeight = 500; // Increased height estimate to prevent cut-off
               
-              // Position the popup so its bottom edge is significantly above the bottom edge of the item card
-              // First calculate the bottom position with an offset to move it higher
-              let bottom = rect.bottom - 200; // Add a 100px offset to move it higher
-              let left = rect.right + 10;
+                // Position the popup so its bottom edge is significantly above the bottom edge of the item card
+                // First calculate the bottom position with an offset to move it higher
+                const bottom = rect.bottom - 200; // Add a 100px offset to move it higher
+                let left = rect.right + 10;
               
-              // Calculate top based on bottom position and popup height
-              let top = bottom - popupHeight;
+                // Calculate top based on bottom position and popup height
+                let top = bottom - popupHeight;
               
-              // Check if popup would go off the right edge of the screen
-              if (left + popupWidth > viewportWidth) {
-                // Try left placement
-                left = rect.left - popupWidth - 10;
-                
-                // If left placement doesn't work, try centering horizontally
-                if (left < 0) {
-                  left = Math.max(10, (viewportWidth - popupWidth) / 2);
+                // Check if popup would go off the right edge of the screen
+                if (left + popupWidth > viewportWidth) {
+                  // Try left placement
+                  left = rect.left - popupWidth - 10;
+                  
+                  // If left placement doesn't work, try centering horizontally
+                  if (left < 0) {
+                    left = Math.max(10, (viewportWidth - popupWidth) / 2);
+                  }
                 }
-              }
               
-              // Check if popup would go off the top of the screen
-              if (top < 10) {
-                // If it would go off the top, position it at the top with a small margin
-                top = 10;
-              }
+                // Check if popup would go off the top of the screen
+                if (top < 10) {
+                  // If it would go off the top, position it at the top with a small margin
+                  top = 10;
+                }
               
-              setPopupPosition({ top, left });
+                setPopupPosition({ top, left });
               }
             }}
             onMouseLeave={() => {
@@ -185,7 +189,6 @@ const ItemSelector = ({
                   
                   // Calculate optimal position for the popup
                   const viewportWidth = window.innerWidth;
-                  const viewportHeight = window.innerHeight;
                   
                   // Estimate popup dimensions
                   const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
@@ -193,8 +196,8 @@ const ItemSelector = ({
                   
                   // Position the popup so its bottom edge is significantly above the bottom edge of the item card
                   // For mobile, we'll still center horizontally but position higher
-                  let bottom = rect.bottom - 200; // Add a 100px offset to move it higher
-                  let left = Math.max(10, (viewportWidth - popupWidth) / 2); // Center horizontally
+                  const bottom = rect.bottom - 200; // Add a 100px offset to move it higher
+                  const left = Math.max(10, (viewportWidth - popupWidth) / 2); // Center horizontally
                   
                   // Calculate top based on bottom position and popup height
                   let top = bottom - popupHeight;

@@ -28,7 +28,7 @@ const ItemCard = ({ item }: ItemCardProps) => {
   return (
     <div className="bg-[#1A1A1A] relative rounded-lg overflow-hidden border border-[#818181] hover:border-[#ddaf7aa6] transition-colors flex flex-col">
       <img
-        src="/images/texture-transparent.png"
+        src="/images/texture-transparent.PNG"
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
       />

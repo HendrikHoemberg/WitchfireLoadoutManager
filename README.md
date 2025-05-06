@@ -1,6 +1,6 @@
 # Witchfire Loadout Manager & Randomizer
 
-A web application for players of the game Witchfire to create, manage, and randomize loadouts with element preferences and detailed item information.
+A web application for players of the game Witchfire to create and randomize loadouts with element preferences and detailed item information.
 
 ## Features
 
@@ -47,25 +47,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-## Project Structure
-
-```
-/src
-  /app                 # Next.js app router pages
-    /randomizer        # Loadout randomizer page
-    /manager           # Loadout manager page
-    /wiki              # Item wiki page
-  /components          # React components
-    /loadout           # Loadout-related components
-    /wiki              # Wiki-related components
-    /ui                # Shared UI components
-  /context             # React context providers
-  /data                # JSON data files and data access functions
-  /types               # TypeScript type definitions
-  /hooks               # Custom React hooks
-  /lib                 # Utility functions
-```
-
 ## Data Structure
 
 The application uses a structured data model for game items:
@@ -73,14 +54,6 @@ The application uses a structured data model for game items:
 - **Base Item**: Common properties for all items (id, name, category, element, etc.)
 - **Weapon**: Extended properties specific to weapons (damage, range, etc.)
 - **Mysterium Levels**: Each item has 3 mysterium levels with effects and requirements
-
-## Deployment
-
-This application can be deployed on Vercel or any other platform that supports Next.js applications.
-
-```bash
-npm run build
-```
 
 ## Disclaimer
 

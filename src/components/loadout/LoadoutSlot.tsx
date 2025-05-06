@@ -5,6 +5,11 @@ import { BaseItem } from '@/types';
 import { useEffect, useRef, useState } from 'react';
 import ItemCardPopup from '../common/ItemCardPopup';
 
+// Define interface for Window with MSMaxTouchPoints
+interface WindowWithMSTouchPoints extends Window {
+  MSMaxTouchPoints?: number;
+}
+
 interface LoadoutSlotProps {
   item: BaseItem | null;
   category: string;
@@ -32,7 +37,7 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
       // Check for touch capability
       const hasTouchCapability = 'ontouchstart' in window || 
                                navigator.maxTouchPoints > 0 || 
-                               (navigator as any).msMaxTouchPoints > 0;
+                               ((window as WindowWithMSTouchPoints).MSMaxTouchPoints || 0) > 0;
       
       // Use a higher breakpoint (1024px) to include tablets in landscape mode
       const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches;

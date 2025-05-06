@@ -1543,6 +1543,194 @@ export const relics: BaseItem[] = [
     },
     addedOn: '2025-05-05',
     updatedOn: '2025-05-05'
+  },
+  {
+    id: 'r005',
+    name: 'Kirfane',
+    category: 'Relics',
+    iconUrl: '/images/items/Kirfane.png',
+    element: 'Air',
+    description: 'After landing multiple shots, a bolt of lightning arcs between nearby enemies.',
+    mysterium1: {
+      charismata: [
+        'Shots to trigger lightning: 30'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Shots to trigger lightning: 25',
+        'Chance per shot to trigger lightning: 2 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Shots to trigger lightning: 20',
+        'Chance per shot to trigger lightning: 3 %',
+        'Casting a Light Spell guarantees a lightning arc on the next shot.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'r006',
+    name: 'Painted Tooth',
+    category: 'Relics',
+    iconUrl: '/images/items/PaintedTooth.png',
+    element: 'Fire',
+    description: 'A tooth found among witchs ashes. Critical shots on full health enemies ignite them.',
+    mysterium1: {
+      charismata: [
+        'Bonus ignition damage: 5'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Bonus ignition damage: 20',
+        'Bonus ignition damage to major enemies: 50'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Bonus ignition damage: 30',
+        'Bonus ignition damage to major enemies: +70',
+        'Chance to stun: 10 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'r007',
+    name: 'Parasite',
+    category: 'Relics',
+    iconUrl: '/images/items/Parasite.png',
+    element: 'Earth',
+    description: 'Curses the nearest enemy with Decay.',
+    mysterium1: {
+      charismata: [
+        'Range: 10 m',
+        'Effect cooldown: 10s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Range: 12 m',
+        'Effect cooldown: 8s',
+        'When an afflicted enemy dies, their ailment jumps to the nearest foe with increased potency.'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Range: 15 m',
+        'Effect cooldown: 6s',
+        'When an afflicted enemy dies, their ailment jumps to the nearest foe with increased potency.',
+        'Upon targets death, the effect may chain to two nearby foes: 30%'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'r008',
+    name: 'Scourge',
+    category: 'Relics',
+    iconUrl: '/images/items/Scourge.png',
+    element: null,
+    description: 'Prevents a fatal hit, removing bonus Stamina instead. Refreshes on regaining Focus',
+    mysterium1: {
+      charismata: [
+        'Stamina stacks removed: 10'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Stamina stacks removed: 9',
+        'Getting hit triggers a damge bonus that is inversly proportional to remaining health.'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Stamina stacks removed: 8',
+        'Getting hit triggers a damge bonus that is inversly proportional to remaining health.',
+        'Improved healing effects when below 25% health.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'r009',
+    name: 'Severed Ear',
+    category: 'Relics',
+    iconUrl: '/images/items/SeveredEar.png',
+    element: null,
+    description: 'Reloading releases a shockwave that knocks back nearby enemies.',
+    mysterium1: {
+      charismata: [
+        'Shockwave range: 7 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Shockwave range: 8 m',
+        'Reload: -15 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Shockwave range: 9 m',
+        'Reload: -20 %',
+        'The shockwave damages enemies affected by Decay.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
   }
 ];
 
@@ -1588,6 +1776,238 @@ export const fetishes: BaseItem[] = [
     },
     addedOn: '2025-05-05',
     updatedOn: '2025-05-05'
+  },
+  {
+    id: 'f002',
+    name: 'Belladonna',
+    category: 'Fetishes',
+    iconUrl: '/images/items/Belladonna.png',
+    element: null,
+    description: 'A regenerating aura that fully shields against minor damage but allows any stronger attack to penetrate.\n',
+    mysterium1: {
+      charismata: [
+        'Damage treshold: 15 HP',
+        'Shield cooldown: 80 s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Damage treshold: 20 HP',
+        'Shield cooldown: 70 s'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Damage treshold: 25 HP',
+        'Shield cooldown: 60 s'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'f003',
+    name: 'Bittersweet Nightshade',
+    category: 'Fetishes',
+    iconUrl: '/images/items/BittersweetNightshade.png',
+    element: null,
+    description: 'When low on health, any damage taken makes the fetish release a powerful shockwave.',
+    mysterium1: {
+      charismata: [
+        'Health threshold: 20 %',
+        'Shockwave range: 40 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Health threshold: 30 %',
+        'Shockwave range: 50 m',
+        'Shockwave damage: 20'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Health threshold: 40 %',
+        'Shockwave range: 60 m',
+        'Shockwave damage: 30',
+        'Bonus effect: stun'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'f004',
+    name: 'Henbane',
+    category: 'Fetishes',
+    iconUrl: '/images/items/Henbane.png',
+    element: null,
+    description: 'Significantly increases the effectiveness of healing elixirs.',
+    mysterium1: {
+      charismata: [
+        'Healing: +75 %'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Healing: +100 %',
+        'Damage reduction after consuming an elixir: +60 %',
+        'Damage reduction duration: 6 s'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Healing: +125 %',
+        'Damage reduction after consuming an elixir: +70 %',
+        'Damage reduction duration: 8 s',
+        'Healing duration: -50 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'f005',
+    name: 'Mandrake',
+    category: 'Fetishes',
+    iconUrl: '/images/items/Mandrake.png',
+    element: null,
+    description: 'Prevents fatal damage once per expedition. Activated, restores some health, fully recharges spells, and grants a few seconds of immunity to any incoming damage.',
+    mysterium1: {
+      charismata: [
+        'Health on resurrection: 50 %',
+        'Immunity: 5 s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Health on resurrection: 75 %',
+        'Immunity: 6 s',
+        'While immune, Light Spell recharges instantly.'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Health on resurrection: 100 %',
+        'Immunity: 7 s',
+        'While immune, Light Spell recharges instantly.',
+        'Weapon damage while immune: +100 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'f006',
+    name: 'Monkshood',
+    category: 'Fetishes',
+    iconUrl: '/images/items/Monkshood.png',
+    element: null,
+    description: 'Absorbing a Manifestation crystal add a magical shield that neutralizes any damage once and then dissipates.',
+    mysterium1: {
+      charismata: [
+        'Maximum shield layers: 3'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Maximum shield layers: 4',
+        'Extra shield chance: 50 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Maximum shield layers: 5',
+        'Extra shield chance: 70 %',
+        'Chance for a shield to hold: 25 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'f007',
+    name: 'Yew',
+    category: 'Fetishes',
+    iconUrl: '/images/items/Yew.png',
+    element: null,
+    description: 'Collecting shield orbs sometimes dropped by enemies grants a temporary shield.',
+    mysterium1: {
+      charismata: [
+        'Shield duration: 8s'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Shield duration: 10s',
+        'Collecting an orb purges all ailments.',
+        'Reload time while the shield is active: -25%'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Shield duration: 12s',
+        'Collecting an orb purges all ailments.',
+        'Reload time while the shield is active: -35%',
+        'Collecting an orb knocks back nearby enemies and grants a brief speed burst.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
   }
 ];
 
@@ -1630,12 +2050,281 @@ export const rings: BaseItem[] = [
     },
     addedOn: '2025-05-05',
     updatedOn: '2025-05-05'
+  },
+  {
+    id: 'rg002',
+    name: 'Dynamo Ring',
+    category: 'Rings',
+    iconUrl: '/images/items/DynamoRing.png',
+    element: 'Air',
+    description: 'Dashing after landing a hit unleashes a lightning bolt that seeks the nearest enemy, favoring targets in the direction of the dash.',
+    mysterium1: {
+      charismata: [
+        'Damage: 35 dmg'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Damage: 40 dmg',
+        'Lightning bolt shocks the target'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Damage: 45 dmg',
+        'Lightning bolt shocks the target.',
+        'Lightning bolt damages its origin target before jumping.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'rg003',
+    name: 'Meteor Ring',
+    category: 'Rings',
+    iconUrl: '/images/items/MeteorRing.png',
+    element: 'Fire',
+    description: 'Slides are longer and create a damaging fire trail that burns enemies.',
+    mysterium1: {
+      charismata: [
+        'Slide length: +0 m',
+        'Tick damage: 6 dmg'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Slide length: +2 m',
+        'Tick damage: 8 dmg',
+        'Collisions with enemies deal damage: 40 dmg'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Slide length: +3 m',
+        'Tick damage: 10 dmg',
+        'Collisions with enemies deal damage: 50 dmg',
+        'Sliding past enemies burns them'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'rg004',
+    name: 'Ring Of Excreta',
+    category: 'Rings',
+    iconUrl: '/images/items/RingOfExcreta.png',
+    element: 'Earth',
+    description: 'Dash leaves behind a delayed bomb that damages and knocks back enemies.',
+    mysterium1: {
+      charismata: [
+        'Explosion range: 5 m',
+        'Bomb damage: 20'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Explosion range: 6 m',
+        'Bomb damage: 25',
+        'Dash distance: 2 m'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Explosion range: 7 m',
+        'Bomb damage: 30',
+        'Dash distance: 3 m',
+        'The bomb applies a Decay curse.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'rg005',
+    name: 'Ring Of Obedience',
+    category: 'Rings',
+    iconUrl: '/images/items/RingOfObedience.png',
+    element: null,
+    description: 'Dashing while looking at the last wounded enemy pushes them in the direction of the Dash.',
+    mysterium1: {
+      charismata: [
+        'Push damage: 20',
+        'Activation distance: 20 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Push damage: 30',
+        'Activation distance: 25 m',
+        'Stamina regenerated on push kills: ??'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Push damage: 40',
+        'Activation distance: 30 m',
+        'Stamina regenerated on push kills: 50',
+        'Three consecutive pushes stun non-Elite enemies.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'rg006',
+    name: 'Ring Of Thorns',
+    category: 'Rings',
+    iconUrl: '/images/items/RingOfThorns.png',
+    element: 'Water',
+    description: 'Dodging an attack with Dash freezes the attacker. Killing them before they thaw might create an ammo-replenishing orb.',
+    mysterium1: {
+      charismata: [
+        'Chance to drop an ammo replenishing orb.'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Chance to drop an ammo replenishing orb.',
+        'The orb fully regenerates Stamina.'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Chance to drop an ammo replenishing orb.',
+        'The orb fully regenerates Stamina.',
+        'The orb fully regenerates Light Spell.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'rg007',
+    name: 'Ring Of Wings',
+    category: 'Rings',
+    iconUrl: '/images/items/RingOfWings.png',
+    element: null,
+    description: 'Allows to Dash mid-air.',
+    mysterium1: {
+      charismata: [
+        'Airborne jump Stamina cost: -10 %'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Airborne jump Stamina cost: -20 %',
+        'Dashing after double-jumping costs less Stamina.'
+      ],
+      requirements: [
+        'Kills with item equipped: 150'
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Airborne jump Stamina cost: -30 %',
+        'Dashing after double-jumping costs less Stamina.',
+        'Improved mid-air directional control.',
+        'No fall damage.'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
+  },
+  {
+    id: 'rg008',
+    name: 'Shadowmist Ring',
+    category: 'Rings',
+    iconUrl: '/images/items/ShadowmistRing.png',
+    element: 'Water',
+    description: 'Dashing turns the ring bearer into a shadow mist that can pass through enemies.',
+    mysterium1: {
+      charismata: [
+        'Activation distance: 9 m'
+      ],
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      charismata: [
+        'Activation distance: 10 m',
+        'Enemy health taken: 25'
+      ],
+      requirements: [
+        ''
+      ]
+    },
+    mysterium3: {
+      charismata: [
+        'Activation distance: 11 m',
+        'Enemy health taken: 35',
+        'Chance to freeze: 50 %'
+      ],
+      requirements: [
+        'Kills with item equipped: 250'
+      ]
+    },
+    addedOn: '2025-05-06',
+    updatedOn: '2025-05-06'
   }
 ];
 
 
 // DemonicWeapons
-export const demonicWeapons: BaseItem[] = [
+export const demonicWeapons: Weapon[] = [
   {
     id: 'dw001',
     name: 'Vulture',
