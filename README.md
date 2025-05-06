@@ -1,4 +1,4 @@
-# Witchfire Loadout Manager & Randomizer
+# Witchfire Randomizer
 
 A web application for players of the game Witchfire to create and randomize loadouts with element preferences and detailed item information.
 
