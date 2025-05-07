@@ -50,7 +50,7 @@ export default function RootLayout({
             </main>
             <footer className="bg-[#1a1a1abb] text-gray-100 py-2">
               <div className="container mx-auto px-4 text-center">
-                <p>©Witchfire Randomizer 1.0.0 - created by Hendrik Hömberg</p>
+                <p className="text-xs">©Witchfire Randomizer 1.0.0</p>
                 <p className="text-xs">I am not affiliated with The Astronauts or Witchfire in any way.</p>
                 <p className="text-xs">All image rights belong to Witchfire and The Astronauts. Background image created by Gregory Pedzinski</p>
               </div>
