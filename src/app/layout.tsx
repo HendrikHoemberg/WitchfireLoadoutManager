@@ -35,12 +35,12 @@ export default function RootLayout({
             <div className="flex justify-center items-center py-4 sm:py-8 mt-2">
               <Link href="/">
                 <Image
-                  src="/images/wf-logo2.PNG"
+                  src="/images/wf-logo2.webP"
                   alt="Witchfire Logo"
-                  width={0}
-                  height={0}
+                  width={400}
+                  height={150}
                   sizes="(max-width: 1000px) 100vw, 25vh"
-                  className="h-50 w-auto"
+                  className="h-auto"
                   priority
                 />
               </Link>
