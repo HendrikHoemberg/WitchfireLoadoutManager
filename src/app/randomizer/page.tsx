@@ -72,6 +72,15 @@ export default function RandomizerPage() {
         />
       </div>
       
+      {/* Randomize Button */}
+      <div className="flex justify-center">
+        <button
+          className="px-6 py-3 cursor-pointer hover:bg-[#ddaf7ada] bg-[#ddaf7aa6] text-white font-bold rounded-md transition-colors"
+          onClick={generateRandomLoadout}
+        >
+          Generate New Loadout
+        </button>
+      </div>
       
       {/* Element Preferences */}
       <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] flex flex-col items-center justify-center text-center overflow-hidden">
@@ -129,16 +138,6 @@ export default function RandomizerPage() {
         <p className="text-sm text-gray-100 mt-2">
           Select elements to prioritize in your loadout. Items with selected elements will be preferred.
         </p>
-      </div>
-      
-      {/* Randomize Button */}
-      <div className="flex justify-center">
-        <button
-          className="px-6 py-3 cursor-pointer hover:bg-[#ddaf7ada] bg-[#ddaf7aa6] text-white font-bold rounded-md transition-colors"
-          onClick={generateRandomLoadout}
-        >
-          Generate New Loadout
-        </button>
       </div>
       
       {/* Item Exclusion Section */}
