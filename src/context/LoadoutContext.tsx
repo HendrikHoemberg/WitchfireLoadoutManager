@@ -155,8 +155,9 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
         if (slot === 'secondaryWeapon') continue;
         
         // Get the corresponding category for this slot
-        const category = Object.entries(categoryToSlot)
-          .find(([_, s]) => s === slot)?.[0];
+        const categoryEntry = Object.entries(categoryToSlot)
+          .find(entry => entry[1] === slot);
+        const category = categoryEntry?.[0];
         
         if (!category) continue;
         
@@ -296,8 +297,9 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
           const slot = remainingSlots[randomSlotIndex];
           
           // Get the category for this slot
-          const category = Object.entries(categoryToSlot)
-            .find(([_, s]) => s === slot)?.[0];
+          const categoryEntry = Object.entries(categoryToSlot)
+            .find(entry => entry[1] === slot);
+          const category = categoryEntry?.[0];
             
           if (!category) {
             // If we're dealing with secondaryWeapon
@@ -401,8 +403,9 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
         }
         
         // Get the category for this slot
-        const category = Object.entries(categoryToSlot)
-          .find(([_, s]) => s === slot)?.[0];
+        const categoryEntry = Object.entries(categoryToSlot)
+          .find(entry => entry[1] === slot);
+        const category = categoryEntry?.[0];
           
         if (!category) continue;
         
