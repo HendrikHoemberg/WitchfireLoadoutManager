@@ -15,7 +15,8 @@ export default function RandomizerPage() {
     setPreferredElements, 
     toggleExcludedItem, 
     clearExcludedItems,
-    clearLoadout
+    clearLoadout,
+    isGenerating
   } = useLoadout();
   
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory>('Weapons');
@@ -69,6 +70,7 @@ export default function RandomizerPage() {
         
         <LoadoutDisplay 
           loadout={loadout} 
+          isGenerating={isGenerating}
         />
       </div>
       
@@ -77,8 +79,9 @@ export default function RandomizerPage() {
         <button
           className="px-6 py-3 cursor-pointer hover:bg-[#ddaf7ada] bg-[#ddaf7aa6] text-white font-bold rounded-md transition-colors"
           onClick={generateRandomLoadout}
+          disabled={isGenerating}
         >
-          Generate New Loadout
+          {isGenerating ? 'Generating...' : 'Generate New Loadout'}
         </button>
       </div>
       
@@ -136,7 +139,8 @@ export default function RandomizerPage() {
         </div>
         
         <p className="text-sm text-gray-100 mt-2">
-          Select elements to prioritize in your loadout. Items with selected elements will be preferred.
+          Select elements that you want in your loadout. Every slot will try to use an item with your selected elements.
+          All selected elements are guaranteed to be included at least once.
         </p>
       </div>
       

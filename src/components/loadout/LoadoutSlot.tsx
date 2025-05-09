@@ -15,9 +15,10 @@ interface LoadoutSlotProps {
   category: string;
   isSelected?: boolean;
   onClick?: () => void;
+  isGenerating?: boolean;
 }
 
-const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlotProps) => {
+const LoadoutSlot = ({ item, category, isSelected = false, onClick, isGenerating = false }: LoadoutSlotProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupPosition, setPopupPosition] = useState<{top: number, left: number, placement: 'right' | 'left' | 'top' | 'bottom'}>({
     top: 0,
@@ -30,6 +31,17 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
   // Handle long press for mobile devices
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // State to track white fill animation phase
+  const [showWhiteFill, setShowWhiteFill] = useState(false);
+  const [showWhiteFadeOut, setShowWhiteFadeOut] = useState(false);
+  
+  // Use refs to track timer IDs for better cleanup
+  const fillTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const fadeOutTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Track the previous isGenerating value to detect changes
+  const prevIsGeneratingRef = useRef(isGenerating);
 
   // Detect if device is a touch device (mobile or tablet)
   useEffect(() => {
@@ -136,6 +148,62 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
       };
     }
   }, [isTouchDevice, showPopup]);
+
+  // Handle the white fill animation timing when isGenerating changes
+  // Use a more synchronized approach to ensure consistent timing
+  useEffect(() => {
+    // Clean up any existing timers first to avoid race conditions
+    if (fillTimerRef.current) {
+      clearTimeout(fillTimerRef.current);
+      fillTimerRef.current = null;
+    }
+    
+    if (fadeOutTimerRef.current) {
+      clearTimeout(fadeOutTimerRef.current);
+      fadeOutTimerRef.current = null;
+    }
+    
+    // Only trigger new animations when isGenerating changes
+    if (isGenerating !== prevIsGeneratingRef.current) {
+      prevIsGeneratingRef.current = isGenerating;
+      
+      if (isGenerating) {
+        // Start the fill animation immediately
+        setShowWhiteFill(true);
+        setShowWhiteFadeOut(false);
+        
+        // Schedule the fade out transition - using 800ms for main animation (80% of 1s)
+        fillTimerRef.current = setTimeout(() => {
+          fillTimerRef.current = null;
+          setShowWhiteFill(false);
+          setShowWhiteFadeOut(true);
+          
+          // Schedule the complete removal of the animation - 200ms for fade-out (20% of 1s)
+          fadeOutTimerRef.current = setTimeout(() => {
+            fadeOutTimerRef.current = null;
+            setShowWhiteFadeOut(false);
+          }, 200); // 200ms fade-out period
+        }, 800); // 800ms main animation
+      } else if (showWhiteFill) {
+        // Start fade out if we were in the middle of fill
+        setShowWhiteFill(false);
+        setShowWhiteFadeOut(true);
+        
+        // Schedule the complete removal of the animation
+        fadeOutTimerRef.current = setTimeout(() => {
+          fadeOutTimerRef.current = null;
+          setShowWhiteFadeOut(false);
+        }, 200); // Match the fadeout timing with the above
+      }
+    }
+    
+    // Clean up timers on unmount
+    return () => {
+      if (fillTimerRef.current) clearTimeout(fillTimerRef.current);
+      if (fadeOutTimerRef.current) clearTimeout(fadeOutTimerRef.current);
+    };
+  }, [isGenerating, showWhiteFill]);
+
   // Determine the display name for the category
   const getCategoryDisplayName = (category: string, slotIndex?: number) => {
     switch (category) {
@@ -152,16 +220,26 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
   const slotIndex = category === 'Weapons' && onClick ? 
     onClick.toString().includes('primaryWeapon') ? 0 : 1 : undefined;
 
+  // Define the glow animation class based on isGenerating state
+  // Enhanced animation with more intense glow and outer glow effect
+  const generatingAnimationClass = isGenerating 
+    ? 'animate-glow-pulse shadow-glow' 
+    : '';
+
   return (
     <div 
       ref={slotRef}
       className={`
         relative flex flex-col items-center 
         w-24 h-24 sm:w-34 sm:h-34 rounded-lg 
-        ${isSelected ? 'border-2 border-[#ddaf7aa6]' : 'border border-[#818181]'} 
+        ${isSelected ? 'border-2 border-[#ddaf7aa6]' : isGenerating ? `border ${generatingAnimationClass}` : 'border border-[#818181]'} 
         ${item ? 'bg-[#505050]' : 'bg-opacity-50 bg-[#30303025]'} 
         transition-all duration-200 cursor-pointer hover:border-[#ddaf7aa6]
       `}
+      style={{
+        // Add dynamic style for the glow effect when generating
+        boxShadow: isGenerating ? undefined : 'none'
+      }}
       onClick={onClick}
       onMouseEnter={() => !isTouchDevice && item && setShowPopup(true)}
       onMouseLeave={() => !isTouchDevice && setShowPopup(false)}
@@ -186,6 +264,13 @@ const LoadoutSlot = ({ item, category, isSelected = false, onClick }: LoadoutSlo
         }
       }}
     >
+      {/* White fill overlay for the animation */}
+      {(showWhiteFill || showWhiteFadeOut) && (
+        <div 
+          className={`absolute inset-0 z-10 rounded-lg pointer-events-none ${showWhiteFill ? 'white-fill-in' : ''} ${showWhiteFadeOut ? 'white-fill-out' : ''}`}
+        ></div>
+      )}
+      
       {item ? (
         <>
           <div className="flex-grow flex items-center justify-center pt-2">

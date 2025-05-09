@@ -7,9 +7,10 @@ interface LoadoutDisplayProps {
   loadout: Loadout;
   onSlotClick?: (slot: keyof Loadout) => void;
   selectedSlot?: keyof Loadout | null;
+  isGenerating?: boolean;
 }
 
-const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot }: LoadoutDisplayProps) => {
+const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = false }: LoadoutDisplayProps) => {
   // Get all active elements in the loadout
   const getActiveElements = (): Element[] => {
     const elements = Object.values(loadout)
@@ -29,48 +30,56 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot }: LoadoutDisplayPr
           category="Weapons" 
           isSelected={selectedSlot === 'primaryWeapon'}
           onClick={() => onSlotClick && onSlotClick('primaryWeapon')}
+          isGenerating={isGenerating}
         />
         <LoadoutSlot 
           item={loadout.secondaryWeapon} 
           category="Weapons" 
           isSelected={selectedSlot === 'secondaryWeapon'}
           onClick={() => onSlotClick && onSlotClick('secondaryWeapon')}
+          isGenerating={isGenerating}
         />
         <LoadoutSlot 
           item={loadout.demonicWeapon} 
           category="DemonicWeapons" 
           isSelected={selectedSlot === 'demonicWeapon'}
           onClick={() => onSlotClick && onSlotClick('demonicWeapon')}
+          isGenerating={isGenerating}
         />
         <LoadoutSlot 
           item={loadout.relic} 
           category="Relics" 
           isSelected={selectedSlot === 'relic'}
           onClick={() => onSlotClick && onSlotClick('relic')}
+          isGenerating={isGenerating}
         />
         <LoadoutSlot 
           item={loadout.fetish} 
           category="Fetishes" 
           isSelected={selectedSlot === 'fetish'}
           onClick={() => onSlotClick && onSlotClick('fetish')}
+          isGenerating={isGenerating}
         />
         <LoadoutSlot 
           item={loadout.ring} 
           category="Rings" 
           isSelected={selectedSlot === 'ring'}
           onClick={() => onSlotClick && onSlotClick('ring')}
+          isGenerating={isGenerating}
         />
         <LoadoutSlot 
           item={loadout.lightSpell} 
           category="LightSpells" 
           isSelected={selectedSlot === 'lightSpell'}
           onClick={() => onSlotClick && onSlotClick('lightSpell')}
+          isGenerating={isGenerating}
         />
         <LoadoutSlot 
           item={loadout.heavySpell} 
           category="HeavySpells" 
           isSelected={selectedSlot === 'heavySpell'}
           onClick={() => onSlotClick && onSlotClick('heavySpell')}
+          isGenerating={isGenerating}
         />
       </div>
 

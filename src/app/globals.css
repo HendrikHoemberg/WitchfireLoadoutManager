@@ -32,4 +32,61 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+@theme {
+  /* Define a new keyframes animation with more intense glow and smooth fade-out */
+  @keyframes glow-pulse {
+    0% { 
+      border-color: #ddaf7a40;
+      box-shadow: 0 0 0 0 rgba(221, 175, 122, 0.1);
+    }
+    80% { /* 800ms of 1s total */
+      border-color: #ffcb8aff; /* Much brighter highlight color */
+      box-shadow: 0 0 20px 4px rgba(255, 203, 138, 0.7);
+    }
+    100% {
+      border-color: #ddaf7a40;
+      box-shadow: 0 0 0 0 rgba(221, 175, 122, 0.1);
+    }
+  }
+
+  /* White fill animation that gradually fades in over 800ms */
+  @keyframes white-fill-in {
+    0% {
+      background-color: rgba(200, 200, 200, 0);
+    }
+    100% {
+      background-color: rgba(200, 200, 200, 1);
+    }
+  }
+
+  /* Smooth fade out animation for the white fill (200ms) */
+  @keyframes white-fill-out {
+    0% {
+      background-color: rgba(200, 200, 200, 1);
+    }
+    100% {
+      background-color: rgba(200, 200, 200, 0);
+    }
+  }
+
+  /* Define the animations in our theme */
+  --animate-glow-pulse: glow-pulse 1s ease-in-out infinite;
+  --animate-white-fill-in: white-fill-in 800ms ease-in-out forwards;
+  --animate-white-fill-out: white-fill-out 200ms ease-out forwards;
+}
+
+/* Add a custom utility class for the shadow glow effect */
+@utility shadow-glow {
+  box-shadow: 0 0 10px 2px rgba(221, 175, 122, 0.4);
+}
+
+/* Add custom utility classes for the white fill animations */
+@utility white-fill-in {
+  animation: var(--animate-white-fill-in);
+}
+
+@utility white-fill-out {
+  animation: var(--animate-white-fill-out);
+}
+
 

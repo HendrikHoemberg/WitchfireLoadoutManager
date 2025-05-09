@@ -5,12 +5,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-6xl mx-auto">
-        <FeatureCard 
-          title="Loadout Manager" 
-          icon="⚔️"
-          link="/manager"
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
         <FeatureCard 
           title="Loadout Randomizer" 
           icon="🎲"
@@ -20,6 +15,11 @@ export default function Home() {
           title="Item Wiki" 
           icon="📚"
           link="/wiki"
+        />
+        <FeatureCard 
+          title="Loadout Manager" 
+          icon="⚔️"
+          link="/manager"
         />
       </div>
     </div>

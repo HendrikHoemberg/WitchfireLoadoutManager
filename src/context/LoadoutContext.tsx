@@ -18,6 +18,7 @@ interface LoadoutContextType {
   
   // Randomizer functions
   generateRandomLoadout: () => void;
+  isGenerating: boolean;
   
   // Helper functions
   getActiveElements: () => Element[];
@@ -44,6 +45,7 @@ const LoadoutContext = createContext<LoadoutContextType | undefined>(undefined);
 export function LoadoutProvider({ children }: { children: ReactNode }) {
   const [loadout, setLoadout] = useState<Loadout>(defaultLoadout);
   const [randomizerSettings, setRandomizerSettings] = useState<RandomizerSettings>(defaultRandomizerSettings);
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   // Set a specific item in the loadout
   const setItemInLoadout = useCallback((slot: keyof Loadout, item: BaseItem | null) => {
@@ -97,113 +99,353 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
     return Array.from(new Set(elements));
   }, [loadout]);
 
+  // Helper function to shuffle an array (Fisher-Yates algorithm)
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  };
+
   // Generate a random loadout based on current settings
   const generateRandomLoadout = useCallback(() => {
-    const newLoadout: Loadout = {
-      primaryWeapon: null,
-      secondaryWeapon: null,
-      demonicWeapon: null,
-      lightSpell: null,
-      heavySpell: null,
-      relic: null,
-      fetish: null,
-      ring: null
-    };
-
-    // Map category names to loadout slot names
-    const categoryToSlot: Record<string, keyof Loadout> = {
-      'Weapons': 'primaryWeapon', // Primary weapon gets items from Weapons category
-      'DemonicWeapons': 'demonicWeapon',
-      'LightSpells': 'lightSpell',
-      'HeavySpells': 'heavySpell',
-      'Relics': 'relic',
-      'Fetishes': 'fetish',
-      'Rings': 'ring'
-    };
+    setIsGenerating(true);
     
-    // Secondary weapon also gets items from Weapons category
-    // We'll handle this separately
+    setTimeout(() => {
+      const newLoadout: Loadout = {
+        primaryWeapon: null,
+        secondaryWeapon: null,
+        demonicWeapon: null,
+        lightSpell: null,
+        heavySpell: null,
+        relic: null,
+        fetish: null,
+        ring: null
+      };
 
-    // For each category, select a random item
-    Object.entries(categoryToSlot).forEach(([category, slot]) => {
-      // Get all items in this category
-      let availableItems = getItemsByCategory(category);
+      // Map category names to loadout slot names
+      const categoryToSlot: Record<string, keyof Loadout> = {
+        'Weapons': 'primaryWeapon', // Primary weapon gets items from Weapons category
+        'DemonicWeapons': 'demonicWeapon',
+        'LightSpells': 'lightSpell',
+        'HeavySpells': 'heavySpell',
+        'Relics': 'relic',
+        'Fetishes': 'fetish',
+        'Rings': 'ring'
+      };
       
-      // Filter out excluded items
-      if (randomizerSettings.excludedItems.length > 0) {
-        availableItems = availableItems.filter(
-          item => !randomizerSettings.excludedItems.includes(item.id)
-        );
-      }
+      // Keep track of preferred elements that haven't been included yet
+      const elementsToInclude = [...randomizerSettings.preferredElements].filter(e => e !== null);
+      const assignedSlots: (keyof Loadout)[] = [];
       
-      // Check if we have enough items to randomize
-      if (availableItems.length < 1) {
-        // Not enough items to randomize, skip this category
-        return;
-      }
+      // First, let's make sure ALL preferred elements are included (Phase 1)
+      const allSlots: (keyof Loadout)[] = [
+        'primaryWeapon', 'secondaryWeapon', 'demonicWeapon', 
+        'lightSpell', 'heavySpell', 'relic', 'fetish', 'ring'
+      ];
       
-      // If preferred elements are specified, prioritize items with those elements
-      if (randomizerSettings.preferredElements.length > 0) {
-        const itemsWithPreferredElements = availableItems.filter(
-          item => item.element !== null && randomizerSettings.preferredElements.includes(item.element)
-        );
+      // Shuffle slots to ensure random distribution
+      const shuffledSlots = shuffleArray([...allSlots]);
+      
+      // Process each slot and try to assign items with preferred elements
+      for (const slot of shuffledSlots) {
+        // Skip secondary weapon for now, we'll handle it separately
+        if (slot === 'secondaryWeapon') continue;
         
-        // If we have items with preferred elements, use those
-        if (itemsWithPreferredElements.length > 0) {
-          const randomIndex = Math.floor(Math.random() * itemsWithPreferredElements.length);
-          newLoadout[slot] = itemsWithPreferredElements[randomIndex];
-          return;
+        // Get the corresponding category for this slot
+        const category = Object.entries(categoryToSlot)
+          .find(([_, s]) => s === slot)?.[0];
+        
+        if (!category) continue;
+        
+        // Get all items for this category
+        let availableItems = getItemsByCategory(category);
+        
+        // Filter out excluded items
+        if (randomizerSettings.excludedItems.length > 0) {
+          availableItems = availableItems.filter(
+            item => !randomizerSettings.excludedItems.includes(item.id)
+          );
+        }
+        
+        // Check if we have enough items to randomize
+        if (availableItems.length < 1) continue;
+        
+        // Prioritize items with any preferred element
+        if (randomizerSettings.preferredElements.length > 0) {
+          const itemsWithPreferredElements = availableItems.filter(
+            item => item.element !== null && randomizerSettings.preferredElements.includes(item.element)
+          );
+          
+          if (itemsWithPreferredElements.length > 0) {
+            // Find items with elements we haven't assigned yet (if any are left)
+            if (elementsToInclude.length > 0) {
+              const itemsWithMissingElements = itemsWithPreferredElements.filter(
+                item => item.element !== null && elementsToInclude.includes(item.element)
+              );
+              
+              if (itemsWithMissingElements.length > 0) {
+                // Pick a random item from those with missing elements
+                const randomIndex = Math.floor(Math.random() * itemsWithMissingElements.length);
+                const selectedItem = itemsWithMissingElements[randomIndex];
+                newLoadout[slot] = selectedItem;
+                
+                // Remove this element from our tracking list
+                if (selectedItem.element) {
+                  const elementIndex = elementsToInclude.indexOf(selectedItem.element);
+                  if (elementIndex !== -1) {
+                    elementsToInclude.splice(elementIndex, 1);
+                  }
+                }
+                
+                assignedSlots.push(slot);
+                continue;
+              }
+            }
+            
+            // If we don't have any missing elements or no items with missing elements,
+            // just pick any item with a preferred element
+            const randomIndex = Math.floor(Math.random() * itemsWithPreferredElements.length);
+            newLoadout[slot] = itemsWithPreferredElements[randomIndex];
+            assignedSlots.push(slot);
+            continue;
+          }
+        }
+        
+        // If we reached here, there are no preferred elements for this slot
+        // We'll leave it empty for now and fill it in Phase 2 if we need to
+      }
+      
+      // Handle secondary weapon separately (to avoid duplicating primary)
+      if (!assignedSlots.includes('secondaryWeapon')) {
+        let availableWeapons = getItemsByCategory('Weapons');
+        
+        // Filter out excluded items
+        if (randomizerSettings.excludedItems.length > 0) {
+          availableWeapons = availableWeapons.filter(
+            item => !randomizerSettings.excludedItems.includes(item.id)
+          );
+        }
+        
+        // Filter out the primary weapon to avoid duplicates
+        if (newLoadout.primaryWeapon) {
+          availableWeapons = availableWeapons.filter(
+            item => item.id !== newLoadout.primaryWeapon?.id
+          );
+        }
+        
+        // Check if we have enough items to randomize
+        if (availableWeapons.length >= 1) {
+          // Prioritize items with any preferred element
+          if (randomizerSettings.preferredElements.length > 0) {
+            const weaponsWithPreferredElements = availableWeapons.filter(
+              item => item.element !== null && randomizerSettings.preferredElements.includes(item.element)
+            );
+            
+            if (weaponsWithPreferredElements.length > 0) {
+              // Find weapons with elements we haven't assigned yet (if any are left)
+              if (elementsToInclude.length > 0) {
+                const weaponsWithMissingElements = weaponsWithPreferredElements.filter(
+                  item => item.element !== null && elementsToInclude.includes(item.element)
+                );
+                
+                if (weaponsWithMissingElements.length > 0) {
+                  // Pick a random weapon from those with missing elements
+                  const randomIndex = Math.floor(Math.random() * weaponsWithMissingElements.length);
+                  const selectedItem = weaponsWithMissingElements[randomIndex];
+                  newLoadout.secondaryWeapon = selectedItem;
+                  
+                  // Remove this element from our tracking list
+                  if (selectedItem.element) {
+                    const elementIndex = elementsToInclude.indexOf(selectedItem.element);
+                    if (elementIndex !== -1) {
+                      elementsToInclude.splice(elementIndex, 1);
+                    }
+                  }
+                  
+                  assignedSlots.push('secondaryWeapon');
+                } else {
+                  // Just pick any weapon with a preferred element
+                  const randomIndex = Math.floor(Math.random() * weaponsWithPreferredElements.length);
+                  newLoadout.secondaryWeapon = weaponsWithPreferredElements[randomIndex];
+                  assignedSlots.push('secondaryWeapon');
+                }
+              } else {
+                // Just pick any weapon with a preferred element
+                const randomIndex = Math.floor(Math.random() * weaponsWithPreferredElements.length);
+                newLoadout.secondaryWeapon = weaponsWithPreferredElements[randomIndex];
+                assignedSlots.push('secondaryWeapon');
+              }
+            }
+          }
         }
       }
       
-      // Otherwise, select a random item from all available items
-      const randomIndex = Math.floor(Math.random() * availableItems.length);
-      newLoadout[slot] = availableItems[randomIndex];
-    });
-    
-    // Handle secondary weapon separately (also from Weapons category)
-    // Get all weapons
-    let availableWeapons = getItemsByCategory('Weapons');
-    
-    // Filter out excluded items
-    if (randomizerSettings.excludedItems.length > 0) {
-      availableWeapons = availableWeapons.filter(
-        item => !randomizerSettings.excludedItems.includes(item.id)
-      );
-    }
-    
-    // Filter out the primary weapon to avoid duplicates
-    if (newLoadout.primaryWeapon) {
-      availableWeapons = availableWeapons.filter(
-        item => item.id !== newLoadout.primaryWeapon?.id
-      );
-    }
-    
-    // Check if we have enough items to randomize
-    if (availableWeapons.length >= 1) {
-      // If preferred elements are specified, prioritize items with those elements
-      if (randomizerSettings.preferredElements.length > 0) {
-        const weaponsWithPreferredElements = availableWeapons.filter(
-          item => item.element !== null && randomizerSettings.preferredElements.includes(item.element)
-        );
-        
-        // If we have items with preferred elements, use those
-        if (weaponsWithPreferredElements.length > 0) {
-          const randomIndex = Math.floor(Math.random() * weaponsWithPreferredElements.length);
-          newLoadout.secondaryWeapon = weaponsWithPreferredElements[randomIndex];
-        } else {
-          // Otherwise, select a random weapon
-          const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-          newLoadout.secondaryWeapon = availableWeapons[randomIndex];
+      // Phase 2: Fill any remaining slots with remaining preferred elements or random items
+      const remainingSlots = allSlots.filter(slot => !assignedSlots.includes(slot));
+      
+      // If we still have preferred elements to include, try to ensure they are included
+      if (elementsToInclude.length > 0 && remainingSlots.length > 0) {
+        for (const element of elementsToInclude) {
+          if (remainingSlots.length === 0) break;
+          
+          // Get a random slot from remaining slots
+          const randomSlotIndex = Math.floor(Math.random() * remainingSlots.length);
+          const slot = remainingSlots[randomSlotIndex];
+          
+          // Get the category for this slot
+          const category = Object.entries(categoryToSlot)
+            .find(([_, s]) => s === slot)?.[0];
+            
+          if (!category) {
+            // If we're dealing with secondaryWeapon
+            if (slot === 'secondaryWeapon') {
+              let availableWeapons = getItemsByCategory('Weapons');
+              
+              // Filter out excluded items
+              if (randomizerSettings.excludedItems.length > 0) {
+                availableWeapons = availableWeapons.filter(
+                  item => !randomizerSettings.excludedItems.includes(item.id)
+                );
+              }
+              
+              // Filter out the primary weapon to avoid duplicates
+              if (newLoadout.primaryWeapon) {
+                availableWeapons = availableWeapons.filter(
+                  item => item.id !== newLoadout.primaryWeapon?.id
+                );
+              }
+              
+              // Find weapons with this element
+              const weaponsWithElement = availableWeapons.filter(
+                item => item.element === element
+              );
+              
+              if (weaponsWithElement.length > 0) {
+                const randomIndex = Math.floor(Math.random() * weaponsWithElement.length);
+                newLoadout.secondaryWeapon = weaponsWithElement[randomIndex];
+                
+                // Remove this slot from remaining slots
+                remainingSlots.splice(randomSlotIndex, 1);
+                continue;
+              }
+            }
+            continue;
+          }
+          
+          // Get items with this specific element
+          let itemsWithElement = getItemsByCategory(category)
+            .filter(item => item.element === element);
+            
+          // Filter out excluded items
+          if (randomizerSettings.excludedItems.length > 0) {
+            itemsWithElement = itemsWithElement.filter(
+              item => !randomizerSettings.excludedItems.includes(item.id)
+            );
+          }
+          
+          if (itemsWithElement.length > 0) {
+            const randomIndex = Math.floor(Math.random() * itemsWithElement.length);
+            newLoadout[slot] = itemsWithElement[randomIndex];
+            
+            // Remove this slot from remaining slots
+            remainingSlots.splice(randomSlotIndex, 1);
+          }
         }
-      } else {
-        // No element preference, select a random weapon
-        const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-        newLoadout.secondaryWeapon = availableWeapons[randomIndex];
       }
-    }
-    
-    setLoadout(newLoadout);
+      
+      // Fill remaining slots with random items, still prioritizing preferred elements
+      for (const slot of remainingSlots) {
+        // Skip secondaryWeapon, we'll handle it specially
+        if (slot === 'secondaryWeapon') {
+          // Only process secondaryWeapon if it's still null
+          if (newLoadout.secondaryWeapon === null) {
+            let availableWeapons = getItemsByCategory('Weapons');
+            
+            // Filter out excluded items
+            if (randomizerSettings.excludedItems.length > 0) {
+              availableWeapons = availableWeapons.filter(
+                item => !randomizerSettings.excludedItems.includes(item.id)
+              );
+            }
+            
+            // Filter out the primary weapon to avoid duplicates
+            if (newLoadout.primaryWeapon) {
+              availableWeapons = availableWeapons.filter(
+                item => item.id !== newLoadout.primaryWeapon?.id
+              );
+            }
+            
+            if (availableWeapons.length > 0) {
+              // Prioritize preferred elements if possible
+              if (randomizerSettings.preferredElements.length > 0) {
+                const weaponsWithPreferredElements = availableWeapons.filter(
+                  item => item.element !== null && randomizerSettings.preferredElements.includes(item.element)
+                );
+                
+                if (weaponsWithPreferredElements.length > 0) {
+                  const randomIndex = Math.floor(Math.random() * weaponsWithPreferredElements.length);
+                  newLoadout.secondaryWeapon = weaponsWithPreferredElements[randomIndex];
+                  continue;
+                }
+              }
+              
+              // No preferred elements match, pick any random weapon
+              const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+              newLoadout.secondaryWeapon = availableWeapons[randomIndex];
+            }
+          }
+          continue;
+        }
+        
+        // Get the category for this slot
+        const category = Object.entries(categoryToSlot)
+          .find(([_, s]) => s === slot)?.[0];
+          
+        if (!category) continue;
+        
+        // Get all items for this category
+        let availableItems = getItemsByCategory(category);
+        
+        // Filter out excluded items
+        if (randomizerSettings.excludedItems.length > 0) {
+          availableItems = availableItems.filter(
+            item => !randomizerSettings.excludedItems.includes(item.id)
+          );
+        }
+        
+        if (availableItems.length > 0) {
+          // Prioritize preferred elements if possible
+          if (randomizerSettings.preferredElements.length > 0) {
+            const itemsWithPreferredElements = availableItems.filter(
+              item => item.element !== null && randomizerSettings.preferredElements.includes(item.element)
+            );
+            
+            if (itemsWithPreferredElements.length > 0) {
+              const randomIndex = Math.floor(Math.random() * itemsWithPreferredElements.length);
+              newLoadout[slot] = itemsWithPreferredElements[randomIndex];
+              continue;
+            }
+          }
+          
+          // No preferred elements match, pick a random item
+          const randomIndex = Math.floor(Math.random() * availableItems.length);
+          newLoadout[slot] = availableItems[randomIndex];
+        }
+      }
+      
+      // Set the loadout first
+      setLoadout(newLoadout);
+      
+      // Then set isGenerating to false after a small delay (200ms)
+      // This allows the white-fill animation to continue after items appear
+      setTimeout(() => {
+        setIsGenerating(false);
+      }, 200);
+      
+    }, 800); // 800ms for main animation (reduced from 1000ms)
   }, [randomizerSettings]);
 
   const value = {
@@ -215,6 +457,7 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
     toggleExcludedItem,
     clearExcludedItems,
     generateRandomLoadout,
+    isGenerating,
     getActiveElements
   };
 
