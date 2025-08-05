@@ -1,9 +1,10 @@
 "use client";
 
-import { getItemsByCategory } from '@/data/items';
-import { BaseItem, ItemCategory } from '@/types';
+import { getItemsByCategory, getBeads } from '@/data/items';
+import { BaseItem, ItemCategory, Bead } from '@/types';
 import { useEffect, useState } from 'react';
 import ItemCardPopup from '../common/ItemCardPopup';
+import BeadCardPopup from '../common/BeadCardPopup';
 
 // Define interface for Window with MSMaxTouchPoints
 interface WindowWithMSTouchPoints extends Window {
@@ -12,7 +13,7 @@ interface WindowWithMSTouchPoints extends Window {
 
 interface ItemSelectorProps {
   category: ItemCategory;
-  onItemSelect: (item: BaseItem) => void;
+  onItemSelect: (item: BaseItem | Bead) => void;
   excludedItems?: string[];
   onItemExcludeToggle?: (itemId: string) => void;
 }
@@ -24,7 +25,7 @@ const ItemSelector = ({
   onItemExcludeToggle 
 }: ItemSelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [hoveredItem, setHoveredItem] = useState<BaseItem | null>(null);
+  const [hoveredItem, setHoveredItem] = useState<BaseItem | Bead | null>(null);
   const [popupPosition, setPopupPosition] = useState<{top: number, left: number} | null>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
@@ -77,7 +78,7 @@ const ItemSelector = ({
   }, [isTouchDevice, hoveredItem]);
   
   // Get items for the selected category
-  const items = getItemsByCategory(category);
+  const items: (BaseItem | Bead)[] = category === 'Beads' ? getBeads() : getItemsByCategory(category);
   
   // Filter items based on search query
   const filteredItems = items.filter(item => 
@@ -99,13 +100,17 @@ const ItemSelector = ({
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 relative">
         {hoveredItem && popupPosition && (
           <div 
-            className="fixed z-50" 
+            className="fixed pointer-events-none z-50" 
             style={{
               top: `${popupPosition.top}px`,
               left: `${popupPosition.left}px`
             }}
           >
-            <ItemCardPopup item={hoveredItem} />
+            {'element' in hoveredItem ? (
+              <ItemCardPopup item={hoveredItem} />
+            ) : (
+              <BeadCardPopup bead={hoveredItem} />
+            )}
           </div>
         )}
         {filteredItems.map(item => {
@@ -139,36 +144,61 @@ const ItemSelector = ({
                 setHoveredItem(item);
                 const rect = e.currentTarget.getBoundingClientRect();
                 
-                // Calculate optimal position for the popup
+                // Calculate optimal position for the popup (similar to LoadoutSlot)
                 const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
               
-                // Estimate popup dimensions
+                // Estimate popup dimensions - weapons with mysteriums can be very tall
                 const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
-                const popupHeight = 500; // Increased height estimate to prevent cut-off
+                const popupHeight = 'element' in item ? 600 : 400; // Weapons need more height for mysteriums
               
-                // Position the popup so its bottom edge is significantly above the bottom edge of the item card
-                // First calculate the bottom position with an offset to move it higher
-                const bottom = rect.bottom - 200; // Add a 100px offset to move it higher
-                let left = rect.right + 10;
-              
-                // Calculate top based on bottom position and popup height
-                let top = bottom - popupHeight;
-              
+                // Default placement is to the right, aligned with slot top
+                let top = rect.top;
+                let left = rect.right + 8;
+                let placement = 'right';
+                
                 // Check if popup would go off the right edge of the screen
                 if (left + popupWidth > viewportWidth) {
-                  // Try left placement
-                  left = rect.left - popupWidth - 10;
+                  // Try left placement, aligned with slot top
+                  left = rect.left - popupWidth - 8;
+                  placement = 'left';
                   
-                  // If left placement doesn't work, try centering horizontally
+                  // If left placement also doesn't work, try bottom or top
                   if (left < 0) {
-                    left = Math.max(10, (viewportWidth - popupWidth) / 2);
+                    if (rect.bottom + popupHeight < viewportHeight) {
+                      // Place below, aligned with slot left
+                      top = rect.bottom + 8;
+                      left = rect.left;
+                      placement = 'bottom';
+                    } else {
+                      // Place above, aligned with slot left
+                      top = rect.top - popupHeight - 8;
+                      left = rect.left;
+                      placement = 'top';
+                    }
                   }
                 }
-              
-                // Check if popup would go off the top of the screen
-                if (top < 10) {
-                  // If it would go off the top, position it at the top with a small margin
-                  top = 10;
+                
+                // Check if popup would go off the bottom of the screen for right/left placement
+                if ((placement === 'right' || placement === 'left') && top + popupHeight > viewportHeight) {
+                  // Try to move popup above the item, aligning bottom with slot bottom
+                  const aboveTop = rect.bottom - popupHeight;
+                  if (aboveTop >= 8) {
+                    top = aboveTop;
+                  } else {
+                    // If can't fit above, align with viewport bottom
+                    top = viewportHeight - popupHeight - 8;
+                  }
+                }
+                
+                // Handle bottom placement going off screen
+                if (placement === 'bottom' && top + popupHeight > viewportHeight) {
+                  top = viewportHeight - popupHeight - 8;
+                }
+                
+                // Final check if popup would go off the top of the screen
+                if (top < 8) {
+                  top = 8; // Add a small margin from the top
                 }
               
                 setPopupPosition({ top, left });
@@ -189,23 +219,24 @@ const ItemSelector = ({
                   
                   // Calculate optimal position for the popup
                   const viewportWidth = window.innerWidth;
+                  const viewportHeight = window.innerHeight;
                   
-                  // Estimate popup dimensions
+                  // Estimate popup dimensions - weapons with mysteriums can be very tall
                   const popupWidth = 288; // 72 * 4 = 288px (w-72 in tailwind)
-                  const popupHeight = 500; // Increased height estimate to prevent cut-off
+                  const popupHeight = 'element' in item ? 600 : 400; // Weapons need more height for mysteriums
                   
-                  // Position the popup so its bottom edge is significantly above the bottom edge of the item card
-                  // For mobile, we'll still center horizontally but position higher
-                  const bottom = rect.bottom - 200; // Add a 100px offset to move it higher
-                  const left = Math.max(10, (viewportWidth - popupWidth) / 2); // Center horizontally
+                  // For mobile, center horizontally and position below the item
+                  let top = rect.bottom + 8;
+                  const left = Math.max(10, (viewportWidth - popupWidth) / 2);
                   
-                  // Calculate top based on bottom position and popup height
-                  let top = bottom - popupHeight;
+                  // If popup would go off the bottom, place it above
+                  if (top + popupHeight > viewportHeight) {
+                    top = rect.top - popupHeight - 8;
+                  }
                   
-                  // Check if popup would go off the top of the screen
-                  if (top < 10) {
-                    // If it would go off the top, position it at the top with a small margin
-                    top = 10;
+                  // Ensure popup doesn't go off the top
+                  if (top < 0) {
+                    top = 8;
                   }
                   
                   setPopupPosition({ top, left });
@@ -239,7 +270,7 @@ const ItemSelector = ({
 
             <span className="text-xs text-center text-gray-100 truncate w-full">{item.name}</span>
 
-            {item.element && (
+            {'element' in item && item.element && (
               <div 
                 className="absolute top-1 right-1 w-3 h-3 rounded-full" 
                 style={{ backgroundColor: getElementColor(item.element) }}

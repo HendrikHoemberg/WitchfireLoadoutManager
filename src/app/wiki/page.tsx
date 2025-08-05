@@ -2,8 +2,9 @@
 "use client";
 
 import ItemCard from '@/components/wiki/ItemCard';
-import { allItems } from '@/data/items';
-import { BaseItem, Element, ItemCategory } from '@/types';
+import BeadCard from '@/components/wiki/BeadCard';
+import { allItems, getBeads } from '@/data/items';
+import { BaseItem, Bead, Element, ItemCategory } from '@/types';
 import { useMemo, useState, useEffect, useRef } from 'react';
 
 type SortCriteria = 'name-asc' | 'name-desc' | 'element-asc' | 'element-desc' | 'category';
@@ -17,7 +18,7 @@ export default function WikiPage() {
   
   // All available categories - define this using useMemo
   const categories = useMemo<(ItemCategory | 'All')[]>(() => [
-    'All', 'Weapons', 'DemonicWeapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings'
+    'All', 'Weapons', 'DemonicWeapons', 'LightSpells', 'HeavySpells', 'Relics', 'Fetishes', 'Rings', 'Beads'
   ], []);
   
   // Update sort criteria only when category changes, not when sort criteria changes
@@ -38,53 +39,80 @@ export default function WikiPage() {
   
   // Filter items based on selected category, element, and search query
   const filteredItems = useMemo(() => {
-    const items = allItems.filter(item => {
-      // Filter by category
-      if (selectedCategory !== 'All' && item.category !== selectedCategory) {
-        return false;
-      }
-      
-      // Filter by element
-      if (selectedElement !== 'All') {
-        if (selectedElement === null) {
-          // Filter for items with no element
-          if (item.element !== null) {
-            return false;
-          }
-        } else if (item.element !== selectedElement) {
+    let items: (BaseItem | Bead)[] = [];
+    
+    // Get BaseItems
+    if (selectedCategory === 'All' || selectedCategory !== 'Beads') {
+      const baseItems = allItems.filter(item => {
+        // Filter by category
+        if (selectedCategory !== 'All' && item.category !== selectedCategory) {
           return false;
         }
-      }
-      
-      // Filter by search query
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        return item.name.toLowerCase().includes(query);
-      }
-      
-      return true;
-    });
+        
+        // Filter by element
+        if (selectedElement !== 'All') {
+          if (selectedElement === null) {
+            // Filter for items with no element
+            if (item.element !== null) {
+              return false;
+            }
+          } else if (item.element !== selectedElement) {
+            return false;
+          }
+        }
+        
+        // Filter by search query
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          return item.name.toLowerCase().includes(query);
+        }
+        
+        return true;
+      });
+      items = [...items, ...baseItems];
+    }
+    
+    // Get Beads
+    if (selectedCategory === 'All' || selectedCategory === 'Beads') {
+      const beads = getBeads().filter(bead => {
+        // Beads don't have elements, so skip element filtering unless element filter is active
+        if (selectedElement !== 'All') {
+          return false; // Beads don't match any element filter
+        }
+        
+        // Filter by search query
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          return bead.name.toLowerCase().includes(query);
+        }
+        
+        return true;
+      });
+      items = [...items, ...beads];
+    }
     
     // Sort items based on sortCriteria
-    items.sort((a: BaseItem, b: BaseItem) => {
+    items.sort((a: BaseItem | Bead, b: BaseItem | Bead) => {
       switch (sortCriteria) {
         case 'name-asc':
           return a.name.localeCompare(b.name);
         case 'name-desc':
           return b.name.localeCompare(a.name);
         case 'element-asc':
-          // Handle null elements (consider them first or last based on preference)
-          const elementA = a.element ?? 'ZZZ'; // Place null elements last
-          const elementB = b.element ?? 'ZZZ';
+          // Handle elements - beads don't have elements, so they go last
+          const elementA = ('element' in a) ? (a.element ?? 'ZZZ') : 'ZZZ'; // Beads last
+          const elementB = ('element' in b) ? (b.element ?? 'ZZZ') : 'ZZZ';
           return elementA.localeCompare(elementB);
         case 'element-desc':
-          const elementDescA = a.element ?? 'AAA'; // Place null elements first
-          const elementDescB = b.element ?? 'AAA';
+          const elementDescA = ('element' in a) ? (a.element ?? 'AAA') : 'AAA'; // Beads first
+          const elementDescB = ('element' in b) ? (b.element ?? 'AAA') : 'AAA';
           return elementDescB.localeCompare(elementDescA);
         case 'category':
           // Order by the index in the categories array (match filter panel order)
-          const categoryOrderA = categories.indexOf(a.category as ItemCategory);
-          const categoryOrderB = categories.indexOf(b.category as ItemCategory);
+          const categoryA = ('element' in a) ? a.category : 'Beads';
+          const categoryB = ('element' in b) ? b.category : 'Beads';
+          const categoryOrderA = categories.indexOf(categoryA as ItemCategory);
+          const categoryOrderB = categories.indexOf(categoryB as ItemCategory);
           // If in the same category, sort by name
           return categoryOrderA - categoryOrderB || a.name.localeCompare(b.name);
         default:
@@ -196,11 +224,11 @@ export default function WikiPage() {
           // Group items by category
           Object.entries(
             filteredItems.reduce((acc, item) => {
-              const category = item.category;
+              const category = ('element' in item) ? item.category : 'Beads';
               if (!acc[category]) acc[category] = [];
               acc[category].push(item);
               return acc;
-            }, {} as Record<string, BaseItem[]>)
+            }, {} as Record<string, (BaseItem | Bead)[]>)
           )
           .sort(([categoryA], [categoryB]) => {
             // Sort category groups based on the same order as in the filter panel
@@ -214,17 +242,27 @@ export default function WikiPage() {
                 {getCategoryDisplayName(category)}
               </h2>
               <div className="grid grid-cols-1 gap-3 sm:gap-6">
-                {items.map(item => (
-                  <ItemCard key={item.id} item={item} />
-                ))}
+                {items.map(item => {
+                  const key = ('element' in item) ? item.id : `bead-${item.name}`;
+                  return ('element' in item) ? (
+                    <ItemCard key={key} item={item} />
+                  ) : (
+                    <BeadCard key={key} bead={item} />
+                  );
+                })}
               </div>
             </div>
           ))
         ) : (
           // Regular display without grouping
-          filteredItems.map(item => (
-            <ItemCard key={item.id} item={item} />
-          ))
+          filteredItems.map(item => {
+            const key = ('element' in item) ? item.id : `bead-${item.name}`;
+            return ('element' in item) ? (
+              <ItemCard key={key} item={item} />
+            ) : (
+              <BeadCard key={key} bead={item} />
+            );
+          })
         )}
       </div>
       

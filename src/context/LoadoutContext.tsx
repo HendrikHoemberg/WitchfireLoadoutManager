@@ -15,6 +15,7 @@ interface LoadoutContextType {
   setPreferredElements: (elements: Element[]) => void;
   toggleExcludedItem: (itemId: string) => void;
   clearExcludedItems: () => void;
+  toggleEmptySlotMode: () => void;
   
   // Randomizer functions
   generateRandomLoadout: () => void;
@@ -37,7 +38,8 @@ const defaultLoadout: Loadout = {
 
 const defaultRandomizerSettings: RandomizerSettings = {
   preferredElements: [],
-  excludedItems: []
+  excludedItems: [],
+  emptySlotMode: false
 };
 
 const LoadoutContext = createContext<LoadoutContextType | undefined>(undefined);
@@ -86,6 +88,14 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
     setRandomizerSettings(prev => ({
       ...prev,
       excludedItems: []
+    }));
+  }, []);
+
+  // Toggle empty slot mode
+  const toggleEmptySlotMode = useCallback(() => {
+    setRandomizerSettings(prev => ({
+      ...prev,
+      emptySlotMode: !prev.emptySlotMode
     }));
   }, []);
 
@@ -139,6 +149,7 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
       // Keep track of preferred elements that haven't been included yet
       const elementsToInclude = [...randomizerSettings.preferredElements].filter(e => e !== null);
       const assignedSlots: (keyof Loadout)[] = [];
+      const emptySlots: (keyof Loadout)[] = []; // Track slots that should remain empty
       
       // First, let's make sure ALL preferred elements are included (Phase 1)
       const allSlots: (keyof Loadout)[] = [
@@ -153,6 +164,15 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
       for (const slot of shuffledSlots) {
         // Skip secondary weapon for now, we'll handle it separately
         if (slot === 'secondaryWeapon') continue;
+        
+        // Empty Slot Mode: 5% chance for a slot to be empty (except primary weapon which is guaranteed)
+        if (randomizerSettings.emptySlotMode && slot !== 'primaryWeapon') {
+          if (Math.random() < 0.35) {
+            // Mark this slot as intentionally empty and continue to next slot
+            emptySlots.push(slot);
+            continue;
+          }
+        }
         
         // Get the corresponding category for this slot
         const categoryEntry = Object.entries(categoryToSlot)
@@ -220,8 +240,13 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
       }
       
       // Handle secondary weapon separately (to avoid duplicating primary)
-      if (!assignedSlots.includes('secondaryWeapon')) {
-        let availableWeapons = getItemsByCategory('Weapons');
+      if (!assignedSlots.includes('secondaryWeapon') && !emptySlots.includes('secondaryWeapon')) {
+        // Empty Slot Mode: 5% chance for secondary weapon to be empty
+        if (randomizerSettings.emptySlotMode && Math.random() < 0.05) {
+          // Mark secondary weapon slot as intentionally empty
+          emptySlots.push('secondaryWeapon');
+        } else {
+          let availableWeapons = getItemsByCategory('Weapons');
         
         // Filter out excluded items
         if (randomizerSettings.excludedItems.length > 0) {
@@ -282,10 +307,11 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
             }
           }
         }
+        }
       }
       
       // Phase 2: Fill any remaining slots with remaining preferred elements or random items
-      const remainingSlots = allSlots.filter(slot => !assignedSlots.includes(slot));
+      const remainingSlots = allSlots.filter(slot => !assignedSlots.includes(slot) && !emptySlots.includes(slot));
       
       // If we still have preferred elements to include, try to ensure they are included
       if (elementsToInclude.length > 0 && remainingSlots.length > 0) {
@@ -362,8 +388,8 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
       for (const slot of remainingSlots) {
         // Skip secondaryWeapon, we'll handle it specially
         if (slot === 'secondaryWeapon') {
-          // Only process secondaryWeapon if it's still null
-          if (newLoadout.secondaryWeapon === null) {
+          // Only process secondaryWeapon if it's still null and not marked as empty
+          if (newLoadout.secondaryWeapon === null && !emptySlots.includes('secondaryWeapon')) {
             let availableWeapons = getItemsByCategory('Weapons');
             
             // Filter out excluded items
@@ -459,6 +485,7 @@ export function LoadoutProvider({ children }: { children: ReactNode }) {
     setPreferredElements,
     toggleExcludedItem,
     clearExcludedItems,
+    toggleEmptySlotMode,
     generateRandomLoadout,
     isGenerating,
     getActiveElements

@@ -30,9 +30,51 @@
         .category-badge {
             margin-left: 10px;
         }
+        
+        /* Toast notification styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast {
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease-in-out;
+            font-weight: 500;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            background: #28a745;
+        }
+        
+        .toast.error {
+            background: #dc3545;
+        }
+        
+        .toast.warning {
+            background: #ffc107;
+            color: #212529;
+        }
     </style>
 </head>
 <body>
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+    
     <div class="container">
         <h1 class="mb-4 text-center">Witchfire Item Editor</h1>
         
@@ -158,7 +200,6 @@
                     "rateOfFire": 1.0,
                     "mobility": "Medium",
                     "clipSize": 6,
-                    "ammoReserves": 30,
                     "mysterium1": {
                         "effect": "",
                         "charismata": null,
@@ -194,7 +235,6 @@
                     "rateOfFire": 1.0,
                     "mobility": "Medium",
                     "clipSize": 6,
-                    "ammoReserves": 30,
                     "mysterium1": {
                         "effect": "",
                         "charismata": null,
@@ -210,6 +250,23 @@
                         "charismata": null,
                         "requirements": [""]
                     },
+                    "addedOn": "",
+                    "updatedOn": ""
+                }
+            </div>
+            <div id="templateBead" class="template-data">
+                {
+                    "id": "",
+                    "name": "",
+                    "category": "Beads",
+                    "iconUrl": "/images/beads/bead.png",
+                    "description": "",
+                    "requirements": [
+                        {
+                            "stat": "Flesh",
+                            "value": "20"
+                        }
+                    ],
                     "addedOn": "",
                     "updatedOn": ""
                 }
@@ -270,12 +327,38 @@
             let editor = null;
             let fileHandle = null; // File handle for File System Access API
 
+            // Toast notification function
+            function showToast(message, type = 'success') {
+                const toastContainer = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                
+                toastContainer.appendChild(toast);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+                
+                // Auto remove after 2 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300); // Wait for fade out animation
+                }, 2000);
+            }
+
             // Initialize JSON Editor
             function initJsonEditor() {
                 const container = document.getElementById('jsonEditor');
                 const options = {
                     mode: 'tree',
                     modes: ['tree', 'code', 'form', 'text'],
+                    schema: getSchemaForCurrentCategory(),
                     onChangeJSON: function(json) {
                         // Update current item when JSON changes
                         if (currentItem) {
@@ -286,6 +369,49 @@
                 editor = new JSONEditor(container, options);
             }
 
+            // Get schema based on current category
+            function getSchemaForCurrentCategory() {
+                if (currentCategory === 'beads') {
+                    return {
+                        type: 'object',
+                        properties: {
+                            requirements: {
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        stat: {
+                                            type: 'string',
+                                            enum: ['Flesh', 'Blood', 'Mind', 'Witchery', 'Arsenal', 'Faith'],
+                                            options: {
+                                                enum_titles: ['Flesh', 'Blood', 'Mind', 'Witchery', 'Arsenal', 'Faith']
+                                            }
+                                        },
+                                        value: {
+                                            type: 'string'
+                                        }
+                                    },
+                                    required: ['stat', 'value']
+                                }
+                            }
+                        }
+                    };
+                }
+                return null; // No schema for other categories
+            }
+
+            // Update JSON Editor with new schema when category changes
+            function updateJsonEditorSchema() {
+                if (editor) {
+                    const newSchema = getSchemaForCurrentCategory();
+                    if (newSchema) {
+                        editor.setSchema(newSchema);
+                    } else {
+                        editor.setSchema(null);
+                    }
+                }
+            }
+
             // Parse TypeScript file content
             function parseTypeScriptFile(content) {
                 // Reset state
@@ -293,7 +419,7 @@
                 categories = [];
                 
                 // Extract export const arrays
-                const regex = /export\s+const\s+(\w+)\s*:\s*(?:BaseItem|Weapon)\[\]\s*=\s*(\[\s*\{[\s\S]*?\}\s*\];)/g;
+                const regex = /export\s+const\s+(\w+)\s*:\s*(?:BaseItem|Weapon|Bead)\[\]\s*=\s*(\[\s*\{[\s\S]*?\}\s*\];)/g;
                 let match;
                 
                 while ((match = regex.exec(content)) !== null) {
@@ -352,6 +478,7 @@
                 });
                 document.querySelector(`#categoryList .list-group-item:nth-child(${categories.indexOf(category) + 1})`).classList.add('active');
                 populateItems(category);
+                updateJsonEditorSchema(); // Update schema when category changes
             }
 
             // Populate item list for a category
@@ -377,18 +504,20 @@
                 if (index !== -1) {
                     document.querySelector(`#itemList .list-group-item:nth-child(${index + 1})`).classList.add('active');
                 }
+                updateJsonEditorSchema(); // Ensure schema is applied
                 editor.set(item);
             }
 
             // Generate a new ID for an item
             function generateId(category) {
-                const prefix = category === 'weapons' ? 'w' : 
+                const prefix = category === 'weapons' ? 'w' :
                               category === 'lightSpells' ? 'ls' :
                               category === 'heavySpells' ? 'hs' :
                               category === 'relics' ? 'r' :
                               category === 'fetishes' ? 'f' :
                               category === 'rings' ? 'rg' :
-                              category === 'demonicWeapons' ? 'dw' : 'x';
+                              category === 'demonicWeapons' ? 'dw' :
+                              category === 'beads' ? 'b' : 'x';
                 
                 const items = parsedData[category] || [];
                 const existingIds = items.map(item => item.id);
@@ -415,7 +544,9 @@
                 if (currentCategory === 'weapons') {
                     template = JSON.parse(document.getElementById('templateWeapon').textContent);
                 } else if (currentCategory === 'demonicWeapons') {
-                    template = JSON.parse(document.getElementById('templateDemonicWeapon').textContent);
+                    template = JSON.parse(document.getElementById('templateWeapon').textContent);
+                } else if (currentCategory === 'beads') {
+                    template = JSON.parse(document.getElementById('templateBead').textContent);
                 } else {
                     template = JSON.parse(document.getElementById('templateBaseItem').textContent);
                 }
@@ -423,11 +554,13 @@
                 // Set category-specific fields
                 template.id = generateId(currentCategory);
                 template.category = currentCategory === 'weapons' ? 'Weapons' :
+                                    currentCategory === 'demonicWeapons' ? 'DemonicWeapons' :
                                     currentCategory === 'lightSpells' ? 'LightSpells' :
                                     currentCategory === 'heavySpells' ? 'HeavySpells' :
                                     currentCategory === 'relics' ? 'Relics' :
                                     currentCategory === 'fetishes' ? 'Fetishes' :
-                                    currentCategory === 'rings' ? 'Rings' : '';
+                                    currentCategory === 'rings' ? 'Rings' :
+                                    currentCategory === 'beads' ? 'Beads' : '';
                 
                 // Set dates
                 const today = new Date().toISOString().split('T')[0];
@@ -443,7 +576,7 @@
             // Save current item
             function saveCurrentItem() {
                 if (!currentItem || !currentCategory) {
-                    alert('No item selected');
+                    showToast('No item selected', 'warning');
                     return;
                 }
                 
@@ -458,19 +591,19 @@
                         currentItem = updatedItem;
                         populateItems(currentCategory);
                         selectItem(updatedItem);
-                        alert('Item saved successfully!');
+                        showToast('Item saved successfully!');
                     } else {
-                        alert('Error: Item not found in the current category');
+                        showToast('Error: Item not found in the current category', 'error');
                     }
                 } catch (e) {
-                    alert(`Error saving item: ${e.message}`);
+                    showToast(`Error saving item: ${e.message}`, 'error');
                 }
             }
 
             // Delete current item
             function deleteCurrentItem() {
                 if (!currentItem || !currentCategory) {
-                    alert('No item selected');
+                    showToast('No item selected', 'warning');
                     return;
                 }
                 
@@ -498,10 +631,12 @@
 
             // Generate TypeScript file content
             function generateTypeScriptFile() {
-                let content = 'import { BaseItem, Weapon } from \'@/types\';\n\n';
+                let content = 'import { BaseItem, Weapon, Bead } from \'@/types\';\n\n';
                 
                 for (const category of categories) {
-                    const itemType = category === 'weapons' ? 'Weapon' : 'BaseItem';
+                    let itemType = 'BaseItem';
+                    if (category === 'weapons') itemType = 'Weapon';
+                    if (category === 'beads') itemType = 'Bead';
                     
                     // Add a proper comment line and export statement on a new line
                     content += `\n// ${category.charAt(0).toUpperCase() + category.slice(1)}\n`;
@@ -540,14 +675,27 @@
                 content += '// Helper function to get item by ID\n';
                 content += 'export const getItemById = (id: string): BaseItem | undefined => {\n';
                 content += '  return allItems.find(item => item.id === id);\n';
-                content += '};\n'
+                content += '};\n\n';
+                
+                // Add bead helper functions if beads category exists
+                if (categories.includes('beads')) {
+                    content += '// Helper function to get all beads\n';
+                    content += 'export const getBeads = (): Bead[] => {\n';
+                    content += '  return beads;\n';
+                    content += '};\n\n';
+                    
+                    content += '// Helper function to get bead by ID\n';
+                    content += 'export const getBeadById = (id: string): Bead | undefined => {\n';
+                    content += '  return beads.find(bead => bead.id === id);\n';
+                    content += '};\n';
+                }
                 
                 // Format TypeScript style: replace property quotes and string quotes
                 content = content
                     // Remove quotes around property names (not needed in TypeScript)
                     .replace(/"([^"]+)":/g, '$1:')
-                    // Replace double quotes with single quotes for strings
-                    .replace(/"([^"]*)"(?!:)/g, '\'$1\'');
+                    // Replace remaining double quotes with single quotes for string values
+                    .replace(/"/g, "'");
                 
                 return content;
             }
@@ -576,12 +724,12 @@
                             // Close the file
                             await writable.close();
                             
-                            alert('File saved successfully!');
+                            showToast('File saved successfully!');
                             return;
                         } catch (error) {
                             console.error('Error saving with File System Access API:', error);
                             // Fall back to download if direct save fails
-                            alert(`Could not save directly to file: ${error.message}\nFalling back to download method.`);
+                            showToast(`Could not save directly to file: ${error.message}. Falling back to download method.`, 'warning');
                         }
                     }
                     
@@ -592,9 +740,9 @@
                     a.download = fileHandle ? fileHandle.name : (fileInput.files[0] ? fileInput.files[0].name : 'items.ts');
                     a.click();
                     URL.revokeObjectURL(a.href);
-                    alert('File downloaded successfully!');
+                    showToast('File downloaded successfully!');
                 } catch (e) {
-                    alert(`Error saving file: ${e.message}`);
+                    showToast(`Error saving file: ${e.message}`, 'error');
                 }
             }
 

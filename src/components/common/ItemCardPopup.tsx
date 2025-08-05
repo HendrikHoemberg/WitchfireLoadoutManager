@@ -58,7 +58,6 @@ const ItemCardPopup = ({ item }: ItemCardPopupProps) => {
           <WeaponStat label="Rate of Fire" value={item.rateOfFire.toString()} />
           <WeaponStat label="Mobility" value={item.mobility} />
           <WeaponStat label="Clip Size" value={item.clipSize.toString()} />
-          <WeaponStat label="Ammo Reserves" value={item.ammoReserves.toString()} />
         </div>
       )}
       

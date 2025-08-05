@@ -1,4 +1,4 @@
-import { BaseItem, Weapon } from '@/types';
+import { BaseItem, Weapon, Bead } from '@/types';
 
 
 // Weapons
@@ -11,16 +11,15 @@ export const weapons: Weapon[] = [
     element: null,
     description: 'Dash after a kill reloads and boosts the gun.',
     damage: 17,
-    stunPower: 'very low',
+    stunPower: 'Very low',
     hipfireRange: 9,
     adsRange: 9.9,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 10,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 20,
-    ammoReserves: 340,
     mysterium1: {
-      effect: 'More potent regenerating witchfire essence from killed enemies',
+      effect: 'Boosts stamina and spell recharge on kills.',
       charismata: null,
       requirements: [
         'Enemies killed: 25'
@@ -43,7 +42,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w002',
@@ -53,14 +52,13 @@ export const weapons: Weapon[] = [
     element: 'Fire',
     description: 'Pellets explode and ignite targets. Uses Stamina.',
     damage: 111,
-    stunPower: 'average',
+    stunPower: 'Average',
     hipfireRange: 7,
     adsRange: 7.7,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 1.7,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 6,
-    ammoReserves: 42,
     mysterium1: {
       effect: 'Pellets have a delayed explosion that applies Burn. Lethal shots push enemies back with great force.',
       charismata: null,
@@ -85,7 +83,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w003',
@@ -95,14 +93,13 @@ export const weapons: Weapon[] = [
     element: null,
     description: 'Fast firing, regenerates more than ammo. Uses Stamina.',
     damage: 80,
-    stunPower: 'low',
+    stunPower: 'Low',
     hipfireRange: 9,
     adsRange: 9,
-    stability: 'very low',
+    stability: 'Very low',
     rateOfFire: 4.3,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 10,
-    ammoReserves: 44,
     mysterium1: {
       effect: 'Kills with a charged melee regenerate up to half a magazine.',
       charismata: null,
@@ -127,7 +124,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-04-01',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w004',
@@ -137,14 +134,13 @@ export const weapons: Weapon[] = [
     element: 'Earth',
     description: 'Designed for crowd control, spreads Decay among attacking hordes.',
     damage: 8,
-    stunPower: 'low',
+    stunPower: 'Low',
     hipfireRange: 10,
     adsRange: 11,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 15.2,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 60,
-    ammoReserves: 480,
     mysterium1: {
       effect: 'Shots apply decay. The longer the burst, the more powerful the curse. The effect wanes when the gun is not in use.',
       charismata: null,
@@ -169,7 +165,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w005',
@@ -182,11 +178,10 @@ export const weapons: Weapon[] = [
     stunPower: 'High',
     hipfireRange: 7,
     adsRange: 7.7,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 1,
-    mobility: 'very low',
+    mobility: 'Very low',
     clipSize: 6,
-    ammoReserves: 30,
     mysterium1: {
       effect: 'Aiming down sights fires a slow-moving, long-range projectile.',
       charismata: null,
@@ -211,7 +206,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w006',
@@ -221,14 +216,13 @@ export const weapons: Weapon[] = [
     element: 'Fire',
     description: 'Heats bullets, boosting damage or igniting enemies.',
     damage: 9,
-    stunPower: 'very low',
+    stunPower: 'Very low',
     hipfireRange: 17,
     adsRange: 25.5,
-    stability: 'average',
+    stability: 'Average',
     rateOfFire: 11.1,
-    mobility: 'medium',
+    mobility: 'Medium',
     clipSize: 60,
-    ammoReserves: 490,
     mysterium1: {
       effect: 'Continuous fire heats up the weapon. Bullets deal more damage when Heated and less when Overheated.',
       charismata: null,
@@ -253,7 +247,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w007',
@@ -266,11 +260,10 @@ export const weapons: Weapon[] = [
     stunPower: 'High',
     hipfireRange: 20,
     adsRange: 26.6,
-    stability: 'average',
+    stability: 'Average',
     rateOfFire: 6.7,
-    mobility: 'medium',
+    mobility: 'Medium',
     clipSize: 30,
-    ammoReserves: 270,
     mysterium1: {
       effect: 'Up to three enemies can be tagged while aiming down sights. Shooting one ricochets the bullet to the others. The link breaks on reload or when all targets die.',
       charismata: null,
@@ -295,7 +288,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w008',
@@ -305,14 +298,13 @@ export const weapons: Weapon[] = [
     element: null,
     description: 'Turns defense into devastating conterattacks.',
     damage: 13,
-    stunPower: 'average',
+    stunPower: 'Average',
     hipfireRange: 18,
     adsRange: 21.6,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 8.3,
-    mobility: 'medium',
+    mobility: 'Medium',
     clipSize: 70,
-    ammoReserves: 560,
     mysterium1: {
       effect: 'Aiming down sights conjures ethereal shield wings.',
       charismata: null,
@@ -337,7 +329,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w009',
@@ -347,14 +339,13 @@ export const weapons: Weapon[] = [
     element: 'Fire',
     description: 'Fires slugs that detonate on command with a reload.',
     damage: 35,
-    stunPower: 'average',
+    stunPower: 'Average',
     hipfireRange: 15,
     adsRange: 19.5,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 0.9,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 6,
-    ammoReserves: 84,
     mysterium1: {
       effect: 'Bullets lodge into enemies or the environment and explode on reload.',
       charismata: null,
@@ -379,7 +370,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w010',
@@ -389,14 +380,13 @@ export const weapons: Weapon[] = [
     element: 'Water',
     description: 'Rewards perfect aim with increasingly potent bullets.',
     damage: 38,
-    stunPower: 'very high',
+    stunPower: 'Very high',
     hipfireRange: 15,
     adsRange: 21,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 2.8,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 6,
-    ammoReserves: 84,
     mysterium1: {
       effect: 'Reloading grants one Charged Bullet for each Critical Hit before the reload. Charged Bullets deal increased damage.',
       charismata: null,
@@ -421,7 +411,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w011',
@@ -431,14 +421,13 @@ export const weapons: Weapon[] = [
     element: 'Fire',
     description: 'Rewards duel victory with bullets that ignite enemies.',
     damage: 25,
-    stunPower: 'very high',
+    stunPower: 'Very high',
     hipfireRange: 16,
     adsRange: 19.2,
-    stability: 'high',
+    stability: 'High',
     rateOfFire: 4.2,
-    mobility: 'very low',
+    mobility: 'Very low',
     clipSize: 12,
-    ammoReserves: 192,
     mysterium1: {
       effect: 'After any kill, a duel can be initiated by shooting an enemy while aiming down sights. Landing a critical hit right after the mark empowers the gun temporarily. Dueling is disabled while empowered.',
       charismata: null,
@@ -463,7 +452,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w012',
@@ -473,14 +462,13 @@ export const weapons: Weapon[] = [
     element: 'Fire',
     description: 'A dual-element stake gun that impales targets or shatters them on impact.',
     damage: 80,
-    stunPower: 'high',
+    stunPower: 'High',
     hipfireRange: 30,
     adsRange: 30,
-    stability: 'high',
+    stability: 'High',
     rateOfFire: 0.7,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 7,
-    ammoReserves: 83,
     mysterium1: {
       effect: 'Stakes ignite mid-flight, Burning the target upon impact.',
       charismata: null,
@@ -505,7 +493,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w013',
@@ -515,14 +503,13 @@ export const weapons: Weapon[] = [
     element: 'Earth',
     description: 'Critical hits hurt all enemies inside the All-Seeing Eye.',
     damage: 38,
-    stunPower: 'low',
+    stunPower: 'Low',
     hipfireRange: 18,
     adsRange: 32.4,
-    stability: 'high',
+    stability: 'High',
     rateOfFire: 0.8,
-    mobility: 'low',
+    mobility: 'Low',
     clipSize: 5,
-    ammoReserves: 95,
     mysterium1: {
       effect: 'Increased damage against enemies with more than 75 % HP.',
       charismata: null,
@@ -547,7 +534,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w014',
@@ -557,14 +544,13 @@ export const weapons: Weapon[] = [
     element: 'Fire',
     description: 'When ignited, the scope burns enemies. Uses Stamina.',
     damage: 60,
-    stunPower: 'average',
+    stunPower: 'Average',
     hipfireRange: 20,
     adsRange: 36,
-    stability: 'high',
+    stability: 'High',
     rateOfFire: 1.1,
-    mobility: 'low',
+    mobility: 'Low',
     clipSize: 10,
-    ammoReserves: 50,
     mysterium1: {
       effect: 'Critical hits ignite the scope for a few seconds, causing enemies viewed through the fiery scope to burn.',
       charismata: null,
@@ -589,7 +575,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w015',
@@ -599,14 +585,13 @@ export const weapons: Weapon[] = [
     element: 'Air',
     description: 'Rewards a patient marksman with increased damage.',
     damage: 40,
-    stunPower: 'average',
+    stunPower: 'Average',
     hipfireRange: 20,
     adsRange: 36,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 0.9,
-    mobility: 'medium',
+    mobility: 'Medium',
     clipSize: 10,
-    ammoReserves: 70,
     mysterium1: {
       effect: 'Aiming down sights slowly charges the bullet with bonus damage.',
       charismata: null,
@@ -631,7 +616,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w016',
@@ -641,14 +626,13 @@ export const weapons: Weapon[] = [
     element: 'Water',
     description: 'Perfect reloading rythm imbues shots with freezing power.',
     damage: 77,
-    stunPower: 'high',
+    stunPower: 'High',
     hipfireRange: 26,
     adsRange: 46.8,
-    stability: 'low',
+    stability: 'Low',
     rateOfFire: 0.8,
-    mobility: 'medium',
+    mobility: 'Medium',
     clipSize: 6,
-    ammoReserves: 74,
     mysterium1: {
       effect: 'Well-timed secondary reload boosts damage for three shots.',
       charismata: null,
@@ -673,7 +657,7 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'w017',
@@ -683,14 +667,13 @@ export const weapons: Weapon[] = [
     element: 'Water',
     description: 'Reloads bullets for Critical Hits. Uses Stamina.',
     damage: 160,
-    stunPower: 'average',
+    stunPower: 'Average',
     hipfireRange: 15,
     adsRange: 67.5,
-    stability: 'very low',
+    stability: 'Very low',
     rateOfFire: 0.8,
-    mobility: 'very low',
+    mobility: 'Very low',
     clipSize: 5,
-    ammoReserves: 20,
     mysterium1: {
       effect: 'Every third consecutive Critical Hit recharges the magazine with two extra bullets.',
       charismata: null,
@@ -715,7 +698,124 @@ export const weapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'w018',
+    name: 'Nemesis',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Nemesis.png',
+    element: 'Fire',
+    description: 'Crafted by a Workshop gunsmith who lost family to witches. Each bullet brands foes with his grief, igniting vengance until nothing remains.',
+    damage: 70,
+    stunPower: 'Average',
+    hipfireRange: 18,
+    adsRange: 32.4,
+    stability: 'Low',
+    rateOfFire: 1.3,
+    mobility: 'Very Low',
+    clipSize: 6,
+    mysterium1: {
+      effect: 'Critical hits may mark nearby enemies. Marked enemies take increased critical damage.',
+      charismata: null,
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      effect: 'The original target may also be marked. Killing a marked enemy with a critical hit instantly marks another.',
+      charismata: null,
+      requirements: [
+        ''
+      ]
+    },
+    mysterium3: {
+      effect: 'Killing a marked enemy with a critical hit triggers a fiery shockwave, knocking back and burning nearby enemies.',
+      charismata: null,
+      requirements: [
+        ''
+      ]
+    },
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'w019',
+    name: 'Oracle',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Oracle.png',
+    element: null,
+    description: 'Built from the iron coffin of a seer exposed as a witch. Her dying curse remains, guiding every bullet to those who believe walls will save them.',
+    damage: 16,
+    stunPower: 'High',
+    hipfireRange: 15,
+    adsRange: 67.5,
+    stability: 'Low',
+    rateOfFire: 0.8,
+    mobility: 'Medium',
+    clipSize: 5,
+    mysterium1: {
+      effect: 'Killing enemies charges the scope, enabling sight and shots through walls. Each kill grants one powered shot.',
+      charismata: null,
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      effect: 'Scoped enemies are slowed.',
+      charismata: null,
+      requirements: [
+        ''
+      ]
+    },
+    mysterium3: {
+      effect: 'Looking through a scope without firing for a moment increases damage.',
+      charismata: null,
+      requirements: [
+        ''
+      ]
+    },
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'w020',
+    name: 'Koschei',
+    category: 'Weapons',
+    iconUrl: '/images/weapons/Koschei.png',
+    element: 'Earth',
+    description: 'Forged from bones of cultists devoted to Koscheis false promises. Their despair echoes eternally, infecting others with decay.',
+    damage: 20,
+    stunPower: 'Low',
+    hipfireRange: 14,
+    adsRange: 18.2,
+    stability: 'Average',
+    rateOfFire: 12.5,
+    mobility: 'Very low',
+    clipSize: 36,
+    mysterium1: {
+      effect: 'At the cost of Stamina, reloading unleashes bone shards that decay enemies. Recharges every 3 kills.',
+      charismata: null,
+      requirements: [
+        '-'
+      ]
+    },
+    mysterium2: {
+      effect: 'Taking damage also recharges the swarm. Shooting decaying enemies prolongs their decay',
+      charismata: null,
+      requirements: [
+        ''
+      ]
+    },
+    mysterium3: {
+      effect: 'Each kill before unleashing the swarm extends decay duration.',
+      charismata: null,
+      requirements: [
+        ''
+      ]
+    },
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
   }
 ];
 
@@ -2336,11 +2436,10 @@ export const demonicWeapons: Weapon[] = [
     stunPower: 'High',
     hipfireRange: 20,
     adsRange: 24,
-    stability: 'high',
+    stability: 'High',
     rateOfFire: 0.5,
-    mobility: 'medium',
+    mobility: 'Medium',
     clipSize: 5,
-    ammoReserves: 10,
     mysterium1: {
       effect: '-',
       charismata: null,
@@ -2363,7 +2462,7 @@ export const demonicWeapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'dw002',
@@ -2373,14 +2472,13 @@ export const demonicWeapons: Weapon[] = [
     element: null,
     description: 'When fired while aiming down sights, grenades home in onto the tagged enemy. The longer the grenades travel, the higher their damage.',
     damage: 250,
-    stunPower: 'average',
+    stunPower: 'Average',
     hipfireRange: 30,
     adsRange: 30,
-    stability: 'average',
+    stability: 'Average',
     rateOfFire: 1,
-    mobility: 'low',
+    mobility: 'Low',
     clipSize: 6,
-    ammoReserves: 14,
     mysterium1: {
       effect: '-',
       charismata: null,
@@ -2403,7 +2501,7 @@ export const demonicWeapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
   },
   {
     id: 'dw003',
@@ -2413,14 +2511,13 @@ export const demonicWeapons: Weapon[] = [
     element: null,
     description: 'A device capable of stunning almost any enemy.',
     damage: 220,
-    stunPower: 'very high',
+    stunPower: 'Very high',
     hipfireRange: 20,
     adsRange: 20,
-    stability: 'very low',
+    stability: 'Very low',
     rateOfFire: 2,
-    mobility: 'very high',
+    mobility: 'Very high',
     clipSize: 3,
-    ammoReserves: 17,
     mysterium1: {
       effect: '-',
       charismata: null,
@@ -2443,7 +2540,569 @@ export const demonicWeapons: Weapon[] = [
       ]
     },
     addedOn: '2025-05-02',
-    updatedOn: '2025-05-05'
+    updatedOn: '2025-08-05'
+  }
+];
+
+
+// Beads
+export const beads: Bead[] = [
+  {
+    id: 'b001',
+    name: 'Ammo Preservation',
+    category: 'Beads',
+    iconUrl: '/images/beads/ammoPreservation.png',
+    description: 'Firing Occasionally Doesnt Consume Ammo',
+    requirements: [
+      {
+        stat: 'Arsenal',
+        value: '20'
+      },
+      {
+        stat: 'Faith',
+        value: '30'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b002',
+    name: 'Health',
+    category: 'Beads',
+    iconUrl: '/images/beads/health.png',
+    description: 'Health +10%',
+    requirements: [],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b003',
+    name: 'Ammo Reserve',
+    category: 'Beads',
+    iconUrl: '/images/beads/ammoReserve.png',
+    description: 'Ammo Reserve +20%',
+    requirements: [
+      {
+        stat: 'Arsenal',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b004',
+    name: 'Melee Recharge',
+    category: 'Beads',
+    iconUrl: '/images/beads/meleeRecharge.png',
+    description: 'Melee Recharge +25%',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b005',
+    name: 'Healing',
+    category: 'Beads',
+    iconUrl: '/images/beads/healing.png',
+    description: 'Healing +25%',
+    requirements: [
+      {
+        stat: 'Mind',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b006',
+    name: 'Stamina',
+    category: 'Beads',
+    iconUrl: '/images/beads/stamina.png',
+    description: 'Stamina +20%',
+    requirements: [
+      {
+        stat: 'Blood',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b007',
+    name: 'Ailment Power',
+    category: 'Beads',
+    iconUrl: '/images/beads/ailmentPower.png',
+    description: 'Ailment Power +20%',
+    requirements: [
+      {
+        stat: 'Witchery',
+        value: '15'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b008',
+    name: 'Triple Reward',
+    category: 'Beads',
+    iconUrl: '/images/beads/tripleReward.png',
+    description: 'Providence May Yield Triple Rewards',
+    requirements: [
+      {
+        stat: 'Faith',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b009',
+    name: 'Free Arcana',
+    category: 'Beads',
+    iconUrl: '/images/beads/freeArcana.png',
+    description: 'Unveiling Arcana Has No Cost',
+    requirements: [
+      {
+        stat: 'Mind',
+        value: '40'
+      },
+      {
+        stat: 'Witchery',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b010',
+    name: 'Weapon Range',
+    category: 'Beads',
+    iconUrl: '/images/beads/weaponRange.png',
+    description: 'Weapon Range +10%',
+    requirements: [
+      {
+        stat: 'Arsenal',
+        value: '15'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b011',
+    name: 'Spell Recharge',
+    category: 'Beads',
+    iconUrl: '/images/beads/spellRecharge.png',
+    description: 'Spell Recharge +20%',
+    requirements: [
+      {
+        stat: 'Witchery',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b012',
+    name: 'Elemental Duration',
+    category: 'Beads',
+    iconUrl: '/images/beads/elementalDuration.png',
+    description: 'Elemental Duration +25%',
+    requirements: [
+      {
+        stat: 'Witchery',
+        value: '25'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b013',
+    name: 'Elixir',
+    category: 'Beads',
+    iconUrl: '/images/beads/elixir.png',
+    description: 'Elixir Slot +1',
+    requirements: [
+      {
+        stat: 'Mind',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b014',
+    name: 'Blessed Aim',
+    category: 'Beads',
+    iconUrl: '/images/beads/blessedAim.png',
+    description: 'Blessed Aim +20%',
+    requirements: [
+      {
+        stat: 'Faith',
+        value: '25'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b015',
+    name: 'Dash Stamina',
+    category: 'Beads',
+    iconUrl: '/images/beads/dashStamina.png',
+    description: 'Consecutive Dashes Drain Less Stamina',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '20'
+      },
+      {
+        stat: 'Blood',
+        value: '30'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b016',
+    name: 'Light Spell Charge',
+    category: 'Beads',
+    iconUrl: '/images/beads/lightSpellCharge.png',
+    description: 'Extra Light Spell Charge +1',
+    requirements: [
+      {
+        stat: 'Blood',
+        value: '20'
+      },
+      {
+        stat: 'Witchery',
+        value: '35'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b017',
+    name: 'Long Range',
+    category: 'Beads',
+    iconUrl: '/images/beads/longRange.png',
+    description: 'Sniper Rifles Are No Longer Unwieldy',
+    requirements: [
+      {
+        stat: 'Blood',
+        value: '20'
+      },
+      {
+        stat: 'Arsenal',
+        value: '40'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b018',
+    name: 'Traps',
+    category: 'Beads',
+    iconUrl: '/images/beads/traps.png',
+    description: 'Traps Are Visible On The Minimap',
+    requirements: [
+      {
+        stat: 'Mind',
+        value: '30'
+      },
+      {
+        stat: 'Witchery',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b019',
+    name: 'Dash Range',
+    category: 'Beads',
+    iconUrl: '/images/beads/dashRange.png',
+    description: 'Dash Range +50%',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '15'
+      },
+      {
+        stat: 'Blood',
+        value: '30'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b020',
+    name: 'Metanoia',
+    category: 'Beads',
+    iconUrl: '/images/beads/metanoia.png',
+    description: 'Metanoia +25%',
+    requirements: [
+      {
+        stat: 'Witchery',
+        value: '15'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b021',
+    name: 'Ailment Immunity',
+    category: 'Beads',
+    iconUrl: '/images/beads/ailmentImmunity.png',
+    description: 'Ailment Immunity',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '30'
+      },
+      {
+        stat: 'Witchery',
+        value: '30'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b022',
+    name: 'Demonic Ammo',
+    category: 'Beads',
+    iconUrl: '/images/beads/demonicAmmo.png',
+    description: 'Expeditions Begin With A Fully Loaded Demonic Weapon',
+    requirements: [
+      {
+        stat: 'Mind',
+        value: '20'
+      },
+      {
+        stat: 'Arsenal',
+        value: '40'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b023',
+    name: 'Divine Intervention',
+    category: 'Beads',
+    iconUrl: '/images/beads/divineIntervention.png',
+    description: 'Divine Intervention +20%',
+    requirements: [
+      {
+        stat: 'Faith',
+        value: '15'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b024',
+    name: 'Sprint',
+    category: 'Beads',
+    iconUrl: '/images/beads/sprint.png',
+    description: 'Sprinting Doesnt Drain Stamina',
+    requirements: [
+      {
+        stat: 'Blood',
+        value: '40'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b025',
+    name: 'Vigor',
+    category: 'Beads',
+    iconUrl: '/images/beads/vigor.png',
+    description: 'Vigor +25%',
+    requirements: [
+      {
+        stat: 'Blood',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b026',
+    name: 'Short Range',
+    category: 'Beads',
+    iconUrl: '/images/beads/shortRange.png',
+    description: 'Shotguns Are No Longer Unwieldy',
+    requirements: [
+      {
+        stat: 'Blood',
+        value: '15'
+      },
+      {
+        stat: 'Arsenal',
+        value: '30'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b027',
+    name: 'Melee Charge',
+    category: 'Beads',
+    iconUrl: '/images/beads/meleeCharge.png',
+    description: 'Second Melee Charge At Reduced Regenration Speed',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '25'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b028',
+    name: 'Incense',
+    category: 'Beads',
+    iconUrl: '/images/beads/incense.png',
+    description: 'Incense Activation +15%',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '15'
+      },
+      {
+        stat: 'Mind',
+        value: '25'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b029',
+    name: 'Elixir II',
+    category: 'Beads',
+    iconUrl: '/images/beads/elixirII.png',
+    description: 'Elixir Slot +2',
+    requirements: [
+      {
+        stat: 'Mind',
+        value: '40'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b030',
+    name: 'Health II',
+    category: 'Beads',
+    iconUrl: '/images/beads/healthII.png',
+    description: 'Health +20%',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '25'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b031',
+    name: 'Providence',
+    category: 'Beads',
+    iconUrl: '/images/beads/providence.png',
+    description: 'Providence +20%',
+    requirements: [
+      {
+        stat: 'Faith',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b032',
+    name: 'Resistance',
+    category: 'Beads',
+    iconUrl: '/images/beads/resistance.png',
+    description: 'Damage Resistance When Health < 50% +20%',
+    requirements: [
+      {
+        stat: 'Flesh',
+        value: '30'
+      },
+      {
+        stat: 'Blood',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b033',
+    name: 'Sanity',
+    category: 'Beads',
+    iconUrl: '/images/beads/sanity.png',
+    description: 'Sanity Loss Resistance +25%',
+    requirements: [
+      {
+        stat: 'Mind',
+        value: '20'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
+  },
+  {
+    id: 'b034',
+    name: 'Blessed Hits',
+    category: 'Beads',
+    iconUrl: '/images/beads/blessedHits.png',
+    description: 'Blessed Aim Hits Deal 50% More Damage',
+    requirements: [
+      {
+        stat: 'Arsenal',
+        value: '20'
+      },
+      {
+        stat: 'Faith',
+        value: '40'
+      }
+    ],
+    addedOn: '2025-08-05',
+    updatedOn: '2025-08-05'
   }
 ];
 
@@ -2484,4 +3143,14 @@ export const getItemsByCategory = (category: string): BaseItem[] => {
 // Helper function to get item by ID
 export const getItemById = (id: string): BaseItem | undefined => {
   return allItems.find(item => item.id === id);
+};
+
+// Helper function to get all beads
+export const getBeads = (): Bead[] => {
+  return beads;
+};
+
+// Helper function to get bead by ID
+export const getBeadById = (id: string): Bead | undefined => {
+  return beads.find(bead => bead.id === id);
 };

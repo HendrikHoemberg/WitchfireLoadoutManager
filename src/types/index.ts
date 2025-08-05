@@ -1,5 +1,5 @@
 // Item Categories and Element Types
-export type ItemCategory = 'Weapons' | 'DemonicWeapons' | 'LightSpells' | 'HeavySpells' | 'Relics' | 'Fetishes' | 'Rings';
+export type ItemCategory = 'Weapons' | 'DemonicWeapons' | 'LightSpells' | 'HeavySpells' | 'Relics' | 'Fetishes' | 'Rings' | 'Beads';
 export type Element = 'Fire' | 'Earth' | 'Water' | 'Air' | null;
 
 // Base Item Structure
@@ -41,12 +41,34 @@ export interface Weapon extends BaseItem {
   rateOfFire: number;
   mobility: string;
   clipSize: number;
-  ammoReserves: number;
+}
+
+// Bead Requirement Structure
+export interface BeadRequirement {
+  stat: string;
+  value: string; // Always represents an integer as string
+}
+
+// Bead-Specific Properties (no mysteriums)
+export interface Bead {
+  id: string;
+  name: string;
+  category: 'Beads';
+  iconUrl: string;
+  description: string;
+  requirements: BeadRequirement[]; // Up to two requirements
+  // Additional metadata
+  addedOn: string; // ISO date
+  updatedOn: string; // ISO date
 }
 
 // Type guards for item categories
 export function isWeapon(item: BaseItem): item is Weapon {
   return item.category === 'Weapons' || item.category === 'DemonicWeapons';
+}
+
+export function isBead(item: BaseItem | Bead): item is Bead {
+  return item.category === 'Beads';
 }
 
 // Loadout Structure
@@ -61,8 +83,29 @@ export interface Loadout {
   ring: BaseItem | null;
 }
 
+// Bead User Stats for determining availability and slot count
+export interface BeadUserStats {
+  flesh: number;
+  blood: number;
+  mind: number;
+  witchery: number;
+  arsenal: number;
+  faith: number;
+  gnosis: number; // 1-6, determines slot count (max 5 slots at gnosis 5+)
+}
+
+// Bead Loadout Structure (separate from main loadout)
+export interface BeadLoadout {
+  slot1: Bead | null;
+  slot2: Bead | null;
+  slot3: Bead | null;
+  slot4: Bead | null;
+  slot5: Bead | null;
+}
+
 // Randomizer Settings
 export interface RandomizerSettings {
   preferredElements: Element[];
   excludedItems: string[]; // Array of item IDs
+  emptySlotMode: boolean;
 }
