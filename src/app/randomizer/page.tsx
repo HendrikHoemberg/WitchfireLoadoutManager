@@ -25,7 +25,25 @@ export default function RandomizerPage() {
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory>('Weapons');
   
   // Beads state
+  const [showTooltip, setShowTooltip] = useState(false);
   const [showBeadSettings, setShowBeadSettings] = useState(false);
+  
+  // Hide tooltip when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (showTooltip) {
+        setShowTooltip(false);
+      }
+    };
+
+    if (showTooltip) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showTooltip]);
   const [beadLoadout, setBeadLoadout] = useState<BeadLoadout>({
     slot1: null,
     slot2: null,
@@ -341,8 +359,18 @@ export default function RandomizerPage() {
             </label>
             <span className="text-gray-100 text-sm font-medium">Empty Slot Mode</span>
             <div className="relative group">
-              <span className="text-gray-400 hover:text-gray-200 cursor-help text-sm">?</span>
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+              <span 
+                className="text-gray-400 hover:text-gray-200 cursor-help text-sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowTooltip(!showTooltip);
+                }}
+              >
+                ?
+              </span>
+              <div className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg transition-opacity z-50 w-48 max-w-xs text-center ${
+                showTooltip ? 'opacity-100' : 'opacity-0 md:absolute md:bottom-full md:top-auto md:left-1/2 md:mb-2 md:z-10 md:group-hover:opacity-100 pointer-events-none'
+              }`}>
                 Activating this mode will lead to slots being randomly empty (Primary Weapon is guaranteed)
               </div>
             </div>
