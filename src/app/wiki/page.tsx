@@ -5,16 +5,34 @@ import ItemCard from '@/components/wiki/ItemCard';
 import BeadCard from '@/components/wiki/BeadCard';
 import { allItems, getBeads } from '@/data/items';
 import { BaseItem, Bead, Element, ItemCategory } from '@/types';
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 type SortCriteria = 'name-asc' | 'name-desc' | 'element-asc' | 'element-desc' | 'category';
 
-export default function WikiPage() {
+// Separate component that uses useSearchParams
+function WikiContent() {
+  const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory | 'All'>('All');
   const [selectedElement, setSelectedElement] = useState<Element | 'All'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortCriteria, setSortCriteria] = useState<SortCriteria>('category');
   const isInitialMount = useRef(true);
+  const scrollTargetRef = useRef<string | null>(null);
+  
+  // Initialize search from URL parameters
+  useEffect(() => {
+    const searchParam = searchParams.get('search');
+    const scrollToParam = searchParams.get('scrollTo');
+    
+    if (searchParam) {
+      setSearchQuery(searchParam);
+    }
+    
+    if (scrollToParam) {
+      scrollTargetRef.current = scrollToParam;
+    }
+  }, [searchParams]);
   
   // All available categories - define this using useMemo
   const categories = useMemo<(ItemCategory | 'All')[]>(() => [
@@ -122,6 +140,34 @@ export default function WikiPage() {
 
     return items; // Return the sorted list
   }, [selectedCategory, selectedElement, searchQuery, sortCriteria, categories]);
+  
+  // Effect to scroll to target item when filteredItems change
+  useEffect(() => {
+    if (scrollTargetRef.current && filteredItems.length > 0) {
+      const scrollTarget = scrollTargetRef.current;
+      // Wait for DOM update
+      setTimeout(() => {
+        // Try to find element by ID first
+        let element = document.getElementById(scrollTarget);
+        
+        // If not found by ID, try to find by name match
+        if (!element) {
+          const targetName = scrollTarget.replace(/-/g, ' ').toLowerCase();
+          filteredItems.forEach((item, index) => {
+            if (item.name.toLowerCase() === targetName) {
+              element = document.querySelector(`[data-item-index="${index}"]`);
+            }
+          });
+        }
+        
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Clear the scroll target after scrolling
+          scrollTargetRef.current = null;
+        }
+      }, 100);
+    }
+  }, [filteredItems]);
   
   // All available elements
   const elements: (Element | 'All')[] = [
@@ -242,12 +288,17 @@ export default function WikiPage() {
                 {getCategoryDisplayName(category)}
               </h2>
               <div className="grid grid-cols-1 gap-3 sm:gap-6">
-                {items.map(item => {
+                {items.map((item, itemIndex) => {
                   const key = ('element' in item) ? item.id : `bead-${item.name}`;
+                  const itemId = item.name.toLowerCase().replace(/\s+/g, '-');
                   return ('element' in item) ? (
-                    <ItemCard key={key} item={item} />
+                    <div key={key} id={itemId} data-item-index={itemIndex}>
+                      <ItemCard item={item} />
+                    </div>
                   ) : (
-                    <BeadCard key={key} bead={item} />
+                    <div key={key} id={itemId} data-item-index={itemIndex}>
+                      <BeadCard bead={item} />
+                    </div>
                   );
                 })}
               </div>
@@ -255,12 +306,17 @@ export default function WikiPage() {
           ))
         ) : (
           // Regular display without grouping
-          filteredItems.map(item => {
+          filteredItems.map((item, index) => {
             const key = ('element' in item) ? item.id : `bead-${item.name}`;
+            const itemId = item.name.toLowerCase().replace(/\s+/g, '-');
             return ('element' in item) ? (
-              <ItemCard key={key} item={item} />
+              <div key={key} id={itemId} data-item-index={index}>
+                <ItemCard item={item} />
+              </div>
             ) : (
-              <BeadCard key={key} bead={item} />
+              <div key={key} id={itemId} data-item-index={index}>
+                <BeadCard bead={item} />
+              </div>
             );
           })
         )}
@@ -288,6 +344,15 @@ export default function WikiPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// Main export with Suspense boundary
+export default function WikiPage() {
+  return (
+    <Suspense fallback={<div className="p-8">Loading...</div>}>
+      <WikiContent />
+    </Suspense>
   );
 }
 

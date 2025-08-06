@@ -1,6 +1,6 @@
 "use client";
 
-import { Element, Loadout } from '@/types';
+import { Element, Loadout, LoadoutLockState } from '@/types';
 import LoadoutSlot from './LoadoutSlot';
 
 interface LoadoutDisplayProps {
@@ -8,9 +8,11 @@ interface LoadoutDisplayProps {
   onSlotClick?: (slot: keyof Loadout) => void;
   selectedSlot?: keyof Loadout | null;
   isGenerating?: boolean;
+  lockState?: LoadoutLockState;
+  onLockToggle?: (slot: keyof Loadout) => void;
 }
 
-const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = false }: LoadoutDisplayProps) => {
+const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = false, lockState, onLockToggle }: LoadoutDisplayProps) => {
   // Get all active elements in the loadout
   const getActiveElements = (): Element[] => {
     const elements = Object.values(loadout)
@@ -31,6 +33,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'primaryWeapon'}
           onClick={() => onSlotClick && onSlotClick('primaryWeapon')}
           isGenerating={isGenerating}
+          isLocked={lockState?.primaryWeapon}
+          onLockToggle={() => onLockToggle && onLockToggle('primaryWeapon')}
         />
         <LoadoutSlot 
           item={loadout.secondaryWeapon} 
@@ -38,6 +42,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'secondaryWeapon'}
           onClick={() => onSlotClick && onSlotClick('secondaryWeapon')}
           isGenerating={isGenerating}
+          isLocked={lockState?.secondaryWeapon}
+          onLockToggle={() => onLockToggle && onLockToggle('secondaryWeapon')}
         />
         <LoadoutSlot 
           item={loadout.demonicWeapon} 
@@ -45,6 +51,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'demonicWeapon'}
           onClick={() => onSlotClick && onSlotClick('demonicWeapon')}
           isGenerating={isGenerating}
+          isLocked={lockState?.demonicWeapon}
+          onLockToggle={() => onLockToggle && onLockToggle('demonicWeapon')}
         />
         <LoadoutSlot 
           item={loadout.relic} 
@@ -52,6 +60,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'relic'}
           onClick={() => onSlotClick && onSlotClick('relic')}
           isGenerating={isGenerating}
+          isLocked={lockState?.relic}
+          onLockToggle={() => onLockToggle && onLockToggle('relic')}
         />
         <LoadoutSlot 
           item={loadout.fetish} 
@@ -59,6 +69,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'fetish'}
           onClick={() => onSlotClick && onSlotClick('fetish')}
           isGenerating={isGenerating}
+          isLocked={lockState?.fetish}
+          onLockToggle={() => onLockToggle && onLockToggle('fetish')}
         />
         <LoadoutSlot 
           item={loadout.ring} 
@@ -66,6 +78,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'ring'}
           onClick={() => onSlotClick && onSlotClick('ring')}
           isGenerating={isGenerating}
+          isLocked={lockState?.ring}
+          onLockToggle={() => onLockToggle && onLockToggle('ring')}
         />
         <LoadoutSlot 
           item={loadout.lightSpell} 
@@ -73,6 +87,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'lightSpell'}
           onClick={() => onSlotClick && onSlotClick('lightSpell')}
           isGenerating={isGenerating}
+          isLocked={lockState?.lightSpell}
+          onLockToggle={() => onLockToggle && onLockToggle('lightSpell')}
         />
         <LoadoutSlot 
           item={loadout.heavySpell} 
@@ -80,6 +96,8 @@ const LoadoutDisplay = ({ loadout, onSlotClick, selectedSlot, isGenerating = fal
           isSelected={selectedSlot === 'heavySpell'}
           onClick={() => onSlotClick && onSlotClick('heavySpell')}
           isGenerating={isGenerating}
+          isLocked={lockState?.heavySpell}
+          onLockToggle={() => onLockToggle && onLockToggle('heavySpell')}
         />
       </div>
 

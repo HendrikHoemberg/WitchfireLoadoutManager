@@ -28,9 +28,30 @@ export default function ManagerPage() {
     witchery: 100,
     arsenal: 100,
     faith: 100,
-    gnosis: 6,
+    slots: 5,
   });
   const [showBeadSettings, setShowBeadSettings] = useState(false);
+  
+  // Effect to prevent background scrolling when bead settings modal is open
+  useEffect(() => {
+    if (showBeadSettings) {
+      // Save the current scroll position
+      const scrollY = window.scrollY;
+      
+      // Add styles to prevent scrolling on the body
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      
+      // Cleanup function to restore scrolling when modal closes
+      return () => {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [showBeadSettings]);
   
   // Clear loadout when the page loads
   useEffect(() => {
@@ -55,9 +76,37 @@ export default function ManagerPage() {
     localStorage.setItem('beadUserStats', JSON.stringify(userStats));
   }, [userStats]);
   
-  // Helper function to get available bead slots based on gnosis level
+  // Helper function to get available bead slots based on slots setting
   const getAvailableBeadSlots = (): number => {
-    return Math.min(userStats.gnosis, 5);
+    return userStats.slots;
+  };
+  
+  // Helper function to calculate stat requirements for current bead loadout
+  const calculateStatRequirements = () => {
+    const statRequirements: { [key: string]: number } = {
+      flesh: 0,
+      blood: 0,
+      mind: 0,
+      witchery: 0,
+      arsenal: 0,
+      faith: 0
+    };
+
+    // Get all beads from current loadout
+    const currentBeads = Object.values(beadLoadout).filter(bead => bead !== null) as Bead[];
+    
+    // Calculate maximum requirement for each stat across all beads
+    currentBeads.forEach(bead => {
+      bead.requirements.forEach(req => {
+        const statName = req.stat.toLowerCase();
+        const requiredValue = parseInt(req.value);
+        if (statRequirements.hasOwnProperty(statName)) {
+          statRequirements[statName] = Math.max(statRequirements[statName], requiredValue);
+        }
+      });
+    });
+
+    return statRequirements;
   };
   
   // Helper function to clear bead loadout
@@ -138,12 +187,6 @@ export default function ManagerPage() {
           onSlotClick={handleSlotClick} 
           selectedSlot={selectedSlot} 
         />
-        
-        {selectedSlot && (
-          <div className="mt-4 text-center text-sm text-gray-400">
-            <p>Select an item below to equip in the {getSlotDisplayName(selectedSlot)} slot</p>
-          </div>
-        )}
       </div>
       
       {/* Beads Section */}
@@ -156,6 +199,12 @@ export default function ManagerPage() {
         <div className="flex w-full justify-between items-center mb-4">
           <h2 className="text-xl text-white font-semibold">Beads</h2>
           <div className="flex gap-2">
+            <button
+              className="px-3 py-1 bg-[#646464] hover:bg-blue-600 text-sm text-white rounded-md transition-colors"
+              onClick={() => setShowBeadSettings(true)}
+            >
+              Settings
+            </button>
             <button
               className="px-3 py-1 bg-[#646464] hover:bg-red-600 text-sm text-white rounded-md transition-colors"
               onClick={clearBeadLoadout}
@@ -186,13 +235,47 @@ export default function ManagerPage() {
           
           {getAvailableBeadSlots() === 0 && (
             <div className="text-gray-400 text-sm">
-              Set your Gnosis level in Settings to unlock bead slots
+              Set your Slots in Settings to unlock bead slots
             </div>
           )}
           
-          {selectedBeadSlot && (
-            <div className="mt-4 text-center text-sm text-gray-400">
-              <p>Select a bead below to equip in {selectedBeadSlot}</p>
+
+          
+          {/* Stat Requirements Table */}
+          {Object.values(beadLoadout).some(bead => bead !== null) && (
+            <div className="w-full mt-4">
+              <h3 className="text-sm font-medium text-white mb-3">Stat Requirements for Current Beads</h3>
+              
+              <div className="bg-[#2a2a2a] rounded-lg p-4 border border-[#555]">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {Object.entries(calculateStatRequirements()).map(([stat, required]) => {
+                    const userStat = userStats[stat as keyof BeadUserStats] as number;
+                    const isMet = userStat >= required;
+                    const statDisplayName = stat.charAt(0).toUpperCase() + stat.slice(1);
+                    
+                    return (
+                      <div key={stat} className="flex justify-between items-center p-2 bg-[#1a1a1a] rounded border border-[#444]">
+                        <span className="text-gray-300 text-sm font-medium">{statDisplayName}:</span>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-bold ${
+                            required === 0 ? 'text-gray-500' :
+                            isMet ? 'text-green-400' : 'text-red-400'
+                          }`}>
+                            {required === 0 ? 'N/A' : required}
+                          </span>
+                          {required > 0 && (
+                            <span className={`text-xs px-1.5 py-0.5 rounded ${
+                              isMet ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                            }`}>
+                              {isMet ? '✓' : '✗'}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -228,7 +311,7 @@ export default function ManagerPage() {
       
       {/* Beads Settings Modal */}
       {showBeadSettings && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
           <div className="bg-[#2a2a2a] rounded-lg p-6 w-full max-w-md mx-4 border border-[#818181]">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-semibold text-white">Bead Settings</h3>
@@ -252,8 +335,7 @@ export default function ManagerPage() {
                 { key: 'mind', label: 'Mind', min: 0, max: 100 },
                 { key: 'witchery', label: 'Witchery', min: 0, max: 100 },
                 { key: 'arsenal', label: 'Arsenal', min: 0, max: 100 },
-                { key: 'faith', label: 'Faith', min: 0, max: 100 },
-                { key: 'gnosis', label: 'Gnosis', min: 1, max: 6 }
+                { key: 'faith', label: 'Faith', min: 0, max: 100 }
               ].map(({ key, label, min, max }) => (
                 <div key={key} className="flex justify-between items-center">
                   <label className="text-gray-200 font-medium">{label}:</label>
@@ -276,8 +358,23 @@ export default function ManagerPage() {
               ))}
               
               <div className="mt-6 pt-4 border-t border-[#606060]">
-                <div className="text-sm text-gray-300">
-                  Available Bead Slots: <span className="text-[#ddaf7aa6] font-semibold">{getAvailableBeadSlots()}</span>
+                <div className="flex justify-between items-center">
+                  <label className="text-gray-200 font-medium">Available Bead Slots:</label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={5}
+                    value={userStats.slots}
+                    onChange={(e) => {
+                      const value = Math.max(1, parseInt(e.target.value) || 1);
+                      const finalValue = Math.min(5, value);
+                      setUserStats(prev => ({
+                        ...prev,
+                        slots: finalValue
+                      }));
+                    }}
+                    className="w-20 px-2 py-1 bg-[#404040] text-white rounded border border-[#606060] focus:border-[#ddaf7aa6] focus:outline-none text-center"
+                  />
                 </div>
               </div>
               
@@ -303,14 +400,7 @@ export default function ManagerPage() {
   );
 }
 
-// Helper function to get display name for slot
-function getSlotDisplayName(slot: keyof Loadout): string {
-  switch (slot) {
-    case 'lightSpell': return 'Light Spell';
-    case 'heavySpell': return 'Heavy Spell';
-    default: return slot.charAt(0).toUpperCase() + slot.slice(1);
-  }
-}
+
 
 // Helper function to get display name for category
 function getCategoryDisplayName(category: ItemCategory): string {

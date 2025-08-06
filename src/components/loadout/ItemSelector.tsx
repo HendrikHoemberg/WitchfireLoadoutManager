@@ -3,6 +3,7 @@
 import { getItemsByCategory, getBeads } from '@/data/items';
 import { BaseItem, ItemCategory, Bead } from '@/types';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import ItemCardPopup from '../common/ItemCardPopup';
 import BeadCardPopup from '../common/BeadCardPopup';
 
@@ -29,6 +30,28 @@ const ItemSelector = ({
   const [popupPosition, setPopupPosition] = useState<{top: number, left: number} | null>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
+  const [showInfoModal, setShowInfoModal] = useState<BaseItem | Bead | null>(null);
+  
+  // Effect to prevent background scrolling when modal is open
+  useEffect(() => {
+    if (showInfoModal) {
+      // Save the current scroll position
+      const scrollY = window.scrollY;
+      
+      // Add styles to prevent scrolling on the body
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      
+      // Cleanup function to restore scrolling when modal closes
+      return () => {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [showInfoModal]);
   
   // Detect if device is a touch device (mobile or tablet)
   useEffect(() => {
@@ -97,6 +120,35 @@ const ItemSelector = ({
         />
       </div>
       
+      {/* Info Modal Overlay */}
+      {showInfoModal && (
+        <div 
+          className="fixed inset-0 flex items-center justify-center z-50 cursor-default overflow-hidden"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
+          onClick={() => setShowInfoModal(null)}
+        >
+          <div className="backdrop-blur-sm absolute inset-0"></div>
+          <div 
+            className="max-h-[90vh] overflow-y-auto max-w-[95vw] py-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {'element' in showInfoModal ? (
+              <ItemCardPopup 
+                item={showInfoModal} 
+                isModal={true} 
+                onClose={() => setShowInfoModal(null)} 
+              />
+            ) : (
+              <BeadCardPopup 
+                bead={showInfoModal} 
+                isModal={true} 
+                onClose={() => setShowInfoModal(null)} 
+              />
+            )}
+          </div>
+        </div>
+      )}
+      
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 relative">
         {hoveredItem && popupPosition && (
           <div 
@@ -128,7 +180,18 @@ const ItemSelector = ({
         return (
           <div 
             key={item.id}
-            onClick={handleClick}
+            onClick={(e) => {
+              // Check if the click is on the info button or its children
+              const target = e.target as HTMLElement;
+              const isInfoButton = target.tagName === 'BUTTON' || 
+                                 target.parentElement?.tagName === 'BUTTON' ||
+                                 target.textContent?.trim() === 'i';
+              
+              // Only trigger handleClick if it's not on the info button
+              if (!isInfoButton) {
+                handleClick();
+              }
+            }}
             className={`
               relative flex flex-col items-center 
               p-2 rounded-md cursor-pointer
@@ -259,9 +322,11 @@ const ItemSelector = ({
           >
             <div className="w-16 h-16 mb-2 bg-black rounded-md flex items-center justify-center">
               {item.iconUrl ? (
-                <img 
+                <Image 
                   src={item.iconUrl} 
                   alt={item.name} 
+                  width={64}
+                  height={64}
                   className="w-full h-full object-contain rounded-md"
                 />
               ) : null}
@@ -277,7 +342,18 @@ const ItemSelector = ({
               />
             )}
 
-            
+            {/* Information Icon */}
+            <button
+              className="absolute top-1 left-1 w-6 h-6 rounded-full bg-[#ddaf7a] hover:bg-[#e9b87e] flex items-center justify-center text-white text-base font-bold transition-all z-10 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                setHoveredItem(null); // Close hover popup if open
+                setShowInfoModal(item);
+              }}
+              title={`View ${item.name} details`}
+            >
+              i
+            </button>
           </div>
         );
       })}

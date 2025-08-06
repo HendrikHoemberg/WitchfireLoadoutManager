@@ -83,6 +83,27 @@ export interface Loadout {
   ring: BaseItem | null;
 }
 
+// Lock State for Loadout Slots
+export interface LoadoutLockState {
+  primaryWeapon: boolean;
+  secondaryWeapon: boolean;
+  demonicWeapon: boolean;
+  lightSpell: boolean;
+  heavySpell: boolean;
+  relic: boolean;
+  fetish: boolean;
+  ring: boolean;
+}
+
+// Lock State for Bead Slots
+export interface BeadLockState {
+  slot1: boolean;
+  slot2: boolean;
+  slot3: boolean;
+  slot4: boolean;
+  slot5: boolean;
+}
+
 // Bead User Stats for determining availability and slot count
 export interface BeadUserStats {
   flesh: number;
@@ -91,7 +112,7 @@ export interface BeadUserStats {
   witchery: number;
   arsenal: number;
   faith: number;
-  gnosis: number; // 1-6, determines slot count (max 5 slots at gnosis 5+)
+  slots: number; // 1-5, determines available bead slots
 }
 
 // Bead Loadout Structure (separate from main loadout)
