@@ -6,10 +6,12 @@ import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
 import BeadSlot from '@/components/loadout/BeadSlot';
 import { useLoadout } from '@/context/LoadoutContext';
 import { Element, ItemCategory, BeadLoadout, BeadUserStats, Bead, LoadoutLockState, BeadLockState, Loadout } from '@/types';
-import { getBeads, getItemsByCategory } from '@/data/items';
-import { useEffect, useState } from 'react';
+import { getBeads, getItemsByCategory, getItemById, getBeadById } from '@/data/items';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { buildCompactShareParam, parseCompactShareParam } from '@/utils/share';
 
-export default function RandomizerPage() {
+function RandomizerPageContent() {
   const { 
     loadout, 
     randomizerSettings, 
@@ -20,12 +22,14 @@ export default function RandomizerPage() {
     toggleEmptySlotMode,
     setItemInLoadout
   } = useLoadout();
+  const searchParams = useSearchParams();
   
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory>('Weapons');
   
   // Beads state
   const [showTooltip, setShowTooltip] = useState(false);
   const [showBeadSettings, setShowBeadSettings] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
   
   // Effect to prevent background scrolling when bead settings modal is open
   useEffect(() => {
@@ -102,10 +106,18 @@ export default function RandomizerPage() {
     slot5: false,
   });
 
-  // Clear loadout when the page loads
+  // Clear loadout on first load ONLY if no prefill params are present
   useEffect(() => {
-    clearLoadout();
-  }, [clearLoadout]);
+    const slotKeys = ['primaryWeapon','secondaryWeapon','demonicWeapon','lightSpell','heavySpell','relic','fetish','ring'];
+    const hasLoadoutParams = slotKeys.some(k => searchParams.get(k));
+    const hasBeadParams = ['bead1','bead2','bead3','bead4','bead5'].some(k => searchParams.get(k));
+    const hasCompact = !!searchParams.get('s');
+    if (!hasLoadoutParams && !hasBeadParams && !hasCompact) {
+      clearLoadout();
+      setBeadLoadout({ slot1: null, slot2: null, slot3: null, slot4: null, slot5: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   // Load user stats from localStorage on component mount
   useEffect(() => {
@@ -125,7 +137,95 @@ export default function RandomizerPage() {
     localStorage.setItem('beadUserStats', JSON.stringify(userStats));
   }, [userStats]);
   
+  // Prefill loadout and bead slots from URL params on first mount
+  useEffect(() => {
+    // Prefer compact param 's' if present
+    const compact = searchParams.get('s');
+    if (compact) {
+      const parsed = parseCompactShareParam(compact);
+      if (parsed) {
+        const order: (keyof Loadout)[] = [
+          'primaryWeapon','secondaryWeapon','demonicWeapon','lightSpell','heavySpell','relic','fetish','ring'
+        ];
+        order.forEach((slot, idx) => {
+          const id = parsed.loadoutIds[idx] ?? null;
+          if (id) {
+            const item = getItemById(id);
+            if (item) setItemInLoadout(slot, item);
+          }
+        });
 
+        const newBeads: BeadLoadout = { slot1: null, slot2: null, slot3: null, slot4: null, slot5: null };
+        for (let i = 0; i < 5; i++) {
+          const id = parsed.beadIds[i] ?? null;
+          if (id) {
+            const bead = getBeadById(id);
+            if (bead) {
+              const key = `slot${i+1}` as keyof BeadLoadout;
+              newBeads[key] = bead;
+            }
+          }
+        }
+        setBeadLoadout(newBeads);
+        return; // Done
+      }
+    }
+
+    // Fallback to verbose params
+    const loadoutKeys: (keyof Loadout)[] = [
+      'primaryWeapon',
+      'secondaryWeapon',
+      'demonicWeapon',
+      'lightSpell',
+      'heavySpell',
+      'relic',
+      'fetish',
+      'ring',
+    ];
+
+    loadoutKeys.forEach((key) => {
+      const id = searchParams.get(key);
+      if (id) {
+        const item = getItemById(id);
+        if (item) {
+          setItemInLoadout(key, item);
+        }
+      }
+    });
+
+    const beadUpdates: Partial<BeadLoadout> = {};
+    for (let i = 1; i <= 5; i++) {
+      const beadId = searchParams.get(`bead${i}`);
+      if (beadId) {
+        const bead = getBeadById(beadId);
+        if (bead) {
+          beadUpdates[`slot${i}` as keyof BeadLoadout] = bead;
+        }
+      }
+    }
+    if (Object.keys(beadUpdates).length > 0) {
+      setBeadLoadout((prev) => ({ ...prev, ...beadUpdates }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Generate a shareable link with current selections and copy to clipboard
+  const handleGenerateShareLink = async () => {
+    try {
+      const url = new URL(window.location.href);
+      url.search = '';
+
+      const s = buildCompactShareParam(loadout, beadLoadout);
+      url.searchParams.set('s', s);
+
+      await navigator.clipboard.writeText(url.toString());
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 1500);
+    } catch (e) {
+      console.error('Failed to generate share link', e);
+      alert('Failed to copy the share link. You can copy the URL from the address bar.');
+    }
+  };
   
   // Helper function to get available bead slots based on slots setting
   const getAvailableBeadSlots = (): number => {
@@ -581,6 +681,13 @@ export default function RandomizerPage() {
     
     // Wait for animation to play (800ms) before updating items
     setTimeout(() => {
+      // First, clear slots that were intentionally marked as empty
+      emptySlots.forEach((slot) => {
+        if (unlockedSlots.includes(slot)) {
+          setItemInLoadout(slot as keyof Loadout, null);
+        }
+      });
+
       // Now update all slots at once after animation has played
       Object.entries(newItems).forEach(([slot, item]) => {
         setItemInLoadout(slot as keyof Loadout, item);
@@ -611,12 +718,22 @@ export default function RandomizerPage() {
         />
         <div className="flex w-full justify-between items-center mb-4">
           <h2 className="text-xl text-white font-semibold">Current Loadout</h2>
-          <button
-            className="px-3 py-1 bg-[#646464] hover:bg-red-600 text-sm text-white rounded-md transition-colors"
-            onClick={clearLoadout}
-          >
-            Clear All
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              className={`px-3 py-1 text-sm text-white rounded-md transition-colors ${
+                shareCopied ? 'bg-green-600 hover:bg-green-500' : 'bg-[#646464] hover:bg-[#7a7a7a]'
+              }`}
+              onClick={handleGenerateShareLink}
+            >
+              {shareCopied ? 'Link copied to clipboard' : 'Generate Share Link'}
+            </button>
+            <button
+              className="px-3 py-1 bg-[#646464] hover:bg-red-600 text-sm text-white rounded-md transition-colors"
+              onClick={clearLoadout}
+            >
+              Clear All
+            </button>
+          </div>
         </div>
         
         <LoadoutDisplay 
@@ -971,6 +1088,14 @@ export default function RandomizerPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function RandomizerPage() {
+  return (
+    <Suspense fallback={<div className="text-gray-400 text-sm">Loading...</div>}>
+      <RandomizerPageContent />
+    </Suspense>
   );
 }
 

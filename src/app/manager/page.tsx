@@ -6,10 +6,14 @@ import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
 import BeadSlot from '@/components/loadout/BeadSlot';
 import { useLoadout } from '@/context/LoadoutContext';
 import { ItemCategory, Loadout, BaseItem, BeadLoadout, BeadUserStats, Bead } from '@/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { getItemById, getBeadById } from '@/data/items';
+import { buildCompactShareParam, parseCompactShareParam } from '@/utils/share';
 
-export default function ManagerPage() {
+function ManagerPageContent() {
   const { loadout, setItemInLoadout, clearLoadout } = useLoadout();
+  const searchParams = useSearchParams();
   
   // State declarations first
   const [selectedSlot, setSelectedSlot] = useState<keyof Loadout | null>(null);
@@ -31,6 +35,7 @@ export default function ManagerPage() {
     slots: 5,
   });
   const [showBeadSettings, setShowBeadSettings] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
   
   // Effect to prevent background scrolling when bead settings modal is open
   useEffect(() => {
@@ -53,10 +58,19 @@ export default function ManagerPage() {
     }
   }, [showBeadSettings]);
   
-  // Clear loadout when the page loads
+  // Clear loadout on first load ONLY if no prefill params are present
   useEffect(() => {
-    clearLoadout();
-  }, [clearLoadout]);
+    const slotKeys = ['primaryWeapon','secondaryWeapon','demonicWeapon','lightSpell','heavySpell','relic','fetish','ring'];
+    const hasLoadoutParams = slotKeys.some(k => searchParams.get(k));
+    const hasBeadParams = ['bead1','bead2','bead3','bead4','bead5'].some(k => searchParams.get(k));
+    const hasCompact = !!searchParams.get('s');
+    if (!hasLoadoutParams && !hasBeadParams && !hasCompact) {
+      clearLoadout();
+      // Also ensure beads are cleared if no params are present
+      setBeadLoadout({ slot1: null, slot2: null, slot3: null, slot4: null, slot5: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   // Load user stats from localStorage on component mount
   useEffect(() => {
@@ -75,6 +89,78 @@ export default function ManagerPage() {
   useEffect(() => {
     localStorage.setItem('beadUserStats', JSON.stringify(userStats));
   }, [userStats]);
+
+  // Prefill loadout and bead slots from URL params on first mount
+  useEffect(() => {
+    // Prefer compact param 's' if present
+    const compact = searchParams.get('s');
+    if (compact) {
+      const parsed = parseCompactShareParam(compact);
+      if (parsed) {
+        const order: (keyof Loadout)[] = [
+          'primaryWeapon','secondaryWeapon','demonicWeapon','lightSpell','heavySpell','relic','fetish','ring'
+        ];
+        order.forEach((slot, idx) => {
+          const id = parsed.loadoutIds[idx] ?? null;
+          if (id) {
+            const item = getItemById(id);
+            if (item) setItemInLoadout(slot, item);
+          }
+        });
+
+        const newBeads: BeadLoadout = { slot1: null, slot2: null, slot3: null, slot4: null, slot5: null };
+        for (let i = 0; i < 5; i++) {
+          const id = parsed.beadIds[i] ?? null;
+          if (id) {
+            const bead = getBeadById(id);
+            if (bead) {
+              const key = `slot${i+1}` as keyof BeadLoadout;
+              newBeads[key] = bead;
+            }
+          }
+        }
+        setBeadLoadout(newBeads);
+        return; // Done
+      }
+    }
+
+    // Fallback: verbose params
+    const loadoutKeys: (keyof Loadout)[] = [
+      'primaryWeapon',
+      'secondaryWeapon',
+      'demonicWeapon',
+      'lightSpell',
+      'heavySpell',
+      'relic',
+      'fetish',
+      'ring',
+    ];
+
+    loadoutKeys.forEach((key) => {
+      const id = searchParams.get(key);
+      if (id) {
+        const item = getItemById(id);
+        if (item) {
+          setItemInLoadout(key, item);
+        }
+      }
+    });
+
+    const beadUpdates: Partial<BeadLoadout> = {};
+    for (let i = 1; i <= 5; i++) {
+      const beadId = searchParams.get(`bead${i}`);
+      if (beadId) {
+        const bead = getBeadById(beadId);
+        if (bead) {
+          beadUpdates[`slot${i}` as keyof BeadLoadout] = bead;
+        }
+      }
+    }
+    if (Object.keys(beadUpdates).length > 0) {
+      setBeadLoadout((prev) => ({ ...prev, ...beadUpdates }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   // Helper function to get available bead slots based on slots setting
   const getAvailableBeadSlots = (): number => {
@@ -119,6 +205,26 @@ export default function ManagerPage() {
       slot5: null,
     });
   };
+
+  // Generate a shareable link with current selections and copy to clipboard
+  const handleGenerateShareLink = async () => {
+    try {
+      const url = new URL(window.location.href);
+      // Reset any existing params
+      url.search = '';
+
+      // Build compact share param
+      const s = buildCompactShareParam(loadout, beadLoadout);
+      url.searchParams.set('s', s);
+
+      await navigator.clipboard.writeText(url.toString());
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 1500);
+    } catch (e) {
+      console.error('Failed to generate share link', e);
+      alert('Failed to copy the share link. You can copy the URL from the address bar.');
+    }
+  };
   
   // Map loadout slot to item category
   const slotToCategory: Record<keyof Loadout, ItemCategory> = {
@@ -131,6 +237,19 @@ export default function ManagerPage() {
     fetish: 'Fetishes',
     ring: 'Rings'
   };
+  
+  // Ordered lists used for auto-advancing selection
+  const loadoutOrder: (keyof Loadout)[] = [
+    'primaryWeapon',
+    'secondaryWeapon',
+    'demonicWeapon',
+    'relic',
+    'fetish',
+    'ring',
+    'lightSpell',
+    'heavySpell'
+  ];
+  const beadOrder: (keyof BeadLoadout)[] = ['slot1','slot2','slot3','slot4','slot5'];
   
   // Handle slot selection
   const handleSlotClick = (slot: keyof Loadout) => {
@@ -146,22 +265,108 @@ export default function ManagerPage() {
   
   // Handle item selection (both BaseItem and Bead)
   const handleItemSelect = (item: BaseItem | Bead) => {
+    // Track projected state for a unified completion check at the end
+    let projectedLoadout: Loadout = loadout as Loadout;
+    let projectedBeads: BeadLoadout = beadLoadout;
+
     if (selectedSlot && 'element' in item) {
       // This is a BaseItem for the main loadout
       setItemInLoadout(selectedSlot, item as BaseItem);
+
+      // Auto-advance to next loadout slot, or first bead slot after the last
+      const nextLoadout: Loadout = { ...loadout, [selectedSlot]: item as BaseItem } as Loadout;
+      const isLoadoutComplete = Object.values(nextLoadout).every(v => v !== null);
+      projectedLoadout = nextLoadout;
+      const currentIdx = loadoutOrder.indexOf(selectedSlot);
+      if (currentIdx >= 0) {
+        if (currentIdx < loadoutOrder.length - 1) {
+          setSelectedSlot(loadoutOrder[currentIdx + 1]);
+          setSelectedBeadSlot(null);
+        } else {
+          // Last loadout slot reached -> move to first bead slot (if any available)
+          const available = Math.max(0, Math.min(5, getAvailableBeadSlots()));
+          if (available > 0) {
+            // Find first empty bead slot among available; if none, and loadout complete, hide selector
+            const firstEmpty = beadOrder
+              .slice(0, available)
+              .find((k) => beadLoadout[k] === null);
+            if (firstEmpty) {
+              setSelectedSlot(null);
+              setSelectedBeadSlot(firstEmpty);
+            } else if (isLoadoutComplete) {
+              setSelectedSlot(null);
+              setSelectedBeadSlot(null);
+            }
+          } else if (isLoadoutComplete) {
+            // No bead slots available and loadout is complete -> hide selector
+            setSelectedSlot(null);
+            setSelectedBeadSlot(null);
+          }
+        }
+      }
     } else if (selectedBeadSlot && 'requirements' in item) {
       // This is a Bead for the bead loadout
-      setBeadLoadout(prev => ({
-        ...prev,
+      const nextBeads: BeadLoadout = {
+        ...beadLoadout,
         [selectedBeadSlot]: item as Bead
-      }));
+      };
+      setBeadLoadout(nextBeads);
+      projectedBeads = nextBeads;
+
+      // Auto-advance to next available bead slot, but stop after last
+      const available = Math.max(0, Math.min(5, getAvailableBeadSlots()));
+      const currentBeadIdx = beadOrder.indexOf(selectedBeadSlot);
+      const allBeadsFilled = beadOrder.slice(0, available).every((k) => nextBeads[k] !== null);
+      const isLoadoutComplete = Object.values(loadout).every(v => v !== null);
+      if (isLoadoutComplete && allBeadsFilled) {
+        // Everything filled -> hide selector
+        setSelectedBeadSlot(null);
+        setSelectedSlot(null);
+      } else if (currentBeadIdx >= 0 && currentBeadIdx < available - 1) {
+        setSelectedBeadSlot(beadOrder[currentBeadIdx + 1]);
+      }
+    }
+
+    // Final unified completion check: if all slots (loadout + available beads) are filled, hide selector
+    const available = Math.max(0, Math.min(5, getAvailableBeadSlots()));
+    const loadoutFull = Object.values(projectedLoadout).every(v => v !== null);
+    const beadsFull = beadOrder.slice(0, available).every((k) => projectedBeads[k] !== null);
+    if (loadoutFull && (available === 0 || beadsFull)) {
+      setSelectedSlot(null);
+      setSelectedBeadSlot(null);
     }
   };
   
   // Get the current category based on selected slot (loadout or bead)
   const currentCategory = selectedSlot ? slotToCategory[selectedSlot] : 
                          selectedBeadSlot ? 'Beads' as ItemCategory : 
-                         null;
+                          null;
+
+  // Exclusions for ItemSelector (Manager-only):
+  // If selecting a weapon slot, exclude the weapon already chosen in the other weapon slot
+  const excludedItemsForSelector: string[] = (() => {
+    if (!currentCategory) return [];
+    if (currentCategory === 'Weapons') {
+      if (selectedSlot === 'primaryWeapon' && loadout.secondaryWeapon) {
+        return [loadout.secondaryWeapon.id];
+      }
+      if (selectedSlot === 'secondaryWeapon' && loadout.primaryWeapon) {
+        return [loadout.primaryWeapon.id];
+      }
+    } else if (currentCategory === 'Beads') {
+      // Exclude beads already used in other slots; allow the current slot's bead to remain visible
+      const usedBeadIds = Object.values(beadLoadout)
+        .filter((b): b is Bead => b !== null)
+        .map(b => b.id);
+
+      if (selectedBeadSlot && beadLoadout[selectedBeadSlot]) {
+        const currentId = (beadLoadout[selectedBeadSlot] as Bead).id;
+        return usedBeadIds.filter(id => id !== currentId);
+      }
+      return usedBeadIds;
+    }
+    return [];
+  })();
 
   return (
     <div className="flex flex-col gap-8">
@@ -174,12 +379,22 @@ export default function ManagerPage() {
         />
         <div className="flex w-full justify-between items-center mb-4">
           <h2 className="text-xl text-white font-semibold">Current Loadout</h2>
-          <button
-            className="px-3 py-1 bg-[#646464] hover:bg-red-600 text-sm text-white rounded-md transition-colors"
-            onClick={clearLoadout}
-          >
-            Clear All
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              className={`px-3 py-1 text-sm text-white rounded-md transition-colors ${
+                shareCopied ? 'bg-green-600 hover:bg-green-500' : 'bg-[#646464] hover:bg-[#7a7a7a]'
+              }`}
+              onClick={handleGenerateShareLink}
+            >
+              {shareCopied ? 'Link copied to clipboard' : 'Generate Share Link'}
+            </button>
+            <button
+              className="px-3 py-1 bg-[#646464] hover:bg-red-600 text-sm text-white rounded-md transition-colors"
+              onClick={clearLoadout}
+            >
+              Clear All
+            </button>
+          </div>
         </div>
         
         <LoadoutDisplay 
@@ -188,6 +403,25 @@ export default function ManagerPage() {
           selectedSlot={selectedSlot} 
         />
       </div>
+      
+      {/* Item Selection for Loadout Slots (between loadout and beads) */}
+      {selectedSlot && (
+        <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
+          <img
+            src="/images/texture-transparent.PNG"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+          />
+          <h2 className="text-xl text-white font-semibold mb-4">
+            {getCategoryDisplayName(slotToCategory[selectedSlot])}
+          </h2>
+          <ItemSelector
+            category={slotToCategory[selectedSlot]}
+            onItemSelect={handleItemSelect}
+            excludedItems={excludedItemsForSelector}
+          />
+        </div>
+      )}
       
       {/* Beads Section */}
       <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] flex flex-col items-center justify-center text-center overflow-hidden">
@@ -242,72 +476,61 @@ export default function ManagerPage() {
 
           
           {/* Stat Requirements Table */}
-          {Object.values(beadLoadout).some(bead => bead !== null) && (
-            <div className="w-full mt-4">
-              <h3 className="text-sm font-medium text-white mb-3">Stat Requirements for Current Beads</h3>
-              
-              <div className="bg-[#2a2a2a] rounded-lg p-4 border border-[#555]">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {Object.entries(calculateStatRequirements()).map(([stat, required]) => {
-                    const userStat = userStats[stat as keyof BeadUserStats] as number;
-                    const isMet = userStat >= required;
-                    const statDisplayName = stat.charAt(0).toUpperCase() + stat.slice(1);
-                    
-                    return (
-                      <div key={stat} className="flex justify-between items-center p-2 bg-[#1a1a1a] rounded border border-[#444]">
-                        <span className="text-gray-300 text-sm font-medium">{statDisplayName}:</span>
-                        <div className="flex items-center gap-2">
-                          <span className={`text-sm font-bold ${
-                            required === 0 ? 'text-gray-500' :
-                            isMet ? 'text-green-400' : 'text-red-400'
+          <div className="w-full mt-4">
+            <h3 className="text-sm font-medium text-white mb-3">Stat Requirements for Current Beads</h3>
+            
+            <div className="bg-[#2a2a2a] rounded-lg p-4 border border-[#555]">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {Object.entries(calculateStatRequirements()).map(([stat, required]) => {
+                  const userStat = userStats[stat as keyof BeadUserStats] as number;
+                  const isMet = userStat >= required;
+                  const statDisplayName = stat.charAt(0).toUpperCase() + stat.slice(1);
+                  
+                  return (
+                    <div key={stat} className="flex justify-between items-center p-2 bg-[#1a1a1a] rounded border border-[#444]">
+                      <span className="text-gray-300 text-sm font-medium">{statDisplayName}:</span>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-sm font-bold ${
+                          required === 0 ? 'text-gray-500' :
+                          isMet ? 'text-green-400' : 'text-red-400'
+                        }`}>
+                          {required === 0 ? 'N/A' : required}
+                        </span>
+                        {required > 0 && (
+                          <span className={`text-xs px-1.5 py-0.5 rounded ${
+                            isMet ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
                           }`}>
-                            {required === 0 ? 'N/A' : required}
+                            {isMet ? '✓' : '✗'}
                           </span>
-                          {required > 0 && (
-                            <span className={`text-xs px-1.5 py-0.5 rounded ${
-                              isMet ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                            }`}>
-                              {isMet ? '✓' : '✗'}
-                            </span>
-                          )}
-                        </div>
+                        )}
                       </div>
-                    );
-                  })}
-                </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
       
-      {/* Item Selection */}
-      {currentCategory && (
+      {/* Item Selection for Bead Slots (below beads) */}
+      {selectedBeadSlot && (
         <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
-        <img
-          src="/images/texture-transparent.PNG"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
-        />
-          <h2 className="text-xl text-white font-semibold mb-4">{getCategoryDisplayName(currentCategory)}</h2>
-          
+          <img
+            src="/images/texture-transparent.PNG"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+          />
+          <h2 className="text-xl text-white font-semibold mb-4">{getCategoryDisplayName('Beads' as ItemCategory)}</h2>
           <ItemSelector
-            category={currentCategory}
+            category={'Beads' as ItemCategory}
             onItemSelect={handleItemSelect}
+            excludedItems={excludedItemsForSelector}
           />
         </div>
       )}
       
-      {!currentCategory && (
-        <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] flex flex-col items-center justify-center text-center overflow-hidden">
-        <img
-          src="/images/texture-transparent.PNG"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
-        />
-          <p className="text-white">Click on a loadout slot above to select an item for that slot.</p>
-        </div>
-      )}
+      
       
       {/* Beads Settings Modal */}
       {showBeadSettings && (
@@ -397,6 +620,14 @@ export default function ManagerPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ManagerPage() {
+  return (
+    <Suspense fallback={<div className="text-gray-300">Loading...</div>}>
+      <ManagerPageContent />
+    </Suspense>
   );
 }
 

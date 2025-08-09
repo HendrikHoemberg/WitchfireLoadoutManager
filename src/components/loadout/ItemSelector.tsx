@@ -104,9 +104,10 @@ const ItemSelector = ({
   const items: (BaseItem | Bead)[] = category === 'Beads' ? getBeads() : getItemsByCategory(category);
   
   // Filter items based on search query
-  const filteredItems = items.filter(item => 
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredItems = items
+    .filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    // If exclude toggle is NOT provided (e.g., Manager page), hide excluded items entirely
+    .filter(item => (onItemExcludeToggle ? true : !excludedItems.includes(item.id)));
 
   return (
     <div className="w-full">
