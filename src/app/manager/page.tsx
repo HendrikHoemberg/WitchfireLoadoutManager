@@ -6,7 +6,7 @@ import LoadoutDisplay from '@/components/loadout/LoadoutDisplay';
 import BeadSlot from '@/components/loadout/BeadSlot';
 import { useLoadout } from '@/context/LoadoutContext';
 import { ItemCategory, Loadout, BaseItem, BeadLoadout, BeadUserStats, Bead } from '@/types';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getItemById, getBeadById } from '@/data/items';
 import { buildCompactShareParam, parseCompactShareParam } from '@/utils/share';
@@ -36,6 +36,7 @@ function ManagerPageContent() {
   });
   const [showBeadSettings, setShowBeadSettings] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const selectorPanelRef = useRef<HTMLDivElement | null>(null);
   
   // Effect to prevent background scrolling when bead settings modal is open
   useEffect(() => {
@@ -340,7 +341,26 @@ function ManagerPageContent() {
   // Get the current category based on selected slot (loadout or bead)
   const currentCategory = selectedSlot ? slotToCategory[selectedSlot] : 
                          selectedBeadSlot ? 'Beads' as ItemCategory : 
-                          null;
+                           null;
+
+  // Close overlay on outside click/touch
+  useEffect(() => {
+    if (!currentCategory) return; // Only active when overlay is open
+    const handler = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      if (selectorPanelRef.current && !selectorPanelRef.current.contains(target)) {
+        setSelectedSlot(null);
+        setSelectedBeadSlot(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    document.addEventListener('touchstart', handler, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handler);
+      document.removeEventListener('touchstart', handler as EventListener);
+    };
+  }, [currentCategory]);
 
   // Exclusions for ItemSelector (Manager-only):
   // If selecting a weapon slot, exclude the weapon already chosen in the other weapon slot
@@ -404,22 +424,45 @@ function ManagerPageContent() {
         />
       </div>
       
-      {/* Item Selection for Loadout Slots (between loadout and beads) */}
-      {selectedSlot && (
-        <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
-          <img
-            src="/images/texture-transparent.PNG"
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
-          />
-          <h2 className="text-xl text-white font-semibold mb-4">
-            {getCategoryDisplayName(slotToCategory[selectedSlot])}
-          </h2>
-          <ItemSelector
-            category={slotToCategory[selectedSlot]}
-            onItemSelect={handleItemSelect}
-            excludedItems={excludedItemsForSelector}
-          />
+      {/* Item Selector Overlay (bottom sheet) */}
+      {currentCategory && (
+        <div className="fixed inset-x-0 bottom-0 z-40 pointer-events-none">
+          <div
+            ref={selectorPanelRef}
+            className="relative pointer-events-auto bg-[#2a2a2a] border border-[#818181] h-[45vh] rounded-lg mx-4 lg:mx-auto lg:max-w-[70%] mb-2 shadow-[0px_0px_40px_5px_rgba(0,0,0,0.95)] overflow-hidden"
+          >
+            <img
+              src="/images/texture-transparent.PNG"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
+            />
+            <div className="h-full overflow-y-auto">
+              <div className="sticky top-0 z-50 flex items-center justify-between h-12 px-4 bg-[#2a2a2a]">
+                <h2 className="text-lg text-white font-semibold m-0">
+                  {getCategoryDisplayName(currentCategory)}
+                </h2>
+                {/* Close button */}
+                <button
+                  className="text-gray-300 hover:text-white text-2xl leading-none cursor-pointer"
+                  onClick={() => {
+                    setSelectedSlot(null);
+                    setSelectedBeadSlot(null);
+                  }}
+                  aria-label="Close item selector"
+                  title="Close"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="px-4">
+                <ItemSelector
+                  category={currentCategory}
+                  onItemSelect={handleItemSelect}
+                  excludedItems={excludedItemsForSelector}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
       
@@ -513,21 +556,15 @@ function ManagerPageContent() {
         </div>
       </div>
       
-      {/* Item Selection for Bead Slots (below beads) */}
-      {selectedBeadSlot && (
-        <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
-          <img
-            src="/images/texture-transparent.PNG"
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
-          />
-          <h2 className="text-xl text-white font-semibold mb-4">{getCategoryDisplayName('Beads' as ItemCategory)}</h2>
-          <ItemSelector
-            category={'Beads' as ItemCategory}
-            onItemSelect={handleItemSelect}
-            excludedItems={excludedItemsForSelector}
-          />
-        </div>
+      {/* Bead selector now uses the same bottom-sheet overlay above */}
+
+      {/* Spacer to allow scrolling content above the fixed bottom selector */}
+      {currentCategory && (
+        <div
+          aria-hidden
+          className="pointer-events-none"
+          style={{ height: 'calc(40vh)' }}
+        />
       )}
       
       

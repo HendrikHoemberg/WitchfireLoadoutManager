@@ -7,6 +7,7 @@ import { allItems, getBeads } from '@/data/items';
 import { BaseItem, Bead, Element, ItemCategory } from '@/types';
 import { useMemo, useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import ClearableInput from '@/components/common/ClearableInput';
 
 type SortCriteria = 'name-asc' | 'name-desc' | 'element-asc' | 'element-desc' | 'category';
 
@@ -184,7 +185,7 @@ function WikiContent() {
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />
         <div className="mb-3 sm:mb-6">
-          <input
+          <ClearableInput
             type="text"
             placeholder="Search items..."
             className="text-gray-100 w-full px-3 py-2 bg-[#30303071] border border-[#818181] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ddaf7aa6] focus:border-transparent"

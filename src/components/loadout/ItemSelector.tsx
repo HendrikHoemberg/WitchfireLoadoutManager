@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ItemCardPopup from '../common/ItemCardPopup';
 import BeadCardPopup from '../common/BeadCardPopup';
+import ClearableInput from '../common/ClearableInput';
 
 // Define interface for Window with MSMaxTouchPoints
 interface WindowWithMSTouchPoints extends Window {
@@ -111,11 +112,12 @@ const ItemSelector = ({
 
   return (
     <div className="w-full">
-      <div className="mb-4">
-        <input
+      <div className="sticky top-12 z-40 -mx-4 px-4 py-2 bg-[#292929] border-b border-[#606060]">
+        <ClearableInput
           type="text"
           placeholder="Search items..."
           className="text-gray-100 w-full px-3 py-2 bg-[#30303071] border border-[#818181] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ddaf7aa6] focus:border-transparent"
+          containerClassName="w-full md:max-w-[20%]"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -150,7 +152,7 @@ const ItemSelector = ({
         </div>
       )}
       
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 relative">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 relative mt-2">
         {hoveredItem && popupPosition && (
           <div 
             className="fixed pointer-events-none z-50" 

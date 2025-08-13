@@ -959,12 +959,7 @@ function RandomizerPageContent() {
       </div>
       
       {/* Item Exclusion Section */}
-      <div className="relative bg-[#30303071] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
-        <img
-          src="/images/texture-transparent.PNG"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
-        />
+      <div className="relative bg-[#292929] rounded-lg p-6 transition-colors border border-[#818181] overflow-hidden">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl text-gray-100 font-semibold">Exclude Items</h2>
           <button
@@ -976,7 +971,7 @@ function RandomizerPageContent() {
         </div>
         
         {/* Category Tabs */}
-        <div className="flex overflow-x-auto pb-2 mb-4">
+        <div className="flex overflow-x-auto pb-2">
           {categories.map(category => (
             <button
               key={category}
