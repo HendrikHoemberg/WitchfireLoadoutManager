@@ -345,20 +345,64 @@ function ManagerPageContent() {
 
   // Close overlay on outside click/touch
   useEffect(() => {
-    if (!currentCategory) return; // Only active when overlay is open
+    // Only add the event listeners if the selector is open
+    if (!currentCategory) return;
+    
+    // Track if we're scrolling to prevent closing the selector during scroll
+    let isScrolling = false;
+    let scrollTimeout: NodeJS.Timeout;
+    
+    const handleScroll = () => {
+      isScrolling = true;
+      
+      // Clear the timeout if it exists
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      
+      // Set a timeout to reset isScrolling after scrolling stops
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 100);
+    };
+    
     const handler = (e: MouseEvent | TouchEvent) => {
+      // If we're scrolling, don't close the selector
+      if (isScrolling) return;
+      
       const target = e.target as Node | null;
       if (!target) return;
+      
+      // Check if the click/touch is inside the selector panel
       if (selectorPanelRef.current && !selectorPanelRef.current.contains(target)) {
-        setSelectedSlot(null);
-        setSelectedBeadSlot(null);
+        // Check if the click is on the close button inside the selector
+        const closeButton = document.querySelector('.selector-close-button');
+        if (closeButton && (closeButton === target || closeButton.contains(target))) {
+          setSelectedSlot(null);
+          setSelectedBeadSlot(null);
+          return;
+        }
+        
+        // On desktop, close on mousedown outside
+        if (e.type === 'mousedown') {
+          setSelectedSlot(null);
+          setSelectedBeadSlot(null);
+        }
+        // On mobile, we'll only close with the explicit close button
+        // This prevents accidental closing when scrolling
       }
     };
+    
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Add click/touch handlers
     document.addEventListener('mousedown', handler);
     document.addEventListener('touchstart', handler, { passive: true });
+    
     return () => {
+      window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('mousedown', handler);
       document.removeEventListener('touchstart', handler as EventListener);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
     };
   }, [currentCategory]);
 
@@ -443,7 +487,7 @@ function ManagerPageContent() {
                 </h2>
                 {/* Close button */}
                 <button
-                  className="text-gray-300 hover:text-white text-2xl leading-none cursor-pointer"
+                  className="text-gray-300 hover:text-white text-2xl leading-none cursor-pointer selector-close-button"
                   onClick={() => {
                     setSelectedSlot(null);
                     setSelectedBeadSlot(null);
