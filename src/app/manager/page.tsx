@@ -473,7 +473,7 @@ function ManagerPageContent() {
         <div className="fixed inset-x-0 bottom-0 z-40 pointer-events-none">
           <div
             ref={selectorPanelRef}
-            className="relative pointer-events-auto bg-[#2a2a2a] border border-[#818181] h-[60vh] md:h-[45vh] rounded-lg mx-4 lg:mx-auto lg:max-w-[70%] mb-2 shadow-[0px_0px_40px_5px_rgba(0,0,0,0.95)] overflow-hidden"
+            className="relative pointer-events-auto bg-[#2a2a2a] border border-[#818181] h-[50vh] md:h-[45vh] rounded-lg mx-4 lg:mx-auto lg:max-w-[70%] mb-2 shadow-[0px_0px_40px_5px_rgba(0,0,0,0.95)] overflow-hidden"
           >
             <img
               src="/images/texture-transparent.PNG"
