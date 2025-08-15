@@ -8,6 +8,21 @@ import {
 import { getItemsByCategory } from "@/data/items";
 import { Weapon, WeaponFamily, WeightClass, isWeapon, BaseItem, Bead } from "@/types";
 import { parseWeaponQuestSourceHandle, parseInventoryWeaponSourceHandle, parseUnlockedKey } from "@/util/saveWeaponParsers";
+import {
+  buildLightSpellAbilityDetailsHandle,
+  buildLightSpellInventoryHandle,
+  buildLightSpellQuestHandle,
+  buildLightSpellResearchKey,
+  buildLightSpellUnlockedKey,
+  getAllLightSpells,
+  getLightSpellByCode,
+  getCodeForLightSpellItem,
+  parseLightSpellInventoryOrDetailsHandle,
+  parseLightSpellQuestHandle,
+  parseLightSpellResearchKey,
+  parseLightSpellUnlockedKey,
+  type LightSpellCode,
+} from "@/util/spellKeys";
 import { buildInventoryContainerSourceHandle, buildWeaponDetailsSourceHandle, buildResearchKey, familyToSaveToken, weightToSaveToken } from "@/util/weaponKeys";
 import ItemSelector from "@/components/loadout/ItemSelector";
 
@@ -73,6 +88,12 @@ interface WeaponDataDetail {
   sourceHandle?: string;
 }
 
+interface AbilityItemDataDetail {
+  detailsId?: number;
+  tierQuestId?: number; // -1 by default
+  sourceHandle?: string;
+}
+
 interface WitchfireSaveFile {
   PlayerClass?: string; // e.g. "Player.Class.AggroChaotic"
   PlayerLevel?: number;
@@ -86,6 +107,7 @@ interface WitchfireSaveFile {
     ItemStorage?: {
       SaveLoadItemDataContainers?: Array<ItemStorageContainer>;
       SaveLoadWeaponDataDetails?: Array<WeaponDataDetail>;
+      SaveLoadAbilityItemDataDetails?: Array<AbilityItemDataDetail>;
     };
   };
 }
@@ -108,6 +130,7 @@ export default function SaveEditorPage() {
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [showAddWeaponModal, setShowAddWeaponModal] = useState(false);
+  const [showAddLightSpellModal, setShowAddLightSpellModal] = useState(false);
 
   // Derived class info from working JSON
   const playerClassInfo: PlayerClassInfo | null = useMemo(() => {
@@ -202,6 +225,319 @@ export default function SaveEditorPage() {
     }
     return m;
   }, [workingJson]);
+
+  // ============ Light Spells Section ============
+  // Map LightSpellCode -> BaseItem
+  const lightSpellByCode = useMemo(() => {
+    const items = getAllLightSpells();
+    const map = new Map<string, BaseItem>();
+    for (const it of items) {
+      const code = getCodeForLightSpellItem(it);
+      if (code) map.set(code, it);
+    }
+    return map;
+  }, []);
+
+  // Parse current mysterium tiers for Light spells from Unlocked.Items map
+  const lightSpellTierMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const unlockedItems = workingJson?.Save?.GameInstance?.ProgressManager?.IntegerMaps?.["Progression.Category.Unlocked.Items"]?.map;
+    if (unlockedItems && typeof unlockedItems === "object") {
+      for (const [k, v] of Object.entries(unlockedItems as Record<string, number>)) {
+        const code = parseLightSpellUnlockedKey(k);
+        if (!code) continue;
+        const stored = Number(v);
+        const tier = Math.max(0, Math.min(3, stored - 1)); // 1..4 -> 0..3
+        m.set(code, tier);
+      }
+    }
+    return m;
+  }, [workingJson]);
+
+  // Parse inventory light spells counts (by LightSpellCode)
+  const lightSpellInventoryCountMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const storage = workingJson?.PlayerController?.ItemStorage;
+    const seen = new Set<string>();
+    const containers = storage?.SaveLoadItemDataContainers;
+    if (Array.isArray(containers)) {
+      for (const c of containers) {
+        const sh = c?.sourceHandle;
+        if (typeof sh !== "string") continue;
+        const code = parseLightSpellInventoryOrDetailsHandle(sh);
+        if (code) {
+          seen.add(sh);
+          m.set(code, (m.get(code) ?? 0) + 1);
+        }
+      }
+    }
+    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    if (Array.isArray(abilityDetails)) {
+      for (const d of abilityDetails) {
+        const sh = d?.sourceHandle;
+        if (typeof sh !== "string" || seen.has(sh)) continue;
+        const code = parseLightSpellInventoryOrDetailsHandle(sh);
+        if (code) m.set(code, (m.get(code) ?? 0) + 1);
+      }
+    }
+    // Deep scan for any stray handles
+    if (workingJson) {
+      const visit = (val: unknown) => {
+        if (typeof val === "string") {
+          const code = parseLightSpellInventoryOrDetailsHandle(val);
+          if (code) m.set(code, (m.get(code) ?? 0) + 1);
+          return;
+        }
+        if (Array.isArray(val)) {
+          for (const v of val) visit(v);
+          return;
+        }
+        if (val && typeof val === "object") {
+          for (const v of Object.values(val as Record<string, unknown>)) visit(v);
+        }
+      };
+      visit(workingJson);
+    }
+    return m;
+  }, [workingJson]);
+
+  const excludedLightForAdd = useMemo(() => {
+    return Array.from(lightSpellInventoryCountMap.entries())
+      .filter(([, c]) => c > 0)
+      .map(([code]) => lightSpellByCode.get(code)?.id)
+      .filter((x): x is string => typeof x === "string");
+  }, [lightSpellInventoryCountMap, lightSpellByCode]);
+
+  const hasAddableLightSpells = useMemo(() => {
+    return getAllLightSpells().some((it) => !excludedLightForAdd.includes(it.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [excludedLightForAdd.join("|")]);
+
+  const addInventoryForLightSpell = (item: BaseItem) => {
+    if (!workingJson) return;
+    const code = getCodeForLightSpellItem(item);
+    if (!code) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+
+    // Compute next available ID across containers, weapon details, and ability details
+    let maxId = 0;
+    for (const c of containers) {
+      if (typeof c.slotId === "number" && c.slotId > maxId) maxId = c.slotId;
+      if (typeof c.detailsId === "number" && c.detailsId > maxId) maxId = c.detailsId;
+    }
+    const weaponDetails = (next.PlayerController?.ItemStorage?.SaveLoadWeaponDataDetails ?? []) as Array<WeaponDataDetail>;
+    for (const d of weaponDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    for (const d of abilityDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    const nextId = maxId + 1;
+
+    // Spells start at Rare
+    const detailsHandle = buildLightSpellAbilityDetailsHandle(code, "Rare");
+    const containerHandle = buildLightSpellInventoryHandle(code, "Rare");
+
+    abilityDetails.push({ detailsId: nextId, tierQuestId: -1, sourceHandle: detailsHandle });
+    containers.push({
+      slotId: nextId,
+      detailsId: nextId,
+      itemCount: 1,
+      bStashed: false,
+      dateTimeAdded: formatDateForSave(),
+      sourceHandle: containerHandle,
+    });
+
+    // Research key
+    ensureResearchPath(next);
+    const projects = next.Save!.Subsystems!.Research!.SaveLoadResearchedProjects as Record<string, number>;
+    projects[buildLightSpellResearchKey(code)] = 1;
+
+    // Ensure mysterium map base entry exists (1)
+    const unlocked = getUnlockedItemsMap(next);
+    const unlockedKey = buildLightSpellUnlockedKey(code);
+    const current = unlocked[unlockedKey];
+    if (typeof current !== "number" || current < 1) unlocked[unlockedKey] = 1;
+
+    setWorkingJson(next);
+  };
+
+  const removeInventoryForLightSpell = (code: LightSpellCode) => {
+    if (!workingJson) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+    // Containers
+    const filteredC = containers.filter((c) => {
+      const sh = c?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseLightSpellInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    containers.splice(0, containers.length, ...filteredC);
+    // Ability details
+    const filteredD = abilityDetails.filter((d) => {
+      const sh = d?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseLightSpellInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    abilityDetails.splice(0, abilityDetails.length, ...filteredD);
+
+    // Research
+    const research = next.Save?.Subsystems?.Research?.SaveLoadResearchedProjects as Record<string, number> | undefined;
+    if (research) {
+      const k = buildLightSpellResearchKey(code);
+      if (k in research) delete research[k];
+    }
+    // Unlocked mysterium
+    const unlocked = getUnlockedItemsMap(next);
+    const uKey = buildLightSpellUnlockedKey(code);
+    if (uKey in unlocked) delete unlocked[uKey];
+    // Quests for this spell
+    const quests = next.Save?.Subsystems?.Quest?.SaveLoadQuests;
+    if (Array.isArray(quests)) {
+      const filteredQ = quests.filter((q) => {
+        const sh = q?.sourceHandle;
+        if (typeof sh !== "string") return true;
+        const parsed = parseLightSpellQuestHandle(sh);
+        if (!parsed) return true;
+        return parsed.code !== code;
+      });
+      quests.splice(0, quests.length, ...filteredQ);
+    }
+
+    setWorkingJson(next);
+  };
+
+  const setLightSpellMysteriumTier = (code: LightSpellCode, value: number) => {
+    if (!workingJson) return;
+    const tier = Math.max(0, Math.min(3, Math.round(value)));
+    const next = structuredClone(workingJson);
+    const unlocked = getUnlockedItemsMap(next);
+    const key = buildLightSpellUnlockedKey(code);
+    unlocked[key] = tier + 1;
+    setWorkingJson(next);
+  };
+
+  const renderLightSpellsSection = () => {
+    if (!workingJson) return null;
+    const present = Array.from(lightSpellInventoryCountMap.entries())
+      .filter(([, c]) => c > 0)
+      .map(([code, count]) => ({ code: code as LightSpellCode, count, name: lightSpellByCode.get(code)?.name ?? code }))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
+
+    const openAdd = () => {
+      if (!hasAddableLightSpells) return;
+      setShowAddLightSpellModal(true);
+    };
+    const closeAdd = () => setShowAddLightSpellModal(false);
+    const handleAddSelect = (item: BaseItem | Bead) => {
+      if ((item as any)?.category === "LightSpells") {
+        addInventoryForLightSpell(item as BaseItem);
+        const remaining = getAllLightSpells().filter((it) => ![...excludedLightForAdd, (item as BaseItem).id].includes(it.id));
+        if (remaining.length === 0) closeAdd();
+      }
+    };
+
+    return (
+      <div className="mt-10">
+        <h3 className="text-xl font-semibold text-gray-100 mb-2">Light Spells</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-[540px] w-full text-left">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-700">
+                <th className="py-2 px-3 w-14"></th>
+                <th className="py-2 px-3">Name</th>
+                <th className="py-2 px-3">Mysterium Tier</th>
+                <th className="py-2 px-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {present.map(({ code }) => {
+                const item = lightSpellByCode.get(code);
+                const name = item?.name ?? code;
+                const tier = lightSpellTierMap.get(code) ?? 0;
+                return (
+                  <tr key={code} className="border-b border-gray-700">
+                    <td className="py-2 px-3">
+                      {item?.iconUrl ? (
+                        <img src={item.iconUrl} alt={name} className="w-12 h-12 object-contain rounded" />
+                      ) : (
+                        <div className="w-12 h-12" />)
+                      }
+                    </td>
+                    <td className="py-2 px-3 text-gray-200">{name}</td>
+                    <td className="py-2 px-3">
+                      <input
+                        type="number"
+                        min={0}
+                        max={3}
+                        step={1}
+                        value={tier}
+                        onChange={(e) => setLightSpellMysteriumTier(code, Number(e.target.value))}
+                        className="w-24 bg-[#2a2a2a] text-white border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#ddaf7a]"
+                      />
+                    </td>
+                    <td className="py-2 px-3">
+                      <button
+                        onClick={() => removeInventoryForLightSpell(code)}
+                        className="px-3 py-2 rounded text-sm bg-red-600 text-white hover:bg-red-700 flex items-center justify-center cursor-pointer"
+                        title="Remove"
+                        aria-label="Remove"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                          <path d="M10 11v6" />
+                          <path d="M14 11v6" />
+                          <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+              {present.length === 0 && (
+                <tr>
+                  <td className="py-3 px-3 text-gray-400" colSpan={4}>No light spells in inventory. Add some with the + button.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {hasAddableLightSpells && (
+          <div className="mt-3">
+            <button onClick={openAdd} className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">+ Add light spell</button>
+          </div>
+        )}
+
+        {showAddLightSpellModal && (
+          <div className="fixed inset-x-0 bottom-0 z-40 pointer-events-none">
+            <div className="relative pointer-events-auto bg-[#2a2a2a] border border-[#818181] h-[50vh] md:h-[50vh] rounded-lg mx-4 lg:mx-auto lg:max-w-[70%] mb-2 shadow-[0px_0px_40px_5px_rgba(0,0,0,0.95)] overflow-hidden">
+              <img src="/images/texture-transparent.PNG" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0" />
+              <div className="h-full overflow-y-auto">
+                <div className="sticky top-0 z-50 flex items-center justify-between h-12 px-4 bg-[#2a2a2a]">
+                  <h2 className="text-lg text-white font-semibold m-0">Add Light Spell</h2>
+                  <button className="text-gray-300 hover:text-white text-2xl leading-none cursor-pointer" onClick={closeAdd} aria-label="Close item selector" title="Close">×</button>
+                </div>
+                <div className="px-4">
+                  <ItemSelector
+                    category="LightSpells"
+                    onItemSelect={handleAddSelect}
+                    excludedItems={excludedLightForAdd}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
 
   // Parse current inventory weapon counts (by Family.Weight, ignoring rarity)
@@ -309,6 +645,10 @@ export default function SaveEditorPage() {
             deepScanMatches++;
             if (sampleDeepHandles.length < 3) sampleDeepHandles.push(val);
           }
+          // also sample spell handles
+          if (parseLightSpellInventoryOrDetailsHandle(val)) {
+            if (sampleDeepHandles.length < 3) sampleDeepHandles.push(val);
+          }
           return;
         }
         if (Array.isArray(val)) {
@@ -373,6 +713,9 @@ export default function SaveEditorPage() {
     // Ensure weapon details array exists
     j.PlayerController.ItemStorage.SaveLoadWeaponDataDetails =
       j.PlayerController.ItemStorage.SaveLoadWeaponDataDetails ?? [];
+    // Ensure ability item details array exists (for Light/Heavy spells)
+    (j.PlayerController.ItemStorage as any).SaveLoadAbilityItemDataDetails =
+      (j.PlayerController.ItemStorage as any).SaveLoadAbilityItemDataDetails ?? [];
   };
 
   // Locate the existing arrays anywhere in the JSON tree. If not found, fall back to top-level PlayerController.ItemStorage
@@ -399,6 +742,32 @@ export default function SaveEditorPage() {
       details = j.PlayerController!.ItemStorage!.SaveLoadWeaponDataDetails!;
     }
     return { containers: containers!, details: details! };
+  };
+
+  // Ability item arrays (Light/Heavy spells)
+  const getAbilityInventoryArrays = (j: WitchfireSaveFile): {
+    containers: Array<ItemStorageContainer>;
+    abilityDetails: Array<AbilityItemDataDetail>;
+  } => {
+    let containers: Array<ItemStorageContainer> | null = null;
+    let abilityDetails: Array<AbilityItemDataDetail> | null = null;
+    const visit = (val: unknown) => {
+      if (containers && abilityDetails) return; // found both
+      if (!val || typeof val !== "object") return;
+      const obj = val as Record<string, unknown>;
+      const c = obj["SaveLoadItemDataContainers"];
+      if (!containers && Array.isArray(c)) containers = c as Array<ItemStorageContainer>;
+      const d = obj["SaveLoadAbilityItemDataDetails"];
+      if (!abilityDetails && Array.isArray(d)) abilityDetails = d as Array<AbilityItemDataDetail>;
+      for (const v of Object.values(obj)) visit(v);
+    };
+    visit(j);
+    if (!containers || !abilityDetails) {
+      ensureInventoryPath(j);
+      containers = j.PlayerController!.ItemStorage!.SaveLoadItemDataContainers!;
+      abilityDetails = (j.PlayerController!.ItemStorage as any).SaveLoadAbilityItemDataDetails!;
+    }
+    return { containers: containers!, abilityDetails: abilityDetails! };
   };
 
   // Ensure ProgressManager path for Unlocked.Items integer map exists
@@ -1057,11 +1426,15 @@ export default function SaveEditorPage() {
 
           {renderStatsTable()}
           {renderWeaponsSection()}
+          {renderLightSpellsSection()}
         </div>
       )}
 
       {/* Spacer below the card so page can scroll past the fixed bottom sheet, without extending the card itself */}
       {showAddWeaponModal && (
+        <div aria-hidden className="pointer-events-none h-[49vh] md:h-[44vh]" />
+      )}
+      {showAddLightSpellModal && (
         <div aria-hidden className="pointer-events-none h-[49vh] md:h-[44vh]" />
       )}
 
