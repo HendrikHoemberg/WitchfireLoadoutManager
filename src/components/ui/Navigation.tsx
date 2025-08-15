@@ -30,6 +30,7 @@ const Navigation = () => {
     { name: 'Loadout Manager', path: '/manager' },
     { name: 'Loadout Randomizer', path: '/randomizer' },
     { name: 'Item Wiki', path: '/wiki' },
+    { name: 'Savefile Editor', path: '/save-editor' },
   ];
 
   return (

@@ -20,6 +20,11 @@ export default function Home() {
           icon="⚔️"
           link="/manager"
         />
+        <FeatureCard 
+          title="Savefile Editor" 
+          icon="📝"
+          link="/save-editor"
+        />
       </div>
     </div>
   );

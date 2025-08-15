@@ -1,0 +1,68 @@
+We are now going to extend the savefile editor with another section: Light spells.
+
+They're mostly stored in the json like weapons but with a few differences. Check if Weapons are added/removed/parsed to get how the current savefileditor is implemented.
+
+you can get the corresponding filename for the spells in @LightSpells.csv and @HeavySpells.csv 
+
+As you can see in @Slot_0 - Copy.json , they need to be added to "Progression.Category.Unlocked.Items": {
+            "map": {  with the naming scheme: "Type.Item.Ability.Spell.Light.Fire.02": 2, or "Type.Item.Ability.Spell.Heavy.Fire.01": 2,
+(here, remember that the numerical value represents the mysterium level of the Spells. Spells start at mysterium 1 so 2 is the min value and 4 is the max value)
+Example: @Slot_0%20-%20Copy.json#L1060-1286 
+
+they also need to be added to "Subsystems": {
+      "Research": {
+        "SaveLoadResearchedProjects": {
+
+with the naming scheme of "Research.Ability.Spell.Light.FIRE_01": 1,
+or "Research.Ability.Spell.Heavy.FIRE_01": 1,
+Example: @Slot_0%20-%20Copy.json#L944-997 
+
+also add them to the "PlayerController": {
+      "ItemStorage": {
+        "SaveLoadItemDataContainers": [
+          { with the naming scheme 
+
+{
+            "slotId": 44,
+            "detailsId": 44,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.34.01",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Abilities/LightSpellItemsData.LightSpellItemsData|Ability.Spell.Light.FIRE_02.Rare"
+          },
+
+or {
+            "slotId": 44,
+            "detailsId": 44,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.34.01",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Abilities/LightSpellItemsData.LightSpellItemsData|Ability.Spell.Heavy.FIRE_01.Rare"
+          },
+
+(Just like for weapons, slotId and detailsId should always be set to current maxvalue of the field + 1. bStashed is always false. DateTimeAdded should always be the current time. Remember that the rarity in the sourceHandle can only be rare, epic or legendary as spells cant be mysterium 0 and thus not rarity common.)
+
+Example: @Slot_0%20-%20Copy.json#L1825-3110 
+
+Differently from the weapons tho, instead of adding them to "SaveLoadWeaponDataDetails": [
+          { add them to 
+
+"SaveLoadAbilityItemDataDetails": [
+          { with a naming scheme of 
+
+{
+            "detailsId": 44,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AbilityItemDataDetails.AbilityItemDataDetails|Ability.Spell.Light.FIRE_02.Rare"
+          },
+
+or {
+            "detailsId": 44,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AbilityItemDataDetails.AbilityItemDataDetails|Ability.Spell.Heavy.FIRE_01.Rare"
+          },
+(just like before, detailsId should be max value of the field +1, tierQuestId is always -1)
+
+Example: @Slot_0%20-%20Copy.json#L3334-3420 
+
+Do you have any questions before you start coding?

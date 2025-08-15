@@ -30,9 +30,27 @@ export interface BaseItem {
   updatedOn: string; // ISO date
 }
 
+// Weapon metadata
+export type WeaponFamily =
+  | 'AutoRifle'
+  | 'BoltActionRifle'
+  | 'HandCannon'
+  | 'LeverActionRifle'
+  | 'MachinePistol'
+  | 'Shotgun'
+  | 'SniperRifle'
+  | 'StakeGun'
+  | 'Crossbow'
+  | 'StunGun'
+  | 'GrenadeLauncher';
+
+export type WeightClass = 'Light' | 'Medium' | 'Heavy' | 'Exotic';
+
 // Weapon-Specific Properties
 export interface Weapon extends BaseItem {
   category: 'Weapons' | 'DemonicWeapons';
+  weaponFamily: WeaponFamily; // e.g., 'Shotgun', 'HandCannon'
+  weightClass: WeightClass;   // e.g., 'Light', 'Medium', 'Heavy', 'Exotic'
   damage: number;
   stunPower: string;
   hipfireRange: number;
@@ -63,7 +81,7 @@ export interface Bead {
 }
 
 // Type guards for item categories
-export function isWeapon(item: BaseItem): item is Weapon {
+export function isWeapon(item: BaseItem | Bead): item is Weapon {
   return item.category === 'Weapons' || item.category === 'DemonicWeapons';
 }
 

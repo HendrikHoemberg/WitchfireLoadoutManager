@@ -1,0 +1,1597 @@
+{
+  "SaveVersion": 25,
+  "GameVersion": "0.7.4.64561",
+  "OriginalSaveVersion": 24,
+  "OriginalGameVersion": "0.7.2.64195",
+  "GameTime": 15282.0537109375,
+  "LastPlayedDate": "2025.08.15-10.02.34",
+  "PlayerClass": "Player.Class.AggroChaotic",
+  "PlayerLevel": 20,
+  "Save": {
+    "GameInstance": {
+      "ProgressManager": {
+        "IntegerMaps": {
+          "Progression.Category.Unlocked.Items": {
+            "map": {
+              "Type.Item.Ability.Melee.Punch": 1,
+              "Type.Item.Booster.Weapon.02": 1,
+              "Type.Item.Booster.Weapon.03": 1,
+              "Type.Item.Booster.Weapon.04": 1,
+              "Type.Item.Booster.Weapon.05": 1,
+              "Type.Item.Booster.Weapon.06": 1,
+              "Type.Item.Booster.Weapon.07": 1,
+              "Type.Item.Booster.Weapon.08": 1,
+              "Type.Item.Booster.Weapon.09": 1,
+              "Type.Item.Booster.Weapon.10": 1,
+              "Type.Item.Booster.Weapon.11": 1,
+              "Type.Item.Booster.Weapon.12": 1,
+              "Type.Item.Booster.Weapon.13": 1,
+              "Type.Item.Booster.Weapon.14": 1,
+              "Type.Item.Booster.Weapon.15": 1,
+              "Type.Item.Booster.Weapon.16": 1,
+              "Type.Item.Booster.Weapon.17": 1,
+              "Type.Item.Booster.Weapon.19": 1,
+              "Type.Item.Booster.Weapon.20": 1,
+              "Type.Item.Booster.Weapon.21": 1,
+              "Type.Item.Booster.Weapon.22": 1,
+              "Type.Item.Booster.Weapon.24": 1,
+              "Type.Item.Booster.Weapon.26": 1,
+              "Type.Item.Booster.Weapon.28": 1,
+              "Type.Item.Booster.Weapon.30": 1,
+              "Type.Item.Booster.Weapon.31": 1,
+              "Type.Item.Booster.Weapon.33": 1,
+              "Type.Item.Booster.Weapon.34": 1,
+              "Type.Item.Booster.Weapon.35": 1,
+              "Type.Item.Booster.Weapon.36": 1,
+              "Type.Item.Booster.Weapon.37": 1,
+              "Type.Item.Booster.Weapon.38": 1,
+              "Type.Item.Booster.Weapon.39": 1,
+              "Type.Item.Booster.Weapon.40": 1,
+              "Type.Item.Booster.Weapon.41": 1,
+              "Type.Item.Booster.Weapon.42": 1,
+              "Type.Item.Booster.Weapon.43": 1,
+              "Type.Item.Booster.Weapon.44": 1,
+              "Type.Item.Booster.Weapon.45": 1,
+              "Type.Item.Booster.Weapon.46": 1,
+              "Type.Item.Booster.Weapon.47": 1,
+              "Type.Item.Booster.Weapon.48": 1,
+              "Type.Item.Booster.Weapon.49": 1,
+              "Type.Item.Booster.Spell.Common.02": 1,
+              "Type.Item.Booster.Spell.Common.03": 1,
+              "Type.Item.Booster.Spell.Common.04": 1,
+              "Type.Item.Booster.Spell.Common.06": 1,
+              "Type.Item.Booster.Spell.Common.07": 1,
+              "Type.Item.Booster.Spell.Common.10": 1,
+              "Type.Item.Booster.Spell.Common.11": 1,
+              "Type.Item.Booster.Spell.Common.12": 1,
+              "Type.Item.Booster.Spell.Fire.01": 1,
+              "Type.Item.Booster.Spell.Fire.02": 1,
+              "Type.Item.Booster.Spell.Fire.03": 1,
+              "Type.Item.Booster.Spell.Fire.04": 1,
+              "Type.Item.Booster.Spell.Fire.06": 1,
+              "Type.Item.Booster.Spell.Fire.07": 1,
+              "Type.Item.Booster.Spell.Fire.08": 1,
+              "Type.Item.Booster.Spell.Fire.09": 1,
+              "Type.Item.Booster.Spell.Fire.10": 1,
+              "Type.Item.Booster.Spell.Air.01": 1,
+              "Type.Item.Booster.Spell.Air.02": 1,
+              "Type.Item.Booster.Spell.Air.03": 1,
+              "Type.Item.Booster.Spell.Air.04": 1,
+              "Type.Item.Booster.Spell.Air.05": 1,
+              "Type.Item.Booster.Spell.Air.06": 1,
+              "Type.Item.Booster.Spell.Air.07": 1,
+              "Type.Item.Booster.Spell.Air.08": 1,
+              "Type.Item.Booster.Spell.Air.09": 1,
+              "Type.Item.Booster.Spell.Earth.01": 1,
+              "Type.Item.Booster.Spell.Earth.02": 1,
+              "Type.Item.Booster.Spell.Earth.03": 1,
+              "Type.Item.Booster.Spell.Earth.04": 1,
+              "Type.Item.Booster.Spell.Earth.05": 1,
+              "Type.Item.Booster.Spell.Earth.06": 1,
+              "Type.Item.Booster.Spell.Earth.07": 1,
+              "Type.Item.Booster.Spell.Earth.08": 1,
+              "Type.Item.Booster.Spell.Earth.09": 1,
+              "Type.Item.Booster.Spell.Water.01": 1,
+              "Type.Item.Booster.Spell.Water.02": 1,
+              "Type.Item.Booster.Spell.Water.03": 1,
+              "Type.Item.Booster.Spell.Water.05": 1,
+              "Type.Item.Booster.Spell.Water.06": 1,
+              "Type.Item.Booster.Spell.Water.07": 1,
+              "Type.Item.Booster.Spell.Water.08": 1,
+              "Type.Item.Booster.Spell.Water.09": 1,
+              "Type.Item.Booster.Spell.Water.10": 1,
+              "Type.Item.Booster.Varia.Health.01": 1,
+              "Type.Item.Booster.Varia.Health.03": 1,
+              "Type.Item.Booster.Varia.Health.04": 1,
+              "Type.Item.Booster.Varia.Health.05": 1,
+              "Type.Item.Booster.Varia.Exotic.01": 1,
+              "Type.Item.Booster.Varia.Exotic.03": 1,
+              "Type.Item.Booster.Varia.Exotic.04": 1,
+              "Type.Item.Booster.Varia.Exotic.05": 1,
+              "Type.Item.Booster.Varia.Stamina.01": 1,
+              "Type.Item.Booster.Varia.Stamina.02": 1,
+              "Type.Item.Booster.Varia.Stamina.04": 1,
+              "Type.Item.Booster.Varia.Stamina.05": 1,
+              "Type.Item.Booster.Varia.Witchfire.02": 1,
+              "Type.Item.Booster.Varia.Witchfire.03": 1,
+              "Type.Item.Booster.Varia.Witchfire.04": 1,
+              "Type.Item.Booster.Varia.Witchfire.05": 1,
+              "Type.Item.Booster.Varia.Common.02": 1,
+              "Type.Item.Booster.Varia.Common.03": 1,
+              "Type.Item.Booster.Varia.Common.04": 1,
+              "Type.Item.Booster.Varia.Common.05": 1,
+              "Type.Item.Booster.Varia.Stamina.06": 1,
+              "Type.Item.Booster.Varia.Stamina.07": 1,
+              "Type.Item.Booster.Varia.Stamina.08": 1,
+              "Type.Item.Booster.Varia.Stamina.09": 1,
+              "Type.Item.Booster.Varia.Stamina.10": 1,
+              "Type.Item.Booster.Varia.Explo.01": 1,
+              "Type.Item.Booster.Varia.Explo.02": 1,
+              "Type.Item.Booster.Varia.Explo.03": 1,
+              "Type.Item.Booster.Varia.Explo.04": 1,
+              "Type.Item.Booster.Varia.Explo.05": 1,
+              "Type.Item.Booster.Corrupted.Weapon.01": 1,
+              "Type.Item.Booster.Corrupted.Weapon.02": 1,
+              "Type.Item.Booster.Corrupted.Weapon.03": 1,
+              "Type.Item.Booster.Corrupted.Weapon.04": 1,
+              "Type.Item.Booster.Corrupted.Weapon.05": 1,
+              "Type.Item.Booster.Corrupted.Weapon.06": 1,
+              "Type.Item.Booster.Corrupted.Weapon.07": 1,
+              "Type.Item.Booster.Corrupted.Weapon.08": 1,
+              "Type.Item.Booster.Corrupted.Weapon.09": 1,
+              "Type.Item.Booster.Corrupted.Weapon.10": 1,
+              "Type.Item.Booster.Corrupted.Weapon.11": 1,
+              "Type.Item.Booster.Corrupted.Ability.01": 1,
+              "Type.Item.Booster.Corrupted.Ability.02": 1,
+              "Type.Item.Booster.Corrupted.Ability.03": 1,
+              "Type.Item.Booster.Corrupted.Ability.04": 1,
+              "Type.Item.Booster.Corrupted.Ability.05": 1,
+              "Type.Item.Booster.Corrupted.Ability.06": 1,
+              "Type.Item.Booster.Corrupted.Ability.07": 1,
+              "Type.Item.Booster.Corrupted.Ability.08": 1,
+              "Type.Item.Booster.Corrupted.Ability.09": 1,
+              "Type.Item.Booster.Corrupted.Ability.10": 1,
+              "Type.Item.Booster.Corrupted.Attribute.01": 1,
+              "Type.Item.Booster.Corrupted.Attribute.02": 1,
+              "Type.Item.Booster.Corrupted.Attribute.03": 1,
+              "Type.Item.Booster.Corrupted.Attribute.04": 1,
+              "Type.Item.Booster.Corrupted.Attribute.05": 1,
+              "Type.Item.Booster.Corrupted.Attribute.06": 1,
+              "Type.Item.Booster.Corrupted.Varia.01": 1,
+              "Type.Item.Booster.Corrupted.Varia.02": 1,
+              "Type.Item.Booster.Corrupted.Varia.03": 1,
+              "Type.Item.Booster.Corrupted.Varia.04": 1,
+              "Type.Item.Booster.Corrupted.Varia.05": 1,
+              "Type.Item.Weapon.AutoRifle.Light": 3,
+              "Type.Item.Weapon.AutoRifle.Heavy": 3,
+              "Type.Item.Weapon.AutoRifle.Medium": 4,
+              "Type.Item.Fetish.Nele.01": 2,
+              "Type.Item.Ability.Spell.Light.Fire.02": 2,
+              "Type.Item.Weapon.Shotgun.Medium": 1,
+              "Type.Item.Ability.Spell.Light.Fire.01": 2,
+              "Type.Item.Fetish.Nele.07": 2,
+              "Type.Item.Ability.Spell.Light.Water.01": 2,
+              "Type.Item.Weapon.HandCannon.Medium": 1,
+              "Type.Item.Weapon.MachinePistol.Medium": 1
+            }
+          },
+          "Progression.Category.Default": {
+            "map": {
+              "Progression.Run.SavedSeed.Village": 425915,
+              "Progression.Run.SavedSeed.Castle": 2137,
+              "Progression.Run.SavedSeed.Town": 19742,
+              "Progression.Run.SavedSeed.Tower": 621569,
+              "Progression.Run.SavedSeed.WitchMountain": 42069,
+              "Progression.Rosary.UnlockedBeads": 7,
+              "Progression.Player.ClassSelected": 1,
+              "Progression.Tutorial.IntroShown": 1,
+              "Progression.Scenario.Success": 30,
+              "Progression.Prologue.Completed": 1,
+              "Progression.Base.ArrivalCutscenePlayed": 1,
+              "Progression.Base.ChurchObjectiveActive": 1,
+              "Progression.Shop.Prophecies.RemainingProphecies": 5,
+              "Progression.Run.ReturnSuccess": 2,
+              "Progression.Tower.Station7": 1,
+              "Progression.Base.AttributeShopUnlocked": 1,
+              "Progression.Base.WorkshopObjectiveActive": 1,
+              "Progression.Tower.Station3": 1,
+              "Progression.Tower.Station2": 1,
+              "Progression.Tower.Station1": 1,
+              "Progression.OneTimeTutorial.Dash": 1,
+              "Progression.Tower.Station4": 1,
+              "Progression.Tower.SceptreReturned": 1,
+              "Progression.Tower.StatuesCompleted": 1,
+              "Progression.Tower.Teleport2": 1,
+              "Progression.Tower.ForceStart.Teleport2": 1,
+              "Progression.Base.WorkshopUnlocked": 1,
+              "Progression.Run.SeedChanged.Tower": 1,
+              "Progression.Run.ReturnFailed": 2,
+              "Progression.Base.WFGateObjectiveActive": 1,
+              "Progression.Run.LastRunFailed": 1,
+              "Progression.Tutorial.Gnosis": 1,
+              "Progression.Quest.Gnosis.HighestUnlocked": 1,
+              "Progression.Base.HasEverCraftedIncense": 1,
+              "Progression.Tutorial.Respec": 1,
+              "Progression.Tutorial.SecondaryWeapon": 1
+            }
+          },
+          "Progression.Category.Arenas.VisitedAnyTime": {
+            "map": {
+              "Arena.Prologue.StartingGrove": 1,
+              "Arena.Prologue.DevilRocks": 1,
+              "Arena.Prologue.DarkForest": 1,
+              "Arena.Prologue.VistaRoad": 1,
+              "Arena.Prologue.Cliff": 1,
+              "Arena.Prologue.PathToHermitory": 1,
+              "Arena.Base.TestingGrounds": 1,
+              "Arena.Base.Apothecary": 1,
+              "Arena.Base.Teleport": 1,
+              "Arena.Base.AscensionShrine": 1,
+              "Arena.Base.Church": 1,
+              "Arena.Tower.StartingBeach": 1,
+              "Arena.Tower.Lowground": 1,
+              "Arena.Tower.Rummage": 1,
+              "Arena.Tower.Highground": 1,
+              "Arena.Tower.PathToTower": 1,
+              "Arena.Tower.Crypt": 1,
+              "Arena.Tower.DeepBay": 1,
+              "Arena.Tower.Exterior": 1,
+              "Arena.Tower.Graveyard": 1,
+              "Arena.Tower.PathToGraveyard": 1,
+              "Arena.Tower.Interior": 1,
+              "Arena.Tower.Dock": 1,
+              "Arena.Tower.Shipwreck": 1,
+              "Arena.Village.FishermenVillage": 1,
+              "Arena.Village.CarpentersVillage": 1,
+              "Arena.Village.MasonsVillage": 1,
+              "Arena.Village.NorthernHighroad": 1,
+              "Arena.Village.Mill": 1,
+              "Arena.Village.FishwivesThroat": 1,
+              "Arena.Village.Chapel": 1,
+              "Arena.Village.SurvivorsHideout": 1,
+              "Arena.Village.SunnyGrove": 1,
+              "Arena.Village.HauntedCave": 1,
+              "Arena.Village.Quarry": 1,
+              "Arena.Village.DruidsHouse": 1,
+              "Arena.Village.HagsHill": 1,
+              "Arena.Village.RockyPath": 1,
+              "Arena.Village.Cliff": 1,
+              "Arena.Village.LandingBeach": 1,
+              "Arena.Village.Crossroads": 1,
+              "Arena.Village.HangingBeach": 1,
+              "Arena.Village.MountainPath": 1,
+              "Arena.Village.DevilHole": 1
+            }
+          },
+          "Progression.Category.Arenas.VisitedInSeed": {
+            "map": {
+              "Arena.Prologue.StartingGrove": 4368,
+              "Arena.Prologue.DevilRocks": 4368,
+              "Arena.Prologue.DarkForest": 4368,
+              "Arena.Prologue.VistaRoad": 4368,
+              "Arena.Prologue.Cliff": 4368,
+              "Arena.Prologue.PathToHermitory": 4368,
+              "Arena.Base.TestingGrounds": 0,
+              "Arena.Base.Apothecary": 0,
+              "Arena.Base.Teleport": 0,
+              "Arena.Base.AscensionShrine": 0,
+              "Arena.Base.Church": 0,
+              "Arena.Tower.StartingBeach": 550644,
+              "Arena.Tower.Lowground": 550644,
+              "Arena.Tower.Rummage": 550644,
+              "Arena.Tower.Highground": 550644,
+              "Arena.Tower.PathToTower": 550644,
+              "Arena.Tower.Crypt": 550644,
+              "Arena.Tower.DeepBay": 550644,
+              "Arena.Tower.Exterior": 550644,
+              "Arena.Tower.Graveyard": 550644,
+              "Arena.Tower.PathToGraveyard": 550644,
+              "Arena.Tower.Interior": 550644,
+              "Arena.Tower.Dock": 550644,
+              "Arena.Tower.Shipwreck": 550644,
+              "Arena.Village.FishermenVillage": 425915,
+              "Arena.Village.CarpentersVillage": 24461,
+              "Arena.Village.MasonsVillage": 425915,
+              "Arena.Village.NorthernHighroad": 425915,
+              "Arena.Village.Mill": 425915,
+              "Arena.Village.FishwivesThroat": 24461,
+              "Arena.Village.Chapel": 24461,
+              "Arena.Village.SurvivorsHideout": 425915,
+              "Arena.Village.SunnyGrove": 425915,
+              "Arena.Village.HauntedCave": 425915,
+              "Arena.Village.Quarry": 425915,
+              "Arena.Village.DruidsHouse": 425915,
+              "Arena.Village.HagsHill": 425915,
+              "Arena.Village.RockyPath": 425915,
+              "Arena.Village.Cliff": 425915,
+              "Arena.Village.LandingBeach": 425915,
+              "Arena.Village.Crossroads": 425915,
+              "Arena.Village.HangingBeach": 425915,
+              "Arena.Village.MountainPath": 425915,
+              "Arena.Village.DevilHole": 425915
+            }
+          },
+          "Progression.Category.Levels.Extractions": {
+            "map": {
+              "Level.Tower": 2
+            }
+          },
+          "Progression.Category.Levels.Entered": {
+            "map": {
+              "Level.Prologue": 1,
+              "Level.Base": 16,
+              "Level.Tower": 2,
+              "Level.Village": 2
+            }
+          },
+          "Progression.Category.Inventory": {
+            "map": {
+              "Inventory.Equipped.Tier.Weapon.Min": 1,
+              "Inventory.Equipped.Tier.Fetish.Min": 2,
+              "Inventory.Equipped.Tier.Ring.Min": 0,
+              "Inventory.Equipped.Tier.Relic.Min": 0,
+              "Inventory.Equipped.Tier.Ability.Spell.Min": 2,
+              "Inventory.Equipped.Tier.Weapon.Max": 4,
+              "Inventory.Equipped.Tier.Fetish.Max": 2,
+              "Inventory.Equipped.Tier.Ring.Max": 0,
+              "Inventory.Equipped.Tier.Relic.Max": 0,
+              "Inventory.Equipped.Tier.Ability.Spell.Max": 2
+            }
+          },
+          "Progression.Category.Unlocked.Gates": {
+            "map": {
+              "Progression.Gate.Base.Church": 1,
+              "Progression.Gate.Base.Barrier": 1
+            }
+          },
+          "Progression.Category.Items.New": {
+            "map": {}
+          },
+          "Progression.Category.UnlockedScenario": {
+            "map": {
+              "Progression.Calamity.Defenders": 1,
+              "Progression.Calamity.Zombie": 1,
+              "Progression.Calamity.Ghosts": 1
+            }
+          },
+          "Progression.Category.Levels.Completed": {
+            "map": {
+              "Level.Village": 2
+            }
+          },
+          "Progression.Category.Levels.Deaths": {
+            "map": {
+              "Level.Village": 2
+            }
+          },
+          "Progression.Category.InRun": {
+            "map": {
+              "Progression.Arena.ArenaVisited": 2,
+              "Progression.Arena.ArenaEntered": 3
+            }
+          },
+          "Progression.Category.Unlocked.Mirages": {
+            "map": {
+              "Progression.Mirage.Village.BeachStash": 1
+            }
+          },
+          "Progression.Category.Counters.Kills": {
+            "map": {
+              "Progression.Village.MiniBoss.RoamingCaptain": 1
+            }
+          }
+        },
+        "FloatMaps": {},
+        "StringMaps": {
+          "Progression.Category.SingleTimePickups": {
+            "map": {
+              "Progression.Pickup.MirrorShard": "Prologue.1,Prologue.2,Tower.1",
+              "Progression.Pickup.ClimbingGear": "Prologue.1",
+              "Progression.Pickup.RosaryBeads": "Bead.2,Bead.3,Bead.1,Bead.14",
+              "Progression.Pickup.Equipment": "WFPickup_Hermitorium2,WFPickup_Hermitorium1,Pickup.Supplies,Pickup.Flamebreath,Pickup.Mandrake",
+              "Progression.Pickup.FallenPreyerMaskShards": "FallenPreyerMaskShard.Vilage.3,FallenPreyerMaskShard.Vilage.2",
+              "Progression.Pickup.Consumable": "StatRespec.Village.1"
+            }
+          }
+        },
+        "GameplayTagMaps": {
+          "Progression.Category.Default": {
+            "map": {
+              "Progression.Base.LastExpeditionLevel": {
+                "tagName": "Level.Village"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Subsystems": {
+      "Research": {
+        "SaveLoadResearchedProjects": {
+          "Research.Fetish.NELE_01": 1,
+          "Research.Weapon.AutoRifle.Light": 1,
+          "Research.Weapon.Shotgun.Medium": 1,
+          "Research.Ability.Spell.Light.FIRE_01": 1,
+          "Research.Ability.Spell.Light.WATER_01": 1,
+          "Research.Weapon.HandCannon.Medium": 1,
+          "Research.Weapon.AutoRifle.Heavy": 1,
+          "Research.Weapon.AutoRifle.Medium": 1,
+          "Research.Weapon.MachinePistol.Medium": 1
+        },
+        "SaveLoadCurrentProjects": []
+      },
+      "Companions": {
+        "SaveLoadActiveCompanions": [],
+        "SaveLoadCompanionsUnlockSteps": {},
+        "SaveLoadRemainingBoons": 0
+      },
+      "Quest": {
+        "SaveLoadQuests": [
+          {
+            "questId": 3,
+            "templateSeed": 26127,
+            "bCompleted": true,
+            "sourceHandle": "/Game/Gameplay/Quests/FetishTierQuests.FetishTierQuests|Quest.Fetish.NELE_01.Tier2"
+          },
+          {
+            "questId": 4,
+            "templateSeed": 20378,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/SpellTierQuests.SpellTierQuests|Quest.Spell.Light.FIRE_02.Tier2"
+          },
+          {
+            "questId": 5,
+            "templateSeed": 6024,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/WeaponTierQuests.WeaponTierQuests|Quest.Shotgun.Medium.Tier1"
+          },
+          {
+            "questId": 6,
+            "templateSeed": 30937,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/SpellTierQuests.SpellTierQuests|Quest.Spell.Light.FIRE_01.Tier2"
+          },
+          {
+            "questId": 7,
+            "templateSeed": 29586,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/WeaponTierQuests.WeaponTierQuests|Quest.AutoRifle.Light.Tier3"
+          },
+          {
+            "questId": 2,
+            "templateSeed": 5254,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/GnosisQuests.GnosisQuests|Quest.Gnosis.Level2"
+          },
+          {
+            "questId": 1,
+            "templateSeed": 4008,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/FetishTierQuests.FetishTierQuests|Quest.Fetish.NELE_07.Tier2"
+          },
+          {
+            "questId": 8,
+            "templateSeed": 6851,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/SpellTierQuests.SpellTierQuests|Quest.Spell.Light.WATER_01.Tier2"
+          },
+          {
+            "questId": 9,
+            "templateSeed": 4990,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/WeaponTierQuests.WeaponTierQuests|Quest.HandCannon.Medium.Tier1"
+          },
+          {
+            "questId": 10,
+            "templateSeed": 32345,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/WeaponTierQuests.WeaponTierQuests|Quest.AutoRifle.Heavy.Tier3"
+          },
+          {
+            "questId": 11,
+            "templateSeed": 2753,
+            "bCompleted": false,
+            "sourceHandle": "/Game/Gameplay/Quests/WeaponTierQuests.WeaponTierQuests|Quest.MachinePistol.Medium.Tier1"
+          },
+          {
+            "sourceHandle": "|Quest.BoltActionRifle.Medium.Tier3"
+          }
+        ],
+        "SaveLoadQuestObjectives": [
+          {
+            "questId": 3,
+            "objectiveIndex": 0,
+            "bCompleted": true,
+            "activeCount": 150,
+            "progress": 150,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 3,
+            "objectiveIndex": 1,
+            "bCompleted": true,
+            "activeCount": 1,
+            "progress": 1,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 4,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 25,
+            "progress": 20,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 4,
+            "objectiveIndex": 1,
+            "bCompleted": true,
+            "activeCount": 1,
+            "progress": 1,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 5,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 25,
+            "progress": 14,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 6,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 70,
+            "progress": 24,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 6,
+            "objectiveIndex": 1,
+            "bCompleted": true,
+            "activeCount": 1,
+            "progress": 1,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 7,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 190,
+            "progress": 66,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 7,
+            "objectiveIndex": 1,
+            "bCompleted": true,
+            "activeCount": 50,
+            "progress": 50,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 7,
+            "objectiveIndex": 2,
+            "bCompleted": false,
+            "activeCount": 1,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 2,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 36000,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 2,
+            "objectiveIndex": 1,
+            "bCompleted": true,
+            "activeCount": 1,
+            "progress": 1,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 2,
+            "objectiveIndex": 2,
+            "bCompleted": false,
+            "activeCount": 1,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 2,
+            "objectiveIndex": 3,
+            "bCompleted": false,
+            "activeCount": 1,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 1,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 150,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 1,
+            "objectiveIndex": 1,
+            "bCompleted": true,
+            "activeCount": 1,
+            "progress": 1,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 8,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 50,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 8,
+            "objectiveIndex": 1,
+            "bCompleted": true,
+            "activeCount": 1,
+            "progress": 1,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 9,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 25,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 10,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 100,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 10,
+            "objectiveIndex": 1,
+            "bCompleted": false,
+            "activeCount": 35,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 10,
+            "objectiveIndex": 2,
+            "bCompleted": false,
+            "activeCount": 1,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          },
+          {
+            "questId": 11,
+            "objectiveIndex": 0,
+            "bCompleted": false,
+            "activeCount": 25,
+            "progress": 0,
+            "pendingProgress": 0,
+            "bCustomActiveCount": false
+          }
+        ],
+        "SaveLoadCustomQuests": [],
+        "SaveLoadCustomQuestObjectives": [],
+        "SaveLoadCustomQuestRewards": [],
+        "SaveLoadCustomQuestModifiers": [],
+        "SaveLoadCustomQuestConditions": []
+      },
+      "Time": {},
+      "Inventory": {
+        "SaveLoadOnDeathItemDrop": {
+          "spawnLocation": {
+            "x": -7235.7001953125,
+            "y": 17090.6328125,
+            "z": -848.5345458984375
+          },
+          "levelTag": "Level.Village",
+          "addReason": 12,
+          "itemPackages": [
+            {
+              "itemCount": 124931,
+              "bShowNotification": true,
+              "bScaledByRandomComponent": true,
+              "itemDataHandle": "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Witchfire.Volatile"
+            },
+            {
+              "itemCount": 2,
+              "bShowNotification": true,
+              "bScaledByRandomComponent": true,
+              "itemDataHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|Key.SupplyChest"
+            },
+            {
+              "itemCount": 1,
+              "bShowNotification": true,
+              "bScaledByRandomComponent": true,
+              "itemDataHandle": "/Game/Gameplay/Inventory/Data/TreasureItemsData.TreasureItemsData|Treasure.Heirloom.Dogtag"
+            },
+            {
+              "itemCount": 1,
+              "bShowNotification": true,
+              "bScaledByRandomComponent": true,
+              "itemDataHandle": "/Game/Gameplay/Inventory/Data/TreasureItemsData.TreasureItemsData|Treasure.Heirloom.Pendant"
+            },
+            {
+              "itemCount": 1,
+              "bShowNotification": true,
+              "bScaledByRandomComponent": true,
+              "itemDataHandle": "/Game/Gameplay/Inventory/Data/TreasureItemsData.TreasureItemsData|Treasure.Heirloom.Letter"
+            },
+            {
+              "itemCount": 2,
+              "bShowNotification": true,
+              "bScaledByRandomComponent": true,
+              "itemDataHandle": "/Game/Gameplay/Inventory/Data/TreasureItemsData.TreasureItemsData|Treasure.Devotionals.Cross"
+            }
+          ]
+        }
+      }
+    },
+    "PlayerController": {
+      "ItemStorage": {
+        "SaveLoadItemDataContainers": [
+          {
+            "slotId": 1,
+            "detailsId": 1,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.10.49",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Abilities/MeleeItemsData.MeleeItemsData|Ability.Melee.Punch.Common"
+          },
+          {
+            "slotId": 3,
+            "detailsId": 3,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.10.49",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Angelica"
+          },
+          {
+            "slotId": 4,
+            "detailsId": 4,
+            "itemCount": 2,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.10.49",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ConsumableItemsData.ConsumableItemsData|Consumable.EmergencyAmmo.Standard"
+          },
+          {
+            "slotId": 5,
+            "detailsId": 5,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.11.19",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Weapons/AutoRiflesItemData.AutoRiflesItemData|AutoRifle.Light.Epic"
+          },
+          {
+            "slotId": 81,
+            "detailsId": 33,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.04.22-18.55.59",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Weapons/AutoRiflesItemData.AutoRiflesItemData|AutoRifle.Medium.Legendary"
+          },
+          {
+            "slotId": 80,
+            "detailsId": 15,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.04.22-18.55.59",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Weapons/AutoRiflesItemData.AutoRiflesItemData|AutoRifle.Heavy.Epic"
+          },
+          {
+            "slotId": 6,
+            "detailsId": 6,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.11.19",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/FetishItemsData.FetishItemsData|Fetish.NELE_01.Rare"
+          },
+          {
+            "slotId": 7,
+            "detailsId": 7,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.11.26",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Witchfire.Volatile"
+          },
+          {
+            "slotId": 14,
+            "detailsId": 14,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.14.49",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Wax"
+          },
+          {
+            "slotId": 16,
+            "detailsId": 16,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.15.25",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Bone"
+          },
+          {
+            "slotId": 18,
+            "detailsId": 18,
+            "itemCount": 12,
+            "bStashed": true,
+            "dateTimeAdded": "2025.08.13-10.17.50",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Angelica"
+          },
+          {
+            "slotId": 20,
+            "detailsId": 20,
+            "itemCount": 3,
+            "bStashed": true,
+            "dateTimeAdded": "2025.08.13-10.17.50",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Wax"
+          },
+          {
+            "slotId": 21,
+            "detailsId": 21,
+            "itemCount": 8,
+            "bStashed": true,
+            "dateTimeAdded": "2025.08.13-10.17.50",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Bone"
+          },
+          {
+            "slotId": 2,
+            "detailsId": 2,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.19.51",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|NavigationChart.Tower"
+          },
+          {
+            "slotId": 12,
+            "detailsId": 12,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.20.03",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/NotesItemsData.NotesItemsData|Hermitory.SanctuaryDoorNote"
+          },
+          {
+            "slotId": 13,
+            "detailsId": 13,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.20.30",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/NotesItemsData.NotesItemsData|Hermitory.ShootingRangeNote"
+          },
+          {
+            "slotId": 19,
+            "detailsId": 19,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.20.59",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|Key.Base.Church"
+          },
+          {
+            "slotId": 22,
+            "detailsId": 22,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.21.52",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/NotesItemsData.NotesItemsData|Hermitory.SanctuaryWorkshopNote"
+          },
+          {
+            "slotId": 25,
+            "detailsId": 25,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.21.58",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ConsumableItemsData.ConsumableItemsData|Consumable.Radar.Herbs"
+          },
+          {
+            "slotId": 26,
+            "detailsId": 26,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.21.58",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ConsumableItemsData.ConsumableItemsData|Consumable.Portal.Entry"
+          },
+          {
+            "slotId": 31,
+            "detailsId": 31,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.25.34",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Hair"
+          },
+          {
+            "slotId": 43,
+            "detailsId": 43,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.33.59",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|NavigationChart.Village"
+          },
+          {
+            "slotId": 44,
+            "detailsId": 44,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.34.01",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Abilities/LightSpellItemsData.LightSpellItemsData|Ability.Spell.Light.FIRE_02.Rare"
+          },
+          {
+            "slotId": 45,
+            "detailsId": 45,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-10.34.04",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/NotesItemsData.NotesItemsData|Tower.DeadMonk"
+          },
+          {
+            "slotId": 46,
+            "detailsId": 46,
+            "itemCount": 1,
+            "bStashed": true,
+            "dateTimeAdded": "2025.08.13-10.37.13",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Hair"
+          },
+          {
+            "slotId": 23,
+            "detailsId": 23,
+            "itemCount": 2,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-12.01.25",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CompanionMasksItemsData.CompanionMasksItemsData|CompanionMask.GadgetGuy"
+          },
+          {
+            "slotId": 39,
+            "detailsId": 39,
+            "itemCount": 3,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-13.40.09",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Gold"
+          },
+          {
+            "slotId": 41,
+            "detailsId": 41,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-13.40.44",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Herb.Rare_2"
+          },
+          {
+            "slotId": 42,
+            "detailsId": 42,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-13.41.18",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|Recipe.Alchemy.Incense5"
+          },
+          {
+            "slotId": 57,
+            "detailsId": 57,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-13.49.37",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/NotesItemsData.NotesItemsData|Village.MadwomanHutNote"
+          },
+          {
+            "slotId": 58,
+            "detailsId": 58,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-13.56.01",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|NavigationChart.Town"
+          },
+          {
+            "slotId": 9,
+            "detailsId": 9,
+            "itemCount": 3,
+            "bStashed": true,
+            "dateTimeAdded": "2025.08.13-13.59.58",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Herb.Rare_2"
+          },
+          {
+            "slotId": 17,
+            "detailsId": 17,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.00.25",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Weapons/ShotgunsItemData.ShotgunsItemData|Shotgun.Medium.Common"
+          },
+          {
+            "slotId": 27,
+            "detailsId": 27,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.00.28",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Abilities/LightSpellItemsData.LightSpellItemsData|Ability.Spell.Light.FIRE_01.Rare"
+          },
+          {
+            "slotId": 8,
+            "detailsId": 8,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.01.17",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|Recipe.Alchemy.Incense7"
+          },
+          {
+            "slotId": 11,
+            "detailsId": 11,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.01.18",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|Recipe.Alchemy.Incense1"
+          },
+          {
+            "slotId": 24,
+            "detailsId": 24,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.07.16",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Witchfire.Cluster"
+          },
+          {
+            "slotId": 28,
+            "detailsId": 28,
+            "itemCount": 3,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.08.14",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Witchfire.Chunk"
+          },
+          {
+            "slotId": 36,
+            "detailsId": 36,
+            "itemCount": 4,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.08.42",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Witchfire.Shard"
+          },
+          {
+            "slotId": 37,
+            "detailsId": 37,
+            "itemCount": 3,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.08.43",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Witchfire.Splinter"
+          },
+          {
+            "slotId": 51,
+            "detailsId": 51,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.14.24",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ConsumableItemsData.ConsumableItemsData|Consumable.SummonVillageBoss"
+          },
+          {
+            "slotId": 52,
+            "detailsId": 52,
+            "itemCount": 2,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.14.24",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/SpecialItemsData.SpecialItemsData|Incantation.Tier2"
+          },
+          {
+            "slotId": 53,
+            "detailsId": 53,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.14.24",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/AdventureItemsData.AdventureItemsData|Witchmark.Endurance"
+          },
+          {
+            "slotId": 60,
+            "detailsId": 60,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.16.18",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ConsumableItemsData.ConsumableItemsData|Consumable.Stat.Respec"
+          },
+          {
+            "slotId": 64,
+            "detailsId": 64,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.19.06",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Herb.Rare_1"
+          },
+          {
+            "slotId": 65,
+            "detailsId": 65,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.19.43",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/FetishItemsData.FetishItemsData|Fetish.NELE_07.Rare"
+          },
+          {
+            "slotId": 68,
+            "detailsId": 68,
+            "itemCount": 0,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.21.28",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Salt"
+          },
+          {
+            "slotId": 10,
+            "detailsId": 10,
+            "itemCount": 1,
+            "bStashed": true,
+            "dateTimeAdded": "2025.08.13-14.22.35",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Herb.Rare_1"
+          },
+          {
+            "slotId": 29,
+            "detailsId": 29,
+            "itemCount": 1,
+            "bStashed": true,
+            "dateTimeAdded": "2025.08.13-14.22.35",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ResourceItemsData.ResourceItemsData|Resource.Salt"
+          },
+          {
+            "slotId": 30,
+            "detailsId": 30,
+            "itemCount": 3,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.22.37",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/CommonItemsData.CommonItemsData|Consumable.HealthPotion"
+          },
+          {
+            "slotId": 32,
+            "detailsId": 32,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.13-14.24.53",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Abilities/LightSpellItemsData.LightSpellItemsData|Ability.Spell.Light.WATER_01.Rare"
+          },
+          {
+            "slotId": 33,
+            "detailsId": 34,
+            "itemCount": 1,
+            "bStashed": false,
+            "dateTimeAdded": "2025.08.15-10.01.48",
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/Weapons/MachinePistolsItemData.MachinePistolsItemData|MachinePistol.Medium.Common"
+          }
+        ],
+        "SaveLoadWeaponDataDetails": [
+          {
+            "detailsId": 5,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/WeaponDataDetails.WeaponDataDetails|AutoRifle.Light.Epic"
+          },
+          {
+            "detailsId": 17,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/WeaponDataDetails.WeaponDataDetails|Shotgun.Medium.Common"
+          },
+          {
+            "detailsId": 15,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/WeaponDataDetails.WeaponDataDetails|AutoRifle.Heavy.Epic"
+          },
+          {
+            "detailsId": 33,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/WeaponDataDetails.WeaponDataDetails|AutoRifle.Medium.Legendary"
+          },
+          {
+            "detailsId": 34,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/WeaponDataDetails.WeaponDataDetails|MachinePistol.Medium.Common"
+          }
+        ],
+        "SaveLoadRingDataDetails": [],
+        "SaveLoadRelicDataDetails": [],
+        "SaveLoadFetishDataDetails": [
+          {
+            "detailsId": 6,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/FetishDataDetails.FetishDataDetails|Fetish.NELE_01.Rare"
+          },
+          {
+            "detailsId": 65,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/FetishDataDetails.FetishDataDetails|Fetish.NELE_07.Rare"
+          }
+        ],
+        "SaveLoadAbilityItemDataDetails": [
+          {
+            "detailsId": 1,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AbilityItemDataDetails.AbilityItemDataDetails|Ability.Melee.Punch"
+          },
+          {
+            "detailsId": 44,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AbilityItemDataDetails.AbilityItemDataDetails|Ability.Spell.Light.FIRE_02.Rare"
+          },
+          {
+            "detailsId": 27,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AbilityItemDataDetails.AbilityItemDataDetails|Ability.Spell.Light.FIRE_01.Rare"
+          },
+          {
+            "detailsId": 32,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AbilityItemDataDetails.AbilityItemDataDetails|Ability.Spell.Light.WATER_01.Rare"
+          }
+        ],
+        "SaveLoadQuestItemDataDetails": [],
+        "SaveLoadBoosterDataDetails": [],
+        "SaveLoadBoosterProphecyDataDetails": [],
+        "SaveLoadItemDataDetails": [
+          {
+            "detailsId": 3,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Angelica"
+          },
+          {
+            "detailsId": 4,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ConsumableItemsDataDetails.ConsumableItemsDataDetails|Consumable.EmergencyAmmo.Standard"
+          },
+          {
+            "detailsId": 7,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/CurrencyDataDetails.CurrencyDataDetails|Currency.Witchfire.Volatile"
+          },
+          {
+            "detailsId": 8,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|Alchemy.Recipe"
+          },
+          {
+            "detailsId": 14,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Wax"
+          },
+          {
+            "detailsId": 16,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Bone"
+          },
+          {
+            "detailsId": 9,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Herb.Rare_02"
+          },
+          {
+            "detailsId": 18,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Angelica"
+          },
+          {
+            "detailsId": 20,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Wax"
+          },
+          {
+            "detailsId": 21,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Bone"
+          },
+          {
+            "detailsId": 2,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|NavigationChart.Tower"
+          },
+          {
+            "detailsId": 12,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/NotesItemsDataDetails.NotesItemsDataDetails|Hermitory.SanctuaryDoorNote"
+          },
+          {
+            "detailsId": 13,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/NotesItemsDataDetails.NotesItemsDataDetails|Hermitory.ShootingRangeNote"
+          },
+          {
+            "detailsId": 19,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|Key.Base.Church"
+          },
+          {
+            "detailsId": 22,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/NotesItemsDataDetails.NotesItemsDataDetails|Hermitory.SanctuaryWorkshopNote"
+          },
+          {
+            "detailsId": 25,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ConsumableItemsDataDetails.ConsumableItemsDataDetails|Consumable.Radar.Herbs"
+          },
+          {
+            "detailsId": 26,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ConsumableItemsDataDetails.ConsumableItemsDataDetails|Consumable.Portal.Entry"
+          },
+          {
+            "detailsId": 11,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|Alchemy.Recipe"
+          },
+          {
+            "detailsId": 31,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Hair"
+          },
+          {
+            "detailsId": 43,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|NavigationChart.Village"
+          },
+          {
+            "detailsId": 45,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/NotesItemsDataDetails.NotesItemsDataDetails|Tower.DeadMonk"
+          },
+          {
+            "detailsId": 46,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Hair"
+          },
+          {
+            "detailsId": 23,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/CompanionsMasksItemsDataDetails.CompanionsMasksItemsDataDetails|CompanionMask.GadgetGuy"
+          },
+          {
+            "detailsId": 39,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/CurrencyDataDetails.CurrencyDataDetails|Currency.Gold"
+          },
+          {
+            "detailsId": 41,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Herb.Rare_02"
+          },
+          {
+            "detailsId": 42,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|Alchemy.Recipe"
+          },
+          {
+            "detailsId": 57,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/NotesItemsDataDetails.NotesItemsDataDetails|Village.MadwomanHut"
+          },
+          {
+            "detailsId": 58,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|NavigationChart.Town"
+          },
+          {
+            "detailsId": 24,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/CurrencyDataDetails.CurrencyDataDetails|Currency.Witchfire.Cluster"
+          },
+          {
+            "detailsId": 28,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/CurrencyDataDetails.CurrencyDataDetails|Currency.Witchfire.Chunk"
+          },
+          {
+            "detailsId": 10,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Herb.Rare_01"
+          },
+          {
+            "detailsId": 29,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Salt"
+          },
+          {
+            "detailsId": 36,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/CurrencyDataDetails.CurrencyDataDetails|Currency.Witchfire.Shard"
+          },
+          {
+            "detailsId": 37,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/CurrencyDataDetails.CurrencyDataDetails|Currency.Witchfire.Splinter"
+          },
+          {
+            "detailsId": 51,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ConsumableItemsDataDetails.ConsumableItemsDataDetails|Consumable.SummonVillageBoss"
+          },
+          {
+            "detailsId": 52,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/SpecialItemsDataDetails.SpecialItemsDataDetails|Incantation.Tier2"
+          },
+          {
+            "detailsId": 53,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/AdventureItemsDataDetails.AdventureItemsDataDetails|Witchmark.Endurance"
+          },
+          {
+            "detailsId": 60,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ConsumableItemsDataDetails.ConsumableItemsDataDetails|Consumable.Stat.Respec"
+          },
+          {
+            "detailsId": 30,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ConsumableItemsDataDetails.ConsumableItemsDataDetails|HealthPotion"
+          },
+          {
+            "detailsId": 64,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Herb.Rare_01"
+          },
+          {
+            "detailsId": 68,
+            "tierQuestId": -1,
+            "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/ResourceItemsDataDetails.ResourceItemsDataDetails|Resource.Salt"
+          }
+        ],
+        "SaveLoadEquippedSlotData": [
+          {
+            "equipSlotTag": "Type.Item.Weapon",
+            "equippedSlotIds": [
+              33,
+              81,
+              -1
+            ]
+          },
+          {
+            "equipSlotTag": "Type.Item.Fetish",
+            "equippedSlotIds": [
+              65
+            ]
+          },
+          {
+            "equipSlotTag": "Type.Item.Ring",
+            "equippedSlotIds": [
+              -1
+            ]
+          },
+          {
+            "equipSlotTag": "Type.Item.Relic",
+            "equippedSlotIds": [
+              -1
+            ]
+          },
+          {
+            "equipSlotTag": "Type.Item.Ability.Spell.Light",
+            "equippedSlotIds": [
+              32
+            ]
+          },
+          {
+            "equipSlotTag": "Type.Item.Ability.Spell.Heavy",
+            "equippedSlotIds": [
+              -1
+            ]
+          },
+          {
+            "equipSlotTag": "Type.Item.Ability.Melee",
+            "equippedSlotIds": [
+              1
+            ]
+          },
+          {
+            "equipSlotTag": "Type.Item.BoosterProphecy",
+            "equippedSlotIds": [
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1,
+              -1
+            ]
+          }
+        ]
+      },
+      "HUD": {
+        "WidgetControllers": {
+          "Inventory2": {}
+        }
+      }
+    },
+    "Player": {
+      "SaveLoadActiveIncense": "/Game/Gameplay/Alchemy/AlchemyRecipes.AlchemyRecipes|Incense.MaxHealthIncrease",
+      "SaveLoadLastSelectedIncense": "/Game/Gameplay/Alchemy/AlchemyRecipes.AlchemyRecipes|Incense.MaxHealthIncrease",
+      "AbilitySystem": {
+        "SaveLoadPropertyValues": {
+          "FleshLevel": 1,
+          "MindLevel": 0,
+          "BloodLevel": 1,
+          "WitcheryLevel": 0,
+          "ArsenalLevel": 12,
+          "FaithLevel": 0,
+          "LevelPoints": 14,
+          "AvailableLevelPoints": 0,
+          "GnosisLevel": 1,
+          "GnosisLevelUpCounter": 14
+        }
+      },
+      "RosaryComponent": {
+        "SaveLoadActiveBeads": [
+          "Bead.Stat.01.T1",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "SaveLoadUnlockedBeads": [
+          "Bead.Exploration.01.T1|2025.08.13-14.19.33",
+          "Bead.Stat.01.T1|2025.08.13-10.22.05",
+          "Bead.Stat.02.T1|2025.08.13-10.20.21",
+          "Bead.Stat.04.T1|2025.08.13-10.34.37",
+          "Bead.Stat.09.T1|2025.08.13-14.14.23",
+          "Bead.Stat.11.T1|2025.08.13-10.22.06",
+          "Bead.Weapon.04|2025.08.13-10.15.28"
+        ],
+        "SaveLoadNewBeads": []
+      }
+    },
+    "Component": {
+      "Vendor": {
+        "Collector": {
+          "SaveLoadVendorItems": []
+        }
+      }
+    },
+    "Research": {
+      "SaveLoadResearchedProjects": {
+        "Research.Weapon.BoltActionRifle.Medium": 1,
+        "Research.BoltActionRifle.Medium": 1,
+        "Research.Weapon.BoltActionRifle.Light": 1,
+        "Research.BoltActionRifle.Light": 1
+      }
+    }
+  },
+  "PlayerController": {
+    "ItemStorage": {
+      "SaveLoadItemDataContainers": [
+        {
+          "sourceHandle": "/Game/Gameplay/Inventory/Data/Weapons/BoltActionRiflesItemData.BoltActionRiflesItemData|BoltActionRifle.Medium.Common"
+        },
+        {
+          "sourceHandle": "/Game/Gameplay/Inventory/Data/Weapons/BoltActionRiflesItemData.BoltActionRiflesItemData|BoltActionRifle.Light.Common"
+        }
+      ],
+      "SaveLoadWeaponDataDetails": [
+        {
+          "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/WeaponDataDetails.WeaponDataDetails|BoltActionRifle.Medium.Common"
+        },
+        {
+          "sourceHandle": "/Game/Gameplay/Inventory/Data/ItemDetails/WeaponDataDetails.WeaponDataDetails|BoltActionRifle.Light.Common"
+        }
+      ]
+    }
+  }
+}

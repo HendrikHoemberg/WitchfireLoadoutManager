@@ -18,13 +18,15 @@ interface ItemSelectorProps {
   onItemSelect: (item: BaseItem | Bead) => void;
   excludedItems?: string[];
   onItemExcludeToggle?: (itemId: string) => void;
+  includeDemonicWeapons?: boolean;
 }
 
 const ItemSelector = ({ 
   category, 
   onItemSelect, 
   excludedItems = [], 
-  onItemExcludeToggle 
+  onItemExcludeToggle,
+  includeDemonicWeapons = false,
 }: ItemSelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredItem, setHoveredItem] = useState<BaseItem | Bead | null>(null);
@@ -102,7 +104,18 @@ const ItemSelector = ({
   }, [isTouchDevice, hoveredItem]);
   
   // Get items for the selected category
-  const items: (BaseItem | Bead)[] = category === 'Beads' ? getBeads() : getItemsByCategory(category);
+  let items: (BaseItem | Bead)[] = [];
+  if (category === 'Beads') {
+    items = getBeads();
+  } else if (category === 'Weapons' && includeDemonicWeapons) {
+    // Merge normal and demonic weapons for contexts that need both (e.g., Save Editor)
+    items = [
+      ...getItemsByCategory('Weapons'),
+      ...getItemsByCategory('DemonicWeapons'),
+    ];
+  } else {
+    items = getItemsByCategory(category);
+  }
   
   // Filter items based on search query
   const filteredItems = items
