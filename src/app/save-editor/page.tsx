@@ -38,7 +38,55 @@ import {
   parseHeavySpellUnlockedKey,
   type HeavySpellCode,
 } from "@/util/heavySpellKeys";
-import { buildInventoryContainerSourceHandle, buildWeaponDetailsSourceHandle, buildResearchKey, familyToSaveToken, weightToSaveToken } from "@/util/weaponKeys";
+import {
+  buildRelicDetailsHandle,
+  buildRelicInventoryHandle,
+  buildRelicQuestHandle,
+  buildRelicResearchKey,
+  buildRelicUnlockedKey,
+  getAllRelics,
+  getRelicByCode,
+  getCodeForRelicItem,
+  parseRelicInventoryOrDetailsHandle,
+  parseRelicQuestHandle,
+  parseRelicResearchKey,
+  parseRelicUnlockedKey,
+  type RelicCode,
+} from "@/util/relicKeys";
+import {
+  buildFetishDetailsHandle,
+  buildFetishInventoryHandle,
+  buildFetishResearchKey,
+  buildFetishUnlockedKey,
+  getAllFetishes,
+  getFetishByCode,
+  getCodeForFetishItem,
+  parseFetishInventoryOrDetailsHandle,
+  parseFetishResearchKey,
+  parseFetishUnlockedKey,
+  type FetishCode,
+} from "@/util/fetishKeys";
+import {
+  buildRingDetailsHandle,
+  buildRingInventoryHandle,
+  buildRingResearchKey,
+  buildRingUnlockedKey,
+  getAllRings,
+  getRingByCode,
+  getCodeForRingItem,
+  parseRingInventoryOrDetailsHandle,
+  parseRingResearchKey,
+  parseRingUnlockedKey,
+  parseRingQuestHandle,
+  type RingCode,
+} from "@/util/ringKeys";
+import {
+  buildInventoryContainerSourceHandle,
+  buildWeaponDetailsSourceHandle,
+  buildResearchKey,
+  familyToSaveToken,
+  weightToSaveToken,
+} from "@/util/weaponKeys";
 import ItemSelector from "@/components/loadout/ItemSelector";
 
 // Save file pieces we care about
@@ -147,6 +195,84 @@ export default function SaveEditorPage() {
   const [showAddWeaponModal, setShowAddWeaponModal] = useState(false);
   const [showAddLightSpellModal, setShowAddLightSpellModal] = useState(false);
   const [showAddHeavySpellModal, setShowAddHeavySpellModal] = useState(false);
+  const [showAddRelicModal, setShowAddRelicModal] = useState(false);
+  const [showAddFetishModal, setShowAddFetishModal] = useState(false);
+  const [showAddRingModal, setShowAddRingModal] = useState(false);
+
+  // --- Helpers: File System Access availability and regular file chooser ---
+  const isFSAAvailable = typeof window !== "undefined" &&
+    // @ts-ignore - TS doesn't know about these on Window in all TS libs
+    typeof (window as any).showOpenFilePicker === "function";
+
+  const onChooseFile = async (file: File) => {
+    try {
+      setError(null);
+      setInfo(null);
+      const text = await file.text();
+      const json = JSON.parse(text) as WitchfireSaveFile;
+      setLoadedJson(structuredClone(json));
+      setWorkingJson(structuredClone(json));
+      setFileHandle(null); // regular input clears any prior handle
+      setInfo(`Loaded ${file.name}`);
+    } catch (e) {
+      console.error(e);
+      setError("Failed to parse JSON file. Make sure it is a valid Witchfire save file.");
+    }
+  };
+
+  // --- Helpers: Stats accessors and updates ---
+  const getSLPV = (j: WitchfireSaveFile | null | undefined): SaveLoadPropertyValues | null => {
+    return j?.Save?.Player?.AbilitySystem?.SaveLoadPropertyValues ?? null;
+  };
+
+  // Recompute any derived fields after load or stat edits (lightweight)
+  const recomputeLevels = (j: WitchfireSaveFile) => {
+    // Ensure path exists
+    j.Save = j.Save ?? {};
+    j.Save.Player = j.Save.Player ?? {};
+    j.Save.Player.AbilitySystem = j.Save.Player.AbilitySystem ?? ({} as AbilitySystemContainer);
+    j.Save.Player.AbilitySystem.SaveLoadPropertyValues = j.Save.Player.AbilitySystem.SaveLoadPropertyValues ?? ({
+      FleshLevel: 0,
+      MindLevel: 0,
+      BloodLevel: 0,
+      WitcheryLevel: 0,
+      ArsenalLevel: 0,
+      FaithLevel: 0,
+      LevelPoints: 0,
+    } as SaveLoadPropertyValues);
+    // Optionally clamp to non-negative integers
+    const slpv = j.Save.Player.AbilitySystem.SaveLoadPropertyValues;
+    const clamp = (n: any) => Math.max(0, Math.floor(Number(n) || 0));
+    slpv.FleshLevel = clamp(slpv.FleshLevel);
+    slpv.MindLevel = clamp(slpv.MindLevel);
+    slpv.BloodLevel = clamp(slpv.BloodLevel);
+    slpv.WitcheryLevel = clamp(slpv.WitcheryLevel);
+    slpv.ArsenalLevel = clamp(slpv.ArsenalLevel);
+    slpv.FaithLevel = clamp(slpv.FaithLevel);
+    slpv.LevelPoints = clamp(slpv.LevelPoints);
+  };
+
+  const updateAbsoluteStat = (key: StatKey, newAbsolute: number) => {
+    if (!workingJson || !base) return;
+    const next = structuredClone(workingJson);
+    const slpv = getSLPV(next);
+    if (!slpv) return;
+    const diff = Math.max(0, Math.round(newAbsolute - base[key]));
+    const map: Record<StatKey, keyof SaveLoadPropertyValues> = {
+      flesh: "FleshLevel",
+      mind: "MindLevel",
+      blood: "BloodLevel",
+      witchery: "WitcheryLevel",
+      arsenal: "ArsenalLevel",
+      faith: "FaithLevel",
+    };
+    const field = map[key];
+    // @ts-ignore index by known key
+    slpv[field] = diff;
+    // keep LevelPoints untouched; recompute/clamp basics
+    recomputeLevels(next);
+    setWorkingJson(next);
+  };
 
   // Derived class info from working JSON
   const playerClassInfo: PlayerClassInfo | null = useMemo(() => {
@@ -159,13 +285,6 @@ export default function SaveEditorPage() {
     if (!playerClassInfo) return null;
     return playerClassInfo.base;
   }, [playerClassInfo]);
-
-  // Get SaveLoadPropertyValues reference safely
-  const getSLPV = (j: WitchfireSaveFile | null): SaveLoadPropertyValues | null => {
-    const slpv = j?.Save?.Player?.AbilitySystem?.SaveLoadPropertyValues;
-    return slpv ?? null;
-  };
-
 
   // ============ Heavy Spells Section ============
   // Map HeavySpellCode -> BaseItem
@@ -522,8 +641,6 @@ export default function SaveEditorPage() {
       .map((w) => w.id);
   }, []);
 
-  
-
   // Researched projects are auto-applied when adding a weapon.
 
   const formatDateForSave = () => {
@@ -871,7 +988,361 @@ export default function SaveEditorPage() {
     );
   };
 
+  // ============ Relics Section ============
+  // Map RelicCode -> BaseItem
+  const relicByCode = useMemo(() => {
+    const items = getAllRelics();
+    const map = new Map<string, BaseItem>();
+    for (const it of items) {
+      const code = getCodeForRelicItem(it);
+      if (code) map.set(code, it);
+    }
+    return map;
+  }, [workingJson]);
 
+  // Parse current mysterium tiers for Relics from Unlocked.Items map (UI 1..3 from stored 2..4)
+  const relicTierMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const unlockedItems = workingJson?.Save?.GameInstance?.ProgressManager?.IntegerMaps?.["Progression.Category.Unlocked.Items"]?.map;
+    if (unlockedItems && typeof unlockedItems === "object") {
+      for (const [k, v] of Object.entries(unlockedItems as Record<string, number>)) {
+        const code = parseRelicUnlockedKey(k);
+        if (!code) continue;
+        const stored = Number(v);
+        const tier = Math.max(1, Math.min(3, stored - 1));
+        m.set(code, tier);
+      }
+    }
+    return m;
+  }, [workingJson]);
+
+  // Parse inventory relic counts (by RelicCode)
+  const relicInventoryCountMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const storage = workingJson?.PlayerController?.ItemStorage;
+    const seen = new Set<string>();
+    const containers = storage?.SaveLoadItemDataContainers;
+    if (Array.isArray(containers)) {
+      for (const c of containers) {
+        const sh = c?.sourceHandle;
+        if (typeof sh !== "string") continue;
+        const code = parseRelicInventoryOrDetailsHandle(sh);
+        if (code) {
+          seen.add(sh);
+          m.set(code, (m.get(code) ?? 0) + 1);
+        }
+      }
+    }
+    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    if (Array.isArray(abilityDetails)) {
+      for (const d of abilityDetails) {
+        const sh = d?.sourceHandle;
+        if (typeof sh !== "string" || seen.has(sh)) continue;
+        const code = parseRelicInventoryOrDetailsHandle(sh);
+        if (code) m.set(code, (m.get(code) ?? 0) + 1);
+      }
+    }
+    // Deep scan
+    if (workingJson) {
+      const visit = (val: unknown) => {
+        if (typeof val === "string") {
+          const code = parseRelicInventoryOrDetailsHandle(val);
+          if (code) m.set(code, (m.get(code) ?? 0) + 1);
+          return;
+        }
+        if (Array.isArray(val)) {
+          for (const v of val) visit(v);
+          return;
+        }
+        if (val && typeof val === "object") {
+          for (const v of Object.values(val as Record<string, unknown>)) visit(v);
+        }
+      };
+      visit(workingJson);
+    }
+    return m;
+  }, [workingJson]);
+
+  // Any relic code seen in inventory, unlocked mysterium tiers, or research projects
+  const relicAvailableCodeSet = useMemo(() => {
+    const set = new Set<string>();
+    // From inventory
+    for (const code of relicInventoryCountMap.keys()) set.add(code);
+    // From unlocked mysterium tiers
+    for (const code of relicTierMap.keys()) set.add(code);
+    // From research keys
+    const projects = workingJson?.Save?.Subsystems?.Research?.SaveLoadResearchedProjects;
+    if (projects && typeof projects === "object") {
+      for (const k of Object.keys(projects as Record<string, number>)) {
+        const code = parseRelicResearchKey(k);
+        if (code) set.add(code);
+      }
+    }
+    return set;
+  }, [relicInventoryCountMap, relicTierMap, workingJson]);
+
+  const excludedRelicsForAdd = useMemo(() => {
+    const ids: string[] = [];
+    for (const code of relicAvailableCodeSet.values()) {
+      const id = relicByCode.get(code)?.id;
+      if (typeof id === "string") ids.push(id);
+    }
+    return ids;
+  }, [relicAvailableCodeSet, relicByCode]);
+
+  const hasAddableRelics = useMemo(() => {
+    return getAllRelics().some((it) => !excludedRelicsForAdd.includes(it.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [excludedRelicsForAdd.join("|")]);
+
+  const addInventoryForRelic = (item: BaseItem) => {
+    if (!workingJson) return;
+    const code = getCodeForRelicItem(item);
+    if (!code) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+
+    // Compute next available ID across containers, weapon details, and ability details
+    let maxId = 0;
+    for (const c of containers) {
+      if (typeof c.slotId === "number" && c.slotId > maxId) maxId = c.slotId;
+      if (typeof c.detailsId === "number" && c.detailsId > maxId) maxId = c.detailsId;
+    }
+    const weaponDetails = (next.PlayerController?.ItemStorage?.SaveLoadWeaponDataDetails ?? []) as Array<WeaponDataDetail>;
+    for (const d of weaponDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    for (const d of abilityDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    const nextId = maxId + 1;
+
+    // Relics start at Rare
+    const detailsHandle = buildRelicDetailsHandle(code, "Rare");
+    const containerHandle = buildRelicInventoryHandle(code, "Rare");
+
+    abilityDetails.push({ detailsId: nextId, tierQuestId: -1, sourceHandle: detailsHandle });
+    containers.push({
+      slotId: nextId,
+      detailsId: nextId,
+      itemCount: 1,
+      bStashed: false,
+      dateTimeAdded: formatDateForSave(),
+      sourceHandle: containerHandle,
+    });
+
+    // Research key
+    ensureResearchPath(next);
+    const projects = next.Save!.Subsystems!.Research!.SaveLoadResearchedProjects as Record<string, number>;
+    projects[buildRelicResearchKey(code)] = 1;
+
+    // Ensure mysterium map base entry exists (2 => Rare)
+    const unlocked = getUnlockedItemsMap(next);
+    const unlockedKey = buildRelicUnlockedKey(code);
+    const current = unlocked[unlockedKey];
+    if (typeof current !== "number" || current < 2) unlocked[unlockedKey] = 2;
+
+    setWorkingJson(next);
+  };
+
+  const removeInventoryForRelic = (code: RelicCode) => {
+    if (!workingJson) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+    // Containers
+    const filteredC = containers.filter((c) => {
+      const sh = c?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseRelicInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    containers.splice(0, containers.length, ...filteredC);
+    // Ability details
+    const filteredD = abilityDetails.filter((d) => {
+      const sh = d?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseRelicInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    abilityDetails.splice(0, abilityDetails.length, ...filteredD);
+
+    // Research: delete any keys that parse to this relic code
+    const research = next.Save?.Subsystems?.Research?.SaveLoadResearchedProjects as Record<string, number> | undefined;
+    if (research) {
+      for (const k of Object.keys(research)) {
+        const parsed = parseRelicResearchKey(k);
+        if (parsed === code) delete research[k];
+      }
+    }
+    // Unlocked mysterium: delete any keys that parse to this relic code
+    const unlocked = getUnlockedItemsMap(next);
+    for (const k of Object.keys(unlocked)) {
+      const parsed = parseRelicUnlockedKey(k);
+      if (parsed === code) delete unlocked[k];
+    }
+    // Quests for this relic
+    const quests = next.Save?.Subsystems?.Quest?.SaveLoadQuests;
+    if (Array.isArray(quests)) {
+      const filteredQ = quests.filter((q) => {
+        const sh = q?.sourceHandle;
+        if (typeof sh !== "string") return true;
+        const parsed = parseRelicQuestHandle(sh);
+        if (!parsed) return true;
+        return parsed.code !== code;
+      });
+      quests.splice(0, quests.length, ...filteredQ);
+    }
+
+    // Deep scrub: clear any lingering string fields that embed this relic handle code
+    const scrub = (val: unknown, obj: any, key: string | number | null) => {
+      if (typeof val === "string") {
+        const parsed = parseRelicInventoryOrDetailsHandle(val);
+        if (parsed === code) {
+          if (obj && key !== null) obj[key as any] = "";
+        }
+        return;
+      }
+      if (Array.isArray(val)) {
+        for (let i = 0; i < val.length; i++) scrub(val[i], val, i);
+        return;
+      }
+      if (val && typeof val === "object") {
+        for (const [k, v] of Object.entries(val as Record<string, unknown>)) scrub(v, val as any, k);
+      }
+    };
+    scrub(next, null as any, null);
+
+    setWorkingJson(next);
+  };
+
+  const setRelicMysteriumTier = (code: RelicCode, value: number) => {
+    if (!workingJson) return;
+    const tier = Math.max(1, Math.min(3, Math.round(value)));
+    const next = structuredClone(workingJson);
+    const unlocked = getUnlockedItemsMap(next);
+    const key = buildRelicUnlockedKey(code);
+    unlocked[key] = tier + 1; // store 2..4
+    setWorkingJson(next);
+  };
+
+  const renderRelicsSection = () => {
+    if (!workingJson) return null;
+    // Present relics are any detected via inventory, unlocked tiers, or research
+    const present: Array<{ code: RelicCode; count: number; name: string }> = Array.from(relicAvailableCodeSet.values())
+      .map((code) => ({ code: code as RelicCode, count: relicInventoryCountMap.get(code) ?? 0, name: (relicByCode.get(code)?.name ?? code) as string }))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
+
+    const openAdd = () => {
+      if (!hasAddableRelics) return;
+      setShowAddRelicModal(true);
+    };
+    const closeAdd = () => setShowAddRelicModal(false);
+    const handleAddSelect = (item: BaseItem | Bead) => {
+      if ((item as any)?.category === "Relics") {
+        addInventoryForRelic(item as BaseItem);
+        const remaining = getAllRelics().filter((it) => ![...excludedRelicsForAdd, (item as BaseItem).id].includes(it.id));
+        if (remaining.length === 0) closeAdd();
+      }
+    };
+
+    return (
+      <div className="mt-10">
+        <h3 className="text-xl font-semibold text-gray-100 mb-2">Relics</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-[540px] w-full text-left">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-700">
+                <th className="py-2 px-3 w-14"></th>
+                <th className="py-2 px-3">Name</th>
+                <th className="py-2 px-3">Mysterium Tier</th>
+                <th className="py-2 px-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {present.map(({ code }) => {
+                const item = relicByCode.get(code);
+                const name = item?.name ?? code;
+                const tier = relicTierMap.get(code) ?? 1;
+                return (
+                  <tr key={code} className="border-b border-gray-700">
+                    <td className="py-2 px-3">
+                      {item?.iconUrl ? (
+                        <img src={item.iconUrl} alt={name} className="w-12 h-12 object-contain rounded" />
+                      ) : (
+                        <div className="w-12 h-12" />)
+                      }
+                    </td>
+                    <td className="py-2 px-3 text-gray-200">{name}</td>
+                    <td className="py-2 px-3">
+                      <input
+                        type="number"
+                        min={1}
+                        max={3}
+                        step={1}
+                        value={tier}
+                        onChange={(e) => setRelicMysteriumTier(code, Number(e.target.value))}
+                        className="w-24 bg-[#2a2a2a] text-white border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#ddaf7a]"
+                      />
+                    </td>
+                    <td className="py-2 px-3">
+                      <button
+                        onClick={() => removeInventoryForRelic(code)}
+                        className="px-3 py-2 rounded text-sm bg-red-600 text-white hover:bg-red-700 flex items-center justify-center cursor-pointer"
+                        title="Remove"
+                        aria-label="Remove"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                          <path d="M10 11v6" />
+                          <path d="M14 11v6" />
+                          <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+              {present.length === 0 && (
+                <tr>
+                  <td className="py-3 px-3 text-gray-400" colSpan={4}>No relics in inventory. Add some with the + button.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {hasAddableRelics && (
+          <div className="mt-3">
+            <button onClick={openAdd} className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">+ Add relic</button>
+          </div>
+        )}
+
+        {showAddRelicModal && (
+          <div className="fixed inset-x-0 bottom-0 z-40 pointer-events-none">
+            <div className="relative pointer-events-auto bg-[#2a2a2a] border border-[#818181] h-[50vh] md:h-[50vh] rounded-lg mx-4 lg:mx-auto lg:max-w-[70%] mb-2 shadow-[0px_0px_40px_5px_rgba(0,0,0,0.95)] overflow-hidden">
+              <img src="/images/texture-transparent.PNG" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0" />
+              <div className="h-full overflow-y-auto">
+                <div className="sticky top-0 z-50 flex items-center justify-between h-12 px-4 bg-[#2a2a2a]">
+                  <h2 className="text-lg text-white font-semibold m-0">Add Relic</h2>
+                  <button className="text-gray-300 hover:text-white text-2xl leading-none cursor-pointer" onClick={closeAdd} aria-label="Close item selector" title="Close">×</button>
+                </div>
+                <div className="px-4">
+                  <ItemSelector
+                    category="Relics"
+                    onItemSelect={handleAddSelect}
+                    excludedItems={excludedRelicsForAdd}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   // Parse current inventory weapon counts (by Family.Weight, ignoring rarity)
   const inventoryCountMap = useMemo(() => {
@@ -1156,7 +1627,8 @@ export default function SaveEditorPage() {
       if (typeof c.slotId === "number" && c.slotId > maxId) maxId = c.slotId;
       if (typeof c.detailsId === "number" && c.detailsId > maxId) maxId = c.detailsId;
     }
-    for (const d of details) {
+    const weaponDetails = (next.PlayerController?.ItemStorage?.SaveLoadWeaponDataDetails ?? []) as Array<WeaponDataDetail>;
+    for (const d of weaponDetails) {
       if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
     }
     const nextId = maxId + 1;
@@ -1462,121 +1934,7 @@ export default function SaveEditorPage() {
     );
   };
 
-  const isFSAAvailable = typeof window !== "undefined" && "showOpenFilePicker" in window;
-
-  // File input handler
-  const onChooseFile = async (file: File) => {
-    setError(null);
-    setInfo(null);
-    try {
-      const text = await file.text();
-      const json = JSON.parse(text) as WitchfireSaveFile;
-      setLoadedJson(json);
-      setWorkingJson(structuredClone(json));
-      setFileHandle(null); // regular input clears handle
-      setInfo(`Loaded ${file.name}`);
-    } catch (e: unknown) {
-      console.error(e);
-      setError("Failed to parse JSON file. Make sure it is a valid Witchfire save file.");
-    }
-  };
-
-  // File System Access: open file
-  type FSAShowOpenFilePicker = (options: {
-    types: { description: string; accept: Record<string, string[]> }[];
-    excludeAcceptAllOption?: boolean;
-    multiple?: boolean;
-  }) => Promise<FileSystemFileHandle[]>;
-
   const openWithFSA = async () => {
-    setError(null);
-    setInfo(null);
-    try {
-      const win = window as unknown as { showOpenFilePicker?: FSAShowOpenFilePicker };
-      if (!win.showOpenFilePicker) {
-        throw new Error("File System Access API not available");
-      }
-      const [handle] = await win.showOpenFilePicker({
-        types: [
-          {
-            description: "JSON Files",
-            accept: { "application/json": [".json"] },
-          },
-        ],
-        excludeAcceptAllOption: false,
-        multiple: false,
-      });
-      const file = await handle.getFile();
-      const text = await file.text();
-      const json = JSON.parse(text) as WitchfireSaveFile;
-      setLoadedJson(json);
-      setWorkingJson(structuredClone(json));
-      setFileHandle(handle);
-      setInfo(`Opened ${file.name} (File System Access)`);
-    } catch (e: unknown) {
-      const hasName = (x: unknown): x is { name: string } =>
-        typeof x === "object" && x !== null && "name" in x && typeof (x as { name: unknown }).name === "string";
-      if (hasName(e) && e.name === "AbortError") return; // user canceled
-      console.error(e);
-      setError("Failed to open file using File System Access API.");
-    }
-  };
-
-  // Update a single absolute stat value (clamped to [base, 100])
-  const updateAbsoluteStat = (key: StatKey, value: number) => {
-    if (!workingJson || !base) return;
-    const clampedAbs = Math.max(base[key], Math.min(100, Math.round(value)));
-    const points = clampedAbs - base[key]; // raw Level in save file
-
-    const next = structuredClone(workingJson);
-    const slpv = getSLPV(next);
-    if (!slpv) return;
-
-    switch (key) {
-      case "flesh":
-        slpv.FleshLevel = points;
-        break;
-      case "mind":
-        slpv.MindLevel = points;
-        break;
-      case "blood":
-        slpv.BloodLevel = points;
-        break;
-      case "witchery":
-        slpv.WitcheryLevel = points;
-        break;
-      case "arsenal":
-        slpv.ArsenalLevel = points;
-        break;
-      case "faith":
-        slpv.FaithLevel = points;
-        break;
-    }
-
-    // Recompute LevelPoints and PlayerLevel
-    recomputeLevels(next);
-    setWorkingJson(next);
-  };
-
-  const recomputeLevels = (j: WitchfireSaveFile) => {
-    const slpv = getSLPV(j);
-    if (!slpv) return;
-    const total =
-      (slpv.FleshLevel ?? 0) +
-      (slpv.MindLevel ?? 0) +
-      (slpv.BloodLevel ?? 0) +
-      (slpv.WitcheryLevel ?? 0) +
-      (slpv.ArsenalLevel ?? 0) +
-      (slpv.FaithLevel ?? 0);
-    slpv.LevelPoints = total;
-
-    const cls = j.PlayerClass ? getPlayerClassInfoFromPlayerClass(j.PlayerClass) : null;
-    const starting = cls?.startingLevel ?? 1;
-    j.PlayerLevel = starting + total;
-  };
-
-  // Save to disk (File System Access)
-  const saveToSameFile = async () => {
     setError(null);
     setInfo(null);
     if (!fileHandle || !workingJson) {
@@ -1594,6 +1952,11 @@ export default function SaveEditorPage() {
       console.error(e);
       setError("Failed to save to the original file.");
     }
+  };
+
+  // Alias used by the UI button
+  const saveToSameFile = async () => {
+    await openWithFSA();
   };
 
   // Download as new JSON
@@ -1693,6 +2056,674 @@ export default function SaveEditorPage() {
     );
   };
 
+  // ============ Fetishes Section ============
+  // Map FetishCode -> BaseItem
+  const fetishByCode = useMemo(() => {
+    const items = getAllFetishes();
+    const map = new Map<string, BaseItem>();
+    for (const it of items) {
+      const code = getCodeForFetishItem(it);
+      if (code) map.set(code, it);
+    }
+    return map;
+  }, [workingJson]);
+
+  // Parse mysterium tiers for Fetishes (UI 1..3 from stored 2..4)
+  const fetishTierMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const unlockedItems = workingJson?.Save?.GameInstance?.ProgressManager?.IntegerMaps?.["Progression.Category.Unlocked.Items"]?.map;
+    if (unlockedItems && typeof unlockedItems === "object") {
+      for (const [k, v] of Object.entries(unlockedItems as Record<string, number>)) {
+        const code = parseFetishUnlockedKey(k);
+        if (!code) continue;
+        const stored = Number(v);
+        const tier = Math.max(1, Math.min(3, stored - 1));
+        m.set(code, tier);
+      }
+    }
+    return m;
+  }, [workingJson]);
+
+  // Parse inventory fetish counts
+  const fetishInventoryCountMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const storage = workingJson?.PlayerController?.ItemStorage;
+    const seen = new Set<string>();
+    const containers = storage?.SaveLoadItemDataContainers;
+    if (Array.isArray(containers)) {
+      for (const c of containers) {
+        const sh = c?.sourceHandle;
+        if (typeof sh !== "string") continue;
+        const code = parseFetishInventoryOrDetailsHandle(sh);
+        if (code) {
+          seen.add(sh);
+          m.set(code, (m.get(code) ?? 0) + 1);
+        }
+      }
+    }
+    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    if (Array.isArray(abilityDetails)) {
+      for (const d of abilityDetails) {
+        const sh = d?.sourceHandle;
+        if (typeof sh !== "string" || seen.has(sh)) continue;
+        const code = parseFetishInventoryOrDetailsHandle(sh);
+        if (code) m.set(code, (m.get(code) ?? 0) + 1);
+      }
+    }
+    // Deep scan
+    if (workingJson) {
+      const visit = (val: unknown) => {
+        if (typeof val === "string") {
+          const code = parseFetishInventoryOrDetailsHandle(val);
+          if (code) m.set(code, (m.get(code) ?? 0) + 1);
+          return;
+        }
+        if (Array.isArray(val)) {
+          for (const v of val) visit(v);
+          return;
+        }
+        if (val && typeof val === "object") {
+          for (const v of Object.values(val as Record<string, unknown>)) visit(v);
+        }
+      };
+      visit(workingJson);
+    }
+    return m;
+  }, [workingJson]);
+
+  const fetishAvailableCodeSet = useMemo(() => {
+    const set = new Set<string>();
+    for (const code of fetishInventoryCountMap.keys()) set.add(code);
+    for (const code of fetishTierMap.keys()) set.add(code);
+    const projects = workingJson?.Save?.Subsystems?.Research?.SaveLoadResearchedProjects;
+    if (projects && typeof projects === "object") {
+      for (const k of Object.keys(projects as Record<string, number>)) {
+        const code = parseFetishResearchKey(k);
+        if (code) set.add(code);
+      }
+    }
+    return set;
+  }, [fetishInventoryCountMap, fetishTierMap, workingJson]);
+
+  const excludedFetishesForAdd = useMemo(() => {
+    const ids: string[] = [];
+    for (const code of fetishAvailableCodeSet.values()) {
+      const id = fetishByCode.get(code)?.id;
+      if (typeof id === "string") ids.push(id);
+    }
+    return ids;
+  }, [fetishAvailableCodeSet, fetishByCode]);
+
+  const hasAddableFetishes = useMemo(() => {
+    return getAllFetishes().some((it) => !excludedFetishesForAdd.includes(it.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [excludedFetishesForAdd.join("|")]);
+
+  const addInventoryForFetish = (item: BaseItem) => {
+    if (!workingJson) return;
+    const code = getCodeForFetishItem(item);
+    if (!code) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+
+    let maxId = 0;
+    for (const c of containers) {
+      if (typeof c.slotId === "number" && c.slotId > maxId) maxId = c.slotId;
+      if (typeof c.detailsId === "number" && c.detailsId > maxId) maxId = c.detailsId;
+    }
+    const weaponDetails = (next.PlayerController?.ItemStorage?.SaveLoadWeaponDataDetails ?? []) as Array<WeaponDataDetail>;
+    for (const d of weaponDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    for (const d of abilityDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    const nextId = maxId + 1;
+
+    const detailsHandle = buildFetishDetailsHandle(code, "Rare");
+    const containerHandle = buildFetishInventoryHandle(code, "Rare");
+
+    abilityDetails.push({ detailsId: nextId, tierQuestId: -1, sourceHandle: detailsHandle });
+    containers.push({
+      slotId: nextId,
+      detailsId: nextId,
+      itemCount: 1,
+      bStashed: false,
+      dateTimeAdded: formatDateForSave(),
+      sourceHandle: containerHandle,
+    });
+
+    ensureResearchPath(next);
+    const projects = next.Save!.Subsystems!.Research!.SaveLoadResearchedProjects as Record<string, number>;
+    projects[buildFetishResearchKey(code)] = 1;
+
+    const unlocked = getUnlockedItemsMap(next);
+    const unlockedKey = buildFetishUnlockedKey(code);
+    const current = unlocked[unlockedKey];
+    if (typeof current !== "number" || current < 2) unlocked[unlockedKey] = 2;
+
+    setWorkingJson(next);
+  };
+
+  const removeInventoryForFetish = (code: FetishCode) => {
+    if (!workingJson) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+    const filteredC = containers.filter((c) => {
+      const sh = c?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseFetishInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    containers.splice(0, containers.length, ...filteredC);
+    const filteredD = abilityDetails.filter((d) => {
+      const sh = d?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseFetishInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    abilityDetails.splice(0, abilityDetails.length, ...filteredD);
+
+    const research = next.Save?.Subsystems?.Research?.SaveLoadResearchedProjects as Record<string, number> | undefined;
+    if (research) {
+      for (const k of Object.keys(research)) {
+        const parsed = parseFetishResearchKey(k);
+        if (parsed === code) delete research[k];
+      }
+    }
+    const unlocked = getUnlockedItemsMap(next);
+    for (const k of Object.keys(unlocked)) {
+      const parsed = parseFetishUnlockedKey(k);
+      if (parsed === code) delete unlocked[k];
+    }
+
+    const scrub = (val: unknown, obj: any, key: string | number | null) => {
+      if (typeof val === "string") {
+        const parsed = parseFetishInventoryOrDetailsHandle(val);
+        if (parsed === code) {
+          if (obj && key !== null) obj[key as any] = "";
+        }
+        return;
+      }
+      if (Array.isArray(val)) {
+        for (let i = 0; i < val.length; i++) scrub(val[i], val, i);
+        return;
+      }
+      if (val && typeof val === "object") {
+        for (const [k, v] of Object.entries(val as Record<string, unknown>)) scrub(v, val as any, k);
+      }
+    };
+    scrub(next, null as any, null);
+
+    setWorkingJson(next);
+  };
+
+  const setFetishMysteriumTier = (code: FetishCode, value: number) => {
+    if (!workingJson) return;
+    const tier = Math.max(1, Math.min(3, Math.round(value)));
+    const next = structuredClone(workingJson);
+    const unlocked = getUnlockedItemsMap(next);
+    const key = buildFetishUnlockedKey(code);
+    unlocked[key] = tier + 1;
+    setWorkingJson(next);
+  };
+
+  const renderFetishesSection = () => {
+    if (!workingJson) return null;
+    const present: Array<{ code: FetishCode; count: number; name: string }> = Array.from(fetishAvailableCodeSet.values())
+      .map((code) => ({ code: code as FetishCode, count: fetishInventoryCountMap.get(code) ?? 0, name: (fetishByCode.get(code)?.name ?? code) as string }))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
+
+    const openAdd = () => {
+      if (!hasAddableFetishes) return;
+      setShowAddFetishModal(true);
+    };
+    const closeAdd = () => setShowAddFetishModal(false);
+    const handleAddSelect = (item: BaseItem | Bead) => {
+      if ((item as any)?.category === "Fetishes") {
+        addInventoryForFetish(item as BaseItem);
+        const remaining = getAllFetishes().filter((it) => ![...excludedFetishesForAdd, (item as BaseItem).id].includes(it.id));
+        if (remaining.length === 0) closeAdd();
+      }
+    };
+
+    return (
+      <div className="mt-10">
+        <h3 className="text-xl font-semibold text-gray-100 mb-2">Fetishes</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-[540px] w-full text-left">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-700">
+                <th className="py-2 px-3 w-14"></th>
+                <th className="py-2 px-3">Name</th>
+                <th className="py-2 px-3">Mysterium Tier</th>
+                <th className="py-2 px-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {present.map(({ code }) => {
+                const item = fetishByCode.get(code);
+                const name = item?.name ?? code;
+                const tier = fetishTierMap.get(code) ?? 1;
+                return (
+                  <tr key={code} className="border-b border-gray-700">
+                    <td className="py-2 px-3">
+                      {item?.iconUrl ? (
+                        <img src={item.iconUrl} alt={name} className="w-12 h-12 object-contain rounded" />
+                      ) : (
+                        <div className="w-12 h-12" />)
+                      }
+                    </td>
+                    <td className="py-2 px-3 text-gray-200">{name}</td>
+                    <td className="py-2 px-3">
+                      <input
+                        type="number"
+                        min={1}
+                        max={3}
+                        step={1}
+                        value={tier}
+                        onChange={(e) => setFetishMysteriumTier(code, Number(e.target.value))}
+                        className="w-24 bg-[#2a2a2a] text-white border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#ddaf7a]"
+                      />
+                    </td>
+                    <td className="py-2 px-3">
+                      <button
+                        onClick={() => removeInventoryForFetish(code)}
+                        className="px-3 py-2 rounded text-sm bg-red-600 text-white hover:bg-red-700 flex items-center justify-center cursor-pointer"
+                        title="Remove"
+                        aria-label="Remove"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                          <path d="M10 11v6" />
+                          <path d="M14 11v6" />
+                          <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+              {present.length === 0 && (
+                <tr>
+                  <td className="py-3 px-3 text-gray-400" colSpan={4}>No fetishes in inventory. Add some with the + button.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {hasAddableFetishes && (
+          <div className="mt-3">
+            <button onClick={openAdd} className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">+ Add fetish</button>
+          </div>
+        )}
+
+        {showAddFetishModal && (
+          <div className="fixed inset-x-0 bottom-0 z-40 pointer-events-none">
+            <div className="relative pointer-events-auto bg-[#2a2a2a] border border-[#818181] h-[50vh] md:h-[50vh] rounded-lg mx-4 lg:mx-auto lg:max-w-[70%] mb-2 shadow-[0px_0px_40px_5px_rgba(0,0,0,0.95)] overflow-hidden">
+              <img src="/images/texture-transparent.PNG" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0" />
+              <div className="h-full overflow-y-auto">
+                <div className="sticky top-0 z-50 flex items-center justify-between h-12 px-4 bg-[#2a2a2a]">
+                  <h2 className="text-lg text-white font-semibold m-0">Add Fetish</h2>
+                  <button className="text-gray-300 hover:text-white text-2xl leading-none cursor-pointer" onClick={closeAdd} aria-label="Close item selector" title="Close">×</button>
+                </div>
+                <div className="px-4">
+                  <ItemSelector
+                    category="Fetishes"
+                    onItemSelect={handleAddSelect}
+                    excludedItems={excludedFetishesForAdd}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // ============ Rings Section ============
+  const ringByCode = useMemo(() => {
+    const items = getAllRings();
+    const map = new Map<string, BaseItem>();
+    for (const it of items) {
+      const code = getCodeForRingItem(it);
+      if (code) map.set(code, it);
+    }
+    return map;
+  }, [workingJson]);
+
+  const ringTierMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const unlockedItems = workingJson?.Save?.GameInstance?.ProgressManager?.IntegerMaps?.["Progression.Category.Unlocked.Items"]?.map;
+    if (unlockedItems && typeof unlockedItems === "object") {
+      for (const [k, v] of Object.entries(unlockedItems as Record<string, number>)) {
+        const code = parseRingUnlockedKey(k);
+        if (!code) continue;
+        const stored = Number(v);
+        const tier = Math.max(1, Math.min(3, stored - 1));
+        m.set(code, tier);
+      }
+    }
+    return m;
+  }, [workingJson]);
+
+  const ringInventoryCountMap = useMemo(() => {
+    const m = new Map<string, number>();
+    const storage = workingJson?.PlayerController?.ItemStorage;
+    const seen = new Set<string>();
+    const containers = storage?.SaveLoadItemDataContainers;
+    if (Array.isArray(containers)) {
+      for (const c of containers) {
+        const sh = c?.sourceHandle;
+        if (typeof sh !== "string") continue;
+        const code = parseRingInventoryOrDetailsHandle(sh);
+        if (code) {
+          seen.add(sh);
+          m.set(code, (m.get(code) ?? 0) + 1);
+        }
+      }
+    }
+    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    if (Array.isArray(abilityDetails)) {
+      for (const d of abilityDetails) {
+        const sh = d?.sourceHandle;
+        if (typeof sh !== "string" || seen.has(sh)) continue;
+        const code = parseRingInventoryOrDetailsHandle(sh);
+        if (code) m.set(code, (m.get(code) ?? 0) + 1);
+      }
+    }
+    // Deep scan
+    if (workingJson) {
+      const visit = (val: unknown) => {
+        if (typeof val === "string") {
+          const code = parseRingInventoryOrDetailsHandle(val);
+          if (code) m.set(code, (m.get(code) ?? 0) + 1);
+          return;
+        }
+        if (Array.isArray(val)) {
+          for (const v of val) visit(v);
+          return;
+        }
+        if (val && typeof val === "object") {
+          for (const v of Object.values(val as Record<string, unknown>)) visit(v);
+        }
+      };
+      visit(workingJson);
+    }
+    return m;
+  }, [workingJson]);
+
+  const ringAvailableCodeSet = useMemo(() => {
+    const set = new Set<string>();
+    for (const code of ringInventoryCountMap.keys()) set.add(code);
+    for (const code of ringTierMap.keys()) set.add(code);
+    const projects = workingJson?.Save?.Subsystems?.Research?.SaveLoadResearchedProjects;
+    if (projects && typeof projects === "object") {
+      for (const k of Object.keys(projects as Record<string, number>)) {
+        const code = parseRingResearchKey(k);
+        if (code) set.add(code);
+      }
+    }
+    return set;
+  }, [ringInventoryCountMap, ringTierMap, workingJson]);
+
+  const excludedRingsForAdd = useMemo(() => {
+    const ids: string[] = [];
+    for (const code of ringAvailableCodeSet.values()) {
+      const id = ringByCode.get(code)?.id;
+      if (typeof id === "string") ids.push(id);
+    }
+    return ids;
+  }, [ringAvailableCodeSet, ringByCode]);
+
+  const hasAddableRings = useMemo(() => {
+    return getAllRings().some((it) => !excludedRingsForAdd.includes(it.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [excludedRingsForAdd.join("|")]);
+
+  const addInventoryForRing = (item: BaseItem) => {
+    if (!workingJson) return;
+    const code = getCodeForRingItem(item);
+    if (!code) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+
+    let maxId = 0;
+    for (const c of containers) {
+      if (typeof c.slotId === "number" && c.slotId > maxId) maxId = c.slotId;
+      if (typeof c.detailsId === "number" && c.detailsId > maxId) maxId = c.detailsId;
+    }
+    const weaponDetails = (next.PlayerController?.ItemStorage?.SaveLoadWeaponDataDetails ?? []) as Array<WeaponDataDetail>;
+    for (const d of weaponDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    for (const d of abilityDetails) {
+      if (typeof d.detailsId === "number" && d.detailsId > maxId) maxId = d.detailsId;
+    }
+    const nextId = maxId + 1;
+
+    const detailsHandle = buildRingDetailsHandle(code, "Rare");
+    const containerHandle = buildRingInventoryHandle(code, "Rare");
+
+    abilityDetails.push({ detailsId: nextId, tierQuestId: -1, sourceHandle: detailsHandle });
+    containers.push({
+      slotId: nextId,
+      detailsId: nextId,
+      itemCount: 1,
+      bStashed: false,
+      dateTimeAdded: formatDateForSave(),
+      sourceHandle: containerHandle,
+    });
+
+    ensureResearchPath(next);
+    const projects = next.Save!.Subsystems!.Research!.SaveLoadResearchedProjects as Record<string, number>;
+    projects[buildRingResearchKey(code)] = 1;
+
+    const unlocked = getUnlockedItemsMap(next);
+    const unlockedKey = buildRingUnlockedKey(code);
+    const current = unlocked[unlockedKey];
+    if (typeof current !== "number" || current < 2) unlocked[unlockedKey] = 2;
+
+    setWorkingJson(next);
+  };
+
+  const removeInventoryForRing = (code: RingCode) => {
+    if (!workingJson) return;
+    const next = structuredClone(workingJson);
+    const { containers, abilityDetails } = getAbilityInventoryArrays(next);
+    const filteredC = containers.filter((c) => {
+      const sh = c?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseRingInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    containers.splice(0, containers.length, ...filteredC);
+    const filteredD = abilityDetails.filter((d) => {
+      const sh = d?.sourceHandle;
+      if (typeof sh !== "string") return true;
+      const parsed = parseRingInventoryOrDetailsHandle(sh);
+      if (!parsed) return true;
+      return parsed !== code;
+    });
+    abilityDetails.splice(0, abilityDetails.length, ...filteredD);
+
+    const research = next.Save?.Subsystems?.Research?.SaveLoadResearchedProjects as Record<string, number> | undefined;
+    if (research) {
+      for (const k of Object.keys(research)) {
+        const parsed = parseRingResearchKey(k);
+        if (parsed === code) delete research[k];
+      }
+    }
+    const unlocked = getUnlockedItemsMap(next);
+    for (const k of Object.keys(unlocked)) {
+      const parsed = parseRingUnlockedKey(k);
+      if (parsed === code) delete unlocked[k];
+    }
+    const quests = next.Save?.Subsystems?.Quest?.SaveLoadQuests;
+    if (Array.isArray(quests)) {
+      const filteredQ = quests.filter((q) => {
+        const sh = q?.sourceHandle;
+        if (typeof sh !== "string") return true;
+        const parsed = parseRingQuestHandle(sh);
+        if (!parsed) return true;
+        return parsed.code !== code;
+      });
+      quests.splice(0, quests.length, ...filteredQ);
+    }
+
+    const scrub = (val: unknown, obj: any, key: string | number | null) => {
+      if (typeof val === "string") {
+        const parsed = parseRingInventoryOrDetailsHandle(val);
+        if (parsed === code) {
+          if (obj && key !== null) obj[key as any] = "";
+        }
+        return;
+      }
+      if (Array.isArray(val)) {
+        for (let i = 0; i < val.length; i++) scrub(val[i], val, i);
+        return;
+      }
+      if (val && typeof val === "object") {
+        for (const [k, v] of Object.entries(val as Record<string, unknown>)) scrub(v, val as any, k);
+      }
+    };
+    scrub(next, null as any, null);
+
+    setWorkingJson(next);
+  };
+
+  const setRingMysteriumTier = (code: RingCode, value: number) => {
+    if (!workingJson) return;
+    const tier = Math.max(1, Math.min(3, Math.round(value)));
+    const next = structuredClone(workingJson);
+    const unlocked = getUnlockedItemsMap(next);
+    const key = buildRingUnlockedKey(code);
+    unlocked[key] = tier + 1;
+    setWorkingJson(next);
+  };
+
+  const renderRingsSection = () => {
+    if (!workingJson) return null;
+    const present: Array<{ code: RingCode; count: number; name: string }> = Array.from(ringAvailableCodeSet.values())
+      .map((code) => ({ code: code as RingCode, count: ringInventoryCountMap.get(code) ?? 0, name: (ringByCode.get(code)?.name ?? code) as string }))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
+
+    const openAdd = () => {
+      if (!hasAddableRings) return;
+      setShowAddRingModal(true);
+    };
+    const closeAdd = () => setShowAddRingModal(false);
+    const handleAddSelect = (item: BaseItem | Bead) => {
+      if ((item as any)?.category === "Rings") {
+        addInventoryForRing(item as BaseItem);
+        const remaining = getAllRings().filter((it) => ![...excludedRingsForAdd, (item as BaseItem).id].includes(it.id));
+        if (remaining.length === 0) closeAdd();
+      }
+    };
+
+    return (
+      <div className="mt-10">
+        <h3 className="text-xl font-semibold text-gray-100 mb-2">Rings</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-[540px] w-full text-left">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-700">
+                <th className="py-2 px-3 w-14"></th>
+                <th className="py-2 px-3">Name</th>
+                <th className="py-2 px-3">Mysterium Tier</th>
+                <th className="py-2 px-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {present.map(({ code }) => {
+                const item = ringByCode.get(code);
+                const name = item?.name ?? code;
+                const tier = ringTierMap.get(code) ?? 1;
+                return (
+                  <tr key={code} className="border-b border-gray-700">
+                    <td className="py-2 px-3">
+                      {item?.iconUrl ? (
+                        <img src={item.iconUrl} alt={name} className="w-12 h-12 object-contain rounded" />
+                      ) : (
+                        <div className="w-12 h-12" />)
+                      }
+                    </td>
+                    <td className="py-2 px-3 text-gray-200">{name}</td>
+                    <td className="py-2 px-3">
+                      <input
+                        type="number"
+                        min={1}
+                        max={3}
+                        step={1}
+                        value={tier}
+                        onChange={(e) => setRingMysteriumTier(code, Number(e.target.value))}
+                        className="w-24 bg-[#2a2a2a] text-white border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#ddaf7a]"
+                      />
+                    </td>
+                    <td className="py-2 px-3">
+                      <button
+                        onClick={() => removeInventoryForRing(code)}
+                        className="px-3 py-2 rounded text-sm bg-red-600 text-white hover:bg-red-700 flex items-center justify-center cursor-pointer"
+                        title="Remove"
+                        aria-label="Remove"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                          <path d="M10 11v6" />
+                          <path d="M14 11v6" />
+                          <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+              {present.length === 0 && (
+                <tr>
+                  <td className="py-3 px-3 text-gray-400" colSpan={4}>No rings in inventory. Add some with the + button.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {hasAddableRings && (
+          <div className="mt-3">
+            <button onClick={openAdd} className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">+ Add ring</button>
+          </div>
+        )}
+
+        {showAddRingModal && (
+          <div className="fixed inset-x-0 bottom-0 z-40 pointer-events-none">
+            <div className="relative pointer-events-auto bg-[#2a2a2a] border border-[#818181] h-[50vh] md:h-[50vh] rounded-lg mx-4 lg:mx-auto lg:max-w-[70%] mb-2 shadow-[0px_0px_40px_5px_rgba(0,0,0,0.95)] overflow-hidden">
+              <img src="/images/texture-transparent.PNG" alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0" />
+              <div className="h-full overflow-y-auto">
+                <div className="sticky top-0 z-50 flex items-center justify-between h-12 px-4 bg-[#2a2a2a]">
+                  <h2 className="text-lg text-white font-semibold m-0">Add Ring</h2>
+                  <button className="text-gray-300 hover:text-white text-2xl leading-none cursor-pointer" onClick={closeAdd} aria-label="Close item selector" title="Close">×</button>
+                </div>
+                <div className="px-4">
+                  <ItemSelector
+                    category="Rings"
+                    onItemSelect={handleAddSelect}
+                    excludedItems={excludedRingsForAdd}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <h1 className="text-3xl font-bold text-gray-100 mb-6">Savefile Editor</h1>
@@ -1761,6 +2792,9 @@ export default function SaveEditorPage() {
           {renderWeaponsSection()}
           {renderLightSpellsSection()}
           {renderHeavySpellsSection()}
+          {renderRelicsSection()}
+          {renderFetishesSection()}
+          {renderRingsSection()}
         </div>
       )}
 
@@ -1772,6 +2806,15 @@ export default function SaveEditorPage() {
         <div aria-hidden className="pointer-events-none h-[49vh] md:h-[44vh]" />
       )}
       {showAddHeavySpellModal && (
+        <div aria-hidden className="pointer-events-none h-[49vh] md:h-[44vh]" />
+      )}
+      {showAddRelicModal && (
+        <div aria-hidden className="pointer-events-none h-[49vh] md:h-[44vh]" />
+      )}
+      {showAddFetishModal && (
+        <div aria-hidden className="pointer-events-none h-[49vh] md:h-[44vh]" />
+      )}
+      {showAddRingModal && (
         <div aria-hidden className="pointer-events-none h-[49vh] md:h-[44vh]" />
       )}
 
