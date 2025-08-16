@@ -44,15 +44,15 @@ function normalizeFamilyWeight<T extends { family: WeaponFamily; weight: WeightC
   const { family, weight } = entry;
   // Whisper (StunGun) and Striga (StakeGun) observed as Medium in saves; canonical is Light
   if ((family === "StunGun" || family === "StakeGun") && weight === "Medium") {
-    return { ...(entry as any), weight: "Light" } as T;
+    return { ...entry, weight: "Light" as WeightClass } as T;
   }
   // Vulture (Crossbow) observed as Medium in some saves; canonical is Heavy
   if (family === "Crossbow" && weight === "Medium") {
-    return { ...(entry as any), weight: "Medium" } as T;
+    return { ...entry, weight: "Medium" as WeightClass } as T;
   }
   // Falling Star (GrenadeLauncher) observed as Medium in some saves; canonical is Heavy
   if (family === "GrenadeLauncher" && weight === "Medium") {
-    return { ...(entry as any), weight: "Medium" } as T;
+    return { ...entry, weight: "Medium" as WeightClass } as T;
   }
   return entry;
 }

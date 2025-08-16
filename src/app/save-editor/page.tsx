@@ -11,41 +11,33 @@ import { parseWeaponQuestSourceHandle, parseInventoryWeaponSourceHandle, parseUn
 import {
   buildLightSpellAbilityDetailsHandle,
   buildLightSpellInventoryHandle,
-  buildLightSpellQuestHandle,
   buildLightSpellResearchKey,
   buildLightSpellUnlockedKey,
   getAllLightSpells,
-  getLightSpellByCode,
   getCodeForLightSpellItem,
   parseLightSpellInventoryOrDetailsHandle,
   parseLightSpellQuestHandle,
-  parseLightSpellResearchKey,
   parseLightSpellUnlockedKey,
   type LightSpellCode,
 } from "@/util/spellKeys";
 import {
   buildHeavySpellAbilityDetailsHandle,
   buildHeavySpellInventoryHandle,
-  buildHeavySpellQuestHandle,
   buildHeavySpellResearchKey,
   buildHeavySpellUnlockedKey,
   getAllHeavySpells,
-  getHeavySpellByCode,
   getCodeForHeavySpellItem,
   parseHeavySpellInventoryOrDetailsHandle,
   parseHeavySpellQuestHandle,
-  parseHeavySpellResearchKey,
   parseHeavySpellUnlockedKey,
   type HeavySpellCode,
 } from "@/util/heavySpellKeys";
 import {
   buildRelicDetailsHandle,
   buildRelicInventoryHandle,
-  buildRelicQuestHandle,
   buildRelicResearchKey,
   buildRelicUnlockedKey,
   getAllRelics,
-  getRelicByCode,
   getCodeForRelicItem,
   parseRelicInventoryOrDetailsHandle,
   parseRelicQuestHandle,
@@ -59,7 +51,6 @@ import {
   buildFetishResearchKey,
   buildFetishUnlockedKey,
   getAllFetishes,
-  getFetishByCode,
   getCodeForFetishItem,
   parseFetishInventoryOrDetailsHandle,
   parseFetishResearchKey,
@@ -72,7 +63,6 @@ import {
   buildRingResearchKey,
   buildRingUnlockedKey,
   getAllRings,
-  getRingByCode,
   getCodeForRingItem,
   parseRingInventoryOrDetailsHandle,
   parseRingResearchKey,
@@ -201,8 +191,7 @@ export default function SaveEditorPage() {
 
   // --- Helpers: File System Access availability and regular file chooser ---
   const isFSAAvailable = typeof window !== "undefined" &&
-    // @ts-ignore - TS doesn't know about these on Window in all TS libs
-    typeof (window as any).showOpenFilePicker === "function";
+    typeof (window as Window & { showOpenFilePicker?: () => void }).showOpenFilePicker === "function";
 
   const onChooseFile = async (file: File) => {
     try {
@@ -242,7 +231,7 @@ export default function SaveEditorPage() {
     } as SaveLoadPropertyValues);
     // Optionally clamp to non-negative integers
     const slpv = j.Save.Player.AbilitySystem.SaveLoadPropertyValues;
-    const clamp = (n: any) => Math.max(0, Math.floor(Number(n) || 0));
+    const clamp = (n: unknown) => Math.max(0, Math.floor(Number(n) || 0));
     slpv.FleshLevel = clamp(slpv.FleshLevel);
     slpv.MindLevel = clamp(slpv.MindLevel);
     slpv.BloodLevel = clamp(slpv.BloodLevel);
@@ -267,7 +256,6 @@ export default function SaveEditorPage() {
       faith: "FaithLevel",
     };
     const field = map[key];
-    // @ts-ignore index by known key
     slpv[field] = diff;
     // keep LevelPoints untouched; recompute/clamp basics
     recomputeLevels(next);
@@ -331,7 +319,7 @@ export default function SaveEditorPage() {
         }
       }
     }
-    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    const abilityDetails = (storage as Record<string, unknown>)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
     if (Array.isArray(abilityDetails)) {
       for (const d of abilityDetails) {
         const sh = d?.sourceHandle;
@@ -495,7 +483,7 @@ export default function SaveEditorPage() {
     };
     const closeAdd = () => setShowAddHeavySpellModal(false);
     const handleAddSelect = (item: BaseItem | Bead) => {
-      if ((item as any)?.category === "HeavySpells") {
+      if ((item as BaseItem)?.category === "HeavySpells") {
         addInventoryForHeavySpell(item as BaseItem);
         const remaining = getAllHeavySpells().filter((it) => ![...excludedHeavyForAdd, (item as BaseItem).id].includes(it.id));
         if (remaining.length === 0) closeAdd();
@@ -719,7 +707,7 @@ export default function SaveEditorPage() {
         }
       }
     }
-    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    const abilityDetails = (storage as Record<string, unknown>)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
     if (Array.isArray(abilityDetails)) {
       for (const d of abilityDetails) {
         const sh = d?.sourceHandle;
@@ -884,7 +872,7 @@ export default function SaveEditorPage() {
     };
     const closeAdd = () => setShowAddLightSpellModal(false);
     const handleAddSelect = (item: BaseItem | Bead) => {
-      if ((item as any)?.category === "LightSpells") {
+      if ((item as BaseItem)?.category === "LightSpells") {
         addInventoryForLightSpell(item as BaseItem);
         const remaining = getAllLightSpells().filter((it) => ![...excludedLightForAdd, (item as BaseItem).id].includes(it.id));
         if (remaining.length === 0) closeAdd();
@@ -1033,7 +1021,7 @@ export default function SaveEditorPage() {
         }
       }
     }
-    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    const abilityDetails = (storage as Record<string, unknown>)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
     if (Array.isArray(abilityDetails)) {
       for (const d of abilityDetails) {
         const sh = d?.sourceHandle;
@@ -1196,11 +1184,17 @@ export default function SaveEditorPage() {
     }
 
     // Deep scrub: clear any lingering string fields that embed this relic handle code
-    const scrub = (val: unknown, obj: any, key: string | number | null) => {
+    const scrub = (val: unknown, obj: Record<string, unknown> | unknown[], key: string | number | null) => {
       if (typeof val === "string") {
         const parsed = parseRelicInventoryOrDetailsHandle(val);
         if (parsed === code) {
-          if (obj && key !== null) obj[key as any] = "";
+          if (obj && key !== null) {
+            if (Array.isArray(obj)) {
+              obj[key as number] = "";
+            } else {
+              obj[key as string] = "";
+            }
+          }
         }
         return;
       }
@@ -1209,10 +1203,12 @@ export default function SaveEditorPage() {
         return;
       }
       if (val && typeof val === "object") {
-        for (const [k, v] of Object.entries(val as Record<string, unknown>)) scrub(v, val as any, k);
+        for (const k of Object.keys(val)) {
+          scrub((val as Record<string, unknown>)[k], val as Record<string, unknown>, k);
+        }
       }
     };
-    scrub(next, null as any, null);
+    scrub(next, {} as Record<string, unknown>, null);
 
     setWorkingJson(next);
   };
@@ -1240,7 +1236,7 @@ export default function SaveEditorPage() {
     };
     const closeAdd = () => setShowAddRelicModal(false);
     const handleAddSelect = (item: BaseItem | Bead) => {
-      if ((item as any)?.category === "Relics") {
+      if ((item as BaseItem)?.category === "Relics") {
         addInventoryForRelic(item as BaseItem);
         const remaining = getAllRelics().filter((it) => ![...excludedRelicsForAdd, (item as BaseItem).id].includes(it.id));
         if (remaining.length === 0) closeAdd();
@@ -1271,8 +1267,8 @@ export default function SaveEditorPage() {
                       {item?.iconUrl ? (
                         <img src={item.iconUrl} alt={name} className="w-12 h-12 object-contain rounded" />
                       ) : (
-                        <div className="w-12 h-12" />)
-                      }
+                        <div className="w-12 h-12" />
+                      )}
                     </td>
                     <td className="py-2 px-3 text-gray-200">{name}</td>
                     <td className="py-2 px-3">
@@ -1402,84 +1398,6 @@ export default function SaveEditorPage() {
     return m;
   }, [workingJson]);
 
-  // Debug info: how many entries we see in each list and how many parse as weapons
-  const inventoryDebug = useMemo(() => {
-    const playerControllerExists = Boolean(workingJson?.PlayerController);
-    const storage = workingJson?.PlayerController?.ItemStorage;
-    const itemStorageExists = Boolean(storage);
-    let containersTotal = 0;
-    let containersWeapons = 0;
-    let weaponDetailsTotal = 0;
-    let weaponDetailsWeapons = 0;
-    const sampleContainerHandles: string[] = [];
-    const sampleWeaponDetailHandles: string[] = [];
-    let deepScanMatches = 0;
-    const sampleDeepHandles: string[] = [];
-
-    const containers = storage?.SaveLoadItemDataContainers;
-    if (Array.isArray(containers)) {
-      containersTotal = containers.length;
-      for (const c of containers) {
-        const sh = c?.sourceHandle;
-        if (typeof sh === "string") {
-          if (sampleContainerHandles.length < 3) sampleContainerHandles.push(sh);
-          if (parseInventoryWeaponSourceHandle(sh)) containersWeapons++;
-        }
-      }
-    }
-
-    const weaponDetails = (storage as unknown as { SaveLoadWeaponDataDetails?: Array<{ sourceHandle?: string }> })?.SaveLoadWeaponDataDetails;
-    if (Array.isArray(weaponDetails)) {
-      weaponDetailsTotal = weaponDetails.length;
-      for (const d of weaponDetails) {
-        const sh = d?.sourceHandle;
-        if (typeof sh === "string") {
-          if (sampleWeaponDetailHandles.length < 3) sampleWeaponDetailHandles.push(sh);
-          if (parseInventoryWeaponSourceHandle(sh)) weaponDetailsWeapons++;
-        }
-      }
-    }
-
-    // Deep scan sample (debug only)
-    if (workingJson) {
-      const visit = (val: unknown) => {
-        if (typeof val === "string") {
-          const parsed = parseInventoryWeaponSourceHandle(val);
-          if (parsed) {
-            deepScanMatches++;
-            if (sampleDeepHandles.length < 3) sampleDeepHandles.push(val);
-          }
-          // also sample spell handles
-          if (parseLightSpellInventoryOrDetailsHandle(val)) {
-            if (sampleDeepHandles.length < 3) sampleDeepHandles.push(val);
-          }
-          return;
-        }
-        if (Array.isArray(val)) {
-          for (const v of val) visit(v);
-          return;
-        }
-        if (val && typeof val === "object") {
-          for (const v of Object.values(val as Record<string, unknown>)) visit(v);
-        }
-      };
-      visit(workingJson);
-    }
-
-    return {
-      playerControllerExists,
-      itemStorageExists,
-      containersTotal,
-      containersWeapons,
-      weaponDetailsTotal,
-      weaponDetailsWeapons,
-      combos: inventoryCountMap.size,
-      sampleContainerHandles,
-      sampleWeaponDetailHandles,
-      deepScanMatches,
-      sampleDeepHandles,
-    };
-  }, [workingJson, inventoryCountMap]);
 
   // IDs of weapons already present (exclude from Add selector)
   const excludedIdsForAdd = useMemo(() => {
@@ -1518,8 +1436,8 @@ export default function SaveEditorPage() {
     j.PlayerController.ItemStorage.SaveLoadWeaponDataDetails =
       j.PlayerController.ItemStorage.SaveLoadWeaponDataDetails ?? [];
     // Ensure ability item details array exists (for Light/Heavy spells)
-    (j.PlayerController.ItemStorage as any).SaveLoadAbilityItemDataDetails =
-      (j.PlayerController.ItemStorage as any).SaveLoadAbilityItemDataDetails ?? [];
+    (j.PlayerController.ItemStorage as Record<string, unknown>).SaveLoadAbilityItemDataDetails =
+      (j.PlayerController.ItemStorage as Record<string, unknown>).SaveLoadAbilityItemDataDetails ?? [];
   };
 
   // Locate the existing arrays anywhere in the JSON tree. If not found, fall back to top-level PlayerController.ItemStorage
@@ -1569,7 +1487,7 @@ export default function SaveEditorPage() {
     if (!containers || !abilityDetails) {
       ensureInventoryPath(j);
       containers = j.PlayerController!.ItemStorage!.SaveLoadItemDataContainers!;
-      abilityDetails = (j.PlayerController!.ItemStorage as any).SaveLoadAbilityItemDataDetails!;
+      abilityDetails = (j.PlayerController!.ItemStorage as Record<string, unknown>).SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail>;
     }
     return { containers: containers!, abilityDetails: abilityDetails! };
   };
@@ -1592,7 +1510,7 @@ export default function SaveEditorPage() {
       if (found) return;
       if (!val || typeof val !== "object") return;
       const obj = val as Record<string, unknown>;
-      const integerMaps = (obj as any).IntegerMaps as Record<string, IntegerMapCategory> | undefined;
+      const integerMaps = (obj as Record<string, unknown>).IntegerMaps as Record<string, IntegerMapCategory> | undefined;
       if (integerMaps && integerMaps["Progression.Category.Unlocked.Items"]?.map) {
         const m = integerMaps["Progression.Category.Unlocked.Items"].map as Record<string, number>;
         if (m && typeof m === "object") {
@@ -1758,7 +1676,7 @@ export default function SaveEditorPage() {
     if (!workingJson) return;
     // Prevent writing tiers for demonic weapons
     const maybeWeapon = weaponByCombo.get(`${family}.${weight}`);
-    if (maybeWeapon && (maybeWeapon as any).category === "DemonicWeapons") return;
+    if (maybeWeapon && (maybeWeapon as BaseItem).category === "DemonicWeapons") return;
     const tier = Math.max(0, Math.min(3, Math.round(value)));
     const next = structuredClone(workingJson);
     const unlocked = getUnlockedItemsMap(next);
@@ -1816,9 +1734,8 @@ export default function SaveEditorPage() {
                 const weapon = weaponByCombo.get(key);
                 const name = weapon?.name ?? key;
                 // Demonic weapons have tier 0 only
-                const isDemonic = (weapon as any)?.category === "DemonicWeapons";
+                const isDemonic = (weapon as BaseItem)?.category === "DemonicWeapons";
                 const tier = isDemonic ? 0 : (mysteriumTierMap.get(key) ?? 0);
-                const stored = (workingJson?.Save?.GameInstance?.ProgressManager?.IntegerMaps?.["Progression.Category.Unlocked.Items"]?.map as Record<string, number> | undefined)?.[`Type.Item.Weapon.${family}.${weight}`];
                 return (
                   <tr key={key} className="border-b border-gray-700">
                     <td className="py-2 px-3">
@@ -2094,14 +2011,14 @@ export default function SaveEditorPage() {
       for (const c of containers) {
         const sh = c?.sourceHandle;
         if (typeof sh !== "string") continue;
+        seen.add(sh);
         const code = parseFetishInventoryOrDetailsHandle(sh);
         if (code) {
-          seen.add(sh);
           m.set(code, (m.get(code) ?? 0) + 1);
         }
       }
     }
-    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    const abilityDetails = (storage as Record<string, unknown>)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
     if (Array.isArray(abilityDetails)) {
       for (const d of abilityDetails) {
         const sh = d?.sourceHandle;
@@ -2115,7 +2032,9 @@ export default function SaveEditorPage() {
       const visit = (val: unknown) => {
         if (typeof val === "string") {
           const code = parseFetishInventoryOrDetailsHandle(val);
-          if (code) m.set(code, (m.get(code) ?? 0) + 1);
+          if (code) {
+            m.set(code, (m.get(code) ?? 0) + 1);
+          }
           return;
         }
         if (Array.isArray(val)) {
@@ -2239,11 +2158,17 @@ export default function SaveEditorPage() {
       if (parsed === code) delete unlocked[k];
     }
 
-    const scrub = (val: unknown, obj: any, key: string | number | null) => {
+    const scrub = (val: unknown, obj: Record<string, unknown> | unknown[], key: string | number | null) => {
       if (typeof val === "string") {
         const parsed = parseFetishInventoryOrDetailsHandle(val);
         if (parsed === code) {
-          if (obj && key !== null) obj[key as any] = "";
+          if (obj && key !== null) {
+            if (Array.isArray(obj)) {
+              obj[key as number] = "";
+            } else {
+              obj[key as string] = "";
+            }
+          }
         }
         return;
       }
@@ -2252,10 +2177,12 @@ export default function SaveEditorPage() {
         return;
       }
       if (val && typeof val === "object") {
-        for (const [k, v] of Object.entries(val as Record<string, unknown>)) scrub(v, val as any, k);
+        for (const k of Object.keys(val)) {
+          scrub((val as Record<string, unknown>)[k], val as Record<string, unknown>, k);
+        }
       }
     };
-    scrub(next, null as any, null);
+    scrub(next, {} as Record<string, unknown>, null);
 
     setWorkingJson(next);
   };
@@ -2282,7 +2209,7 @@ export default function SaveEditorPage() {
     };
     const closeAdd = () => setShowAddFetishModal(false);
     const handleAddSelect = (item: BaseItem | Bead) => {
-      if ((item as any)?.category === "Fetishes") {
+      if ((item as BaseItem)?.category === "Fetishes") {
         addInventoryForFetish(item as BaseItem);
         const remaining = getAllFetishes().filter((it) => ![...excludedFetishesForAdd, (item as BaseItem).id].includes(it.id));
         if (remaining.length === 0) closeAdd();
@@ -2313,8 +2240,8 @@ export default function SaveEditorPage() {
                       {item?.iconUrl ? (
                         <img src={item.iconUrl} alt={name} className="w-12 h-12 object-contain rounded" />
                       ) : (
-                        <div className="w-12 h-12" />)
-                      }
+                        <div className="w-12 h-12" />
+                      )}
                     </td>
                     <td className="py-2 px-3 text-gray-200">{name}</td>
                     <td className="py-2 px-3">
@@ -2421,14 +2348,14 @@ export default function SaveEditorPage() {
       for (const c of containers) {
         const sh = c?.sourceHandle;
         if (typeof sh !== "string") continue;
+        seen.add(sh);
         const code = parseRingInventoryOrDetailsHandle(sh);
         if (code) {
-          seen.add(sh);
           m.set(code, (m.get(code) ?? 0) + 1);
         }
       }
     }
-    const abilityDetails = (storage as any)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
+    const abilityDetails = (storage as Record<string, unknown>)?.SaveLoadAbilityItemDataDetails as Array<AbilityItemDataDetail> | undefined;
     if (Array.isArray(abilityDetails)) {
       for (const d of abilityDetails) {
         const sh = d?.sourceHandle;
@@ -2442,7 +2369,9 @@ export default function SaveEditorPage() {
       const visit = (val: unknown) => {
         if (typeof val === "string") {
           const code = parseRingInventoryOrDetailsHandle(val);
-          if (code) m.set(code, (m.get(code) ?? 0) + 1);
+          if (code) {
+            m.set(code, (m.get(code) ?? 0) + 1);
+          }
           return;
         }
         if (Array.isArray(val)) {
@@ -2577,11 +2506,17 @@ export default function SaveEditorPage() {
       quests.splice(0, quests.length, ...filteredQ);
     }
 
-    const scrub = (val: unknown, obj: any, key: string | number | null) => {
+    const scrub = (val: unknown, obj: Record<string, unknown> | unknown[], key: string | number | null) => {
       if (typeof val === "string") {
         const parsed = parseRingInventoryOrDetailsHandle(val);
         if (parsed === code) {
-          if (obj && key !== null) obj[key as any] = "";
+          if (obj && key !== null) {
+            if (Array.isArray(obj)) {
+              obj[key as number] = "";
+            } else {
+              obj[key as string] = "";
+            }
+          }
         }
         return;
       }
@@ -2590,10 +2525,12 @@ export default function SaveEditorPage() {
         return;
       }
       if (val && typeof val === "object") {
-        for (const [k, v] of Object.entries(val as Record<string, unknown>)) scrub(v, val as any, k);
+        for (const k of Object.keys(val)) {
+          scrub((val as Record<string, unknown>)[k], val as Record<string, unknown>, k);
+        }
       }
     };
-    scrub(next, null as any, null);
+    scrub(next, {} as Record<string, unknown>, null);
 
     setWorkingJson(next);
   };
@@ -2620,7 +2557,7 @@ export default function SaveEditorPage() {
     };
     const closeAdd = () => setShowAddRingModal(false);
     const handleAddSelect = (item: BaseItem | Bead) => {
-      if ((item as any)?.category === "Rings") {
+      if ((item as BaseItem)?.category === "Rings") {
         addInventoryForRing(item as BaseItem);
         const remaining = getAllRings().filter((it) => ![...excludedRingsForAdd, (item as BaseItem).id].includes(it.id));
         if (remaining.length === 0) closeAdd();
