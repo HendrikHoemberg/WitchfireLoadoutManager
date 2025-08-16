@@ -189,10 +189,7 @@ export default function SaveEditorPage() {
   const [showAddFetishModal, setShowAddFetishModal] = useState(false);
   const [showAddRingModal, setShowAddRingModal] = useState(false);
 
-  // --- Helpers: File System Access availability and regular file chooser ---
-  const isFSAAvailable = typeof window !== "undefined" &&
-    typeof (window as Window & { showOpenFilePicker?: () => void }).showOpenFilePicker === "function";
-
+  // --- Helpers: Regular file chooser ---
   const onChooseFile = async (file: File) => {
     try {
       setError(null);
@@ -2661,9 +2658,106 @@ export default function SaveEditorPage() {
     );
   };
 
+  // ============ Items Section (Volatile Witchfire) ============
+  const VOLATILE_HANDLE = "/Game/Gameplay/Inventory/Data/CurrencyItemsData.CurrencyItemsData|Currency.Witchfire.Volatile";
+  const UINT_MIN = 0;
+  const UINT_MAX = 4294967295; // 32-bit unsigned
+
+  // Resolve containers either from top-level PlayerController or, if absent, from Save.PlayerController (fallback for variant files)
+  const getItemContainers = (j: WitchfireSaveFile | null | undefined): Array<ItemStorageContainer> | null => {
+    const top = j?.PlayerController?.ItemStorage?.SaveLoadItemDataContainers;
+    if (Array.isArray(top)) return top;
+    const save = (j as unknown as { Save?: unknown })?.Save as
+      | { PlayerController?: { ItemStorage?: { SaveLoadItemDataContainers?: unknown } } }
+      | undefined;
+    const maybe = save?.PlayerController?.ItemStorage?.SaveLoadItemDataContainers;
+    return Array.isArray(maybe) ? (maybe as Array<ItemStorageContainer>) : null;
+  };
+
+  const volatileWitchfireAmount = useMemo(() => {
+    const containers = getItemContainers(workingJson);
+    if (!Array.isArray(containers)) return 0;
+    for (const c of containers) {
+      if (c?.sourceHandle === VOLATILE_HANDLE) {
+        const n = Number(c?.itemCount ?? 0);
+        if (!Number.isFinite(n)) return 0;
+        const clamped = Math.max(UINT_MIN, Math.min(UINT_MAX, Math.floor(n)));
+        return clamped;
+      }
+    }
+    return 0;
+  }, [workingJson]);
+
+  const setVolatileWitchfireAmount = (value: number) => {
+    if (!workingJson) return;
+    const next = structuredClone(workingJson);
+    const containers = getItemContainers(next);
+    if (!Array.isArray(containers)) return;
+    const clamped = Math.max(UINT_MIN, Math.min(UINT_MAX, Math.floor(Number(value) || 0)));
+    for (const c of containers) {
+      if (c?.sourceHandle === VOLATILE_HANDLE) {
+        c.itemCount = clamped;
+        setWorkingJson(next);
+        return;
+      }
+    }
+    // If not found, do nothing (only edit existing entry)
+  };
+
+  const renderItemsSection = () => {
+    if (!workingJson) return null;
+    return (
+      <div className="mt-10">
+        <h3 className="text-xl font-semibold text-gray-100 mb-2">Items</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-[540px] w-full text-left">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-700">
+                <th className="py-2 px-3 w-14"></th>
+                <th className="py-2 px-3">Name</th>
+                <th className="py-2 px-3">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-700">
+                <td className="py-2 px-3">
+                  <img src="/images/items/VolatileWitchfire.png" alt="Volatile Witchfire" className="w-12 h-12 object-contain rounded" />
+                </td>
+                <td className="py-2 px-3 text-gray-200">Volatile Witchfire</td>
+                <td className="py-2 px-3">
+                  <input
+                    type="number"
+                    min={UINT_MIN}
+                    max={UINT_MAX}
+                    step={1}
+                    value={volatileWitchfireAmount}
+                    onChange={(e) => setVolatileWitchfireAmount(Number(e.target.value))}
+                    className="w-36 bg-[#2a2a2a] text-white border border-gray-600 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#ddaf7a]"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <h1 className="text-3xl font-bold text-gray-100 mb-6">Savefile Editor</h1>
+      <div className="mb-6 rounded border border-yellow-600 bg-yellow-900/40 text-yellow-200 p-4">
+        <div className="flex items-start gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mt-0.5 flex-shrink-0">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          <p className="m-0">
+            <strong>Important:</strong> Always back up your save files before making any changes. If something breaks, you can restore from your backup.
+          </p>
+        </div>
+      </div>
 
       <div className="bg-[#30303071] border border-gray-700 rounded p-4 mb-4">
         <h2 className="text-lg font-semibold text-gray-100 mb-3">Open Save File</h2>
@@ -2678,17 +2772,6 @@ export default function SaveEditorPage() {
               }}
               className="block w-full text-gray-200 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-[#ddaf7a] file:text-black hover:file:bg-[#e8c295]"
             />
-          </div>
-          <div className="flex items-end">
-            <button
-              disabled={!isFSAAvailable}
-              onClick={openWithFSA}
-              className={`w-full md:w-auto px-4 py-2 rounded font-semibold ${
-                isFSAAvailable ? "bg-[#ddaf7a] text-black hover:bg-[#e8c295]" : "bg-gray-600 text-gray-300 cursor-not-allowed"
-              }`}
-            >
-              {isFSAAvailable ? "Open with File System Access" : "File System Access not supported"}
-            </button>
           </div>
         </div>
 
@@ -2732,6 +2815,7 @@ export default function SaveEditorPage() {
           {renderRelicsSection()}
           {renderFetishesSection()}
           {renderRingsSection()}
+          {renderItemsSection()}
         </div>
       )}
 
